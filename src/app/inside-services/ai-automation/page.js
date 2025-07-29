@@ -9,34 +9,37 @@ import {
   Bot,
   ShieldCheck,
   Zap,
-  DatabaseZap,
   Cog,
 } from "lucide-react";
 
 export default function AiAutomationsPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans px-2 sm:px-4 md:px-8">
-      <Header/>
+    <main className="w-full min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans m-0 p-0 overflow-x-hidden">
+      {/* ✅ Fixed Top Spacing */}
+      <Header />
+
       {/* Hero Section */}
-      <section className="w-full max-w-4xl mx-auto py-12 sm:py-20 md:py-28 flex flex-col items-center text-center px-2 sm:px-0">
-        <h1 className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">
+      <section className="w-full max-w-7xl mx-auto py-16 sm:py-20 md:py-28 flex flex-col items-center text-center px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
           <span className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text">
             AI Automations
           </span>{" "}
           That Supercharge Your Business
         </h1>
-        <p className="text-purple-200 text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto">
+        <p className="text-purple-200 text-base sm:text-lg md:text-xl mb-8 max-w-2xl mx-auto">
           Automate tasks, increase efficiency, and scale operations using intelligent workflows crafted by Hexologix.
         </p>
-        <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full w-full sm:w-auto max-w-xs sm:max-w-none">
+        <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-4 text-lg rounded-full w-full sm:w-auto">
           Schedule Free Consultation
         </Button>
       </section>
 
       {/* Features Section */}
-      <section className="w-full max-w-6xl mx-auto py-10 sm:py-16 md:py-20 px-2 sm:px-0">
-        <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-10 text-purple-300">What We Automate</h2>
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+      <section className="w-full max-w-7xl mx-auto py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 text-purple-300">
+          What We Automate
+        </h2>
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-6">
           {[
             {
               title: "Lead Management",
@@ -71,51 +74,52 @@ export default function AiAutomationsPage() {
           ].map((s, i) => (
             <Card
               key={i}
-              className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-4 sm:p-6 border border-purple-800 text-white hover:scale-[1.02] transition-transform flex flex-col h-full"
+              className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-6 border border-purple-800 text-white hover:scale-[1.02] transition-transform flex flex-col h-full"
             >
               <CardHeader>
                 <div className="mb-4 flex justify-center">{s.icon}</div>
-                <CardTitle className="text-base sm:text-lg md:text-xl text-center">{s.title}</CardTitle>
+                <CardTitle className="text-lg md:text-xl text-center">{s.title}</CardTitle>
               </CardHeader>
-              <CardContent className="text-xs sm:text-sm md:text-base text-center">{s.desc}</CardContent>
+              <CardContent className="text-sm md:text-base text-center">{s.desc}</CardContent>
             </Card>
           ))}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-10 sm:py-16 md:py-24 text-center bg-gradient-to-r from-fuchsia-800 via-purple-700 to-black px-2 sm:px-0 flex flex-col items-center">
+      <section className="w-full py-16 sm:py-20 md:py-24 text-center bg-gradient-to-r from-fuchsia-800 via-purple-700 to-black px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-2xl mx-auto">
-          <h2 className="text-lg sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-5">Ready to Automate Smarter?</h2>
-          <p className="text-base sm:text-lg mb-5 sm:mb-8 text-purple-100">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-5">Ready to Automate Smarter?</h2>
+          <p className="text-base sm:text-lg mb-8 text-purple-100">
             Let’s build workflows that work even while you sleep.
           </p>
-          <Button className="bg-white text-purple-800 px-5 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full w-full sm:w-auto max-w-xs sm:max-w-none hover:scale-105 transition-all">
+          <Button className="bg-white text-purple-800 px-6 py-4 text-lg font-semibold rounded-full w-full sm:w-auto hover:scale-105 transition-all">
             Book a Strategy Session
           </Button>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="w-full max-w-3xl mx-auto py-10 sm:py-16 md:py-20 flex flex-col items-center px-2 sm:px-0">
-        <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-purple-300 mb-4 sm:mb-6 text-center">
+      <section className="w-full max-w-4xl mx-auto py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-purple-300 mb-6 text-center">
           Frequently Asked Questions
         </h2>
-        <div className="space-y-4 sm:space-y-6 text-purple-200 w-full">
+        <div className="space-y-6 text-purple-200 w-full">
           <div>
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-1 sm:mb-2">What platforms do you support?</h4>
-            <p className="text-xs sm:text-sm md:text-base">We work with Zapier, Make, n8n, custom Node.js workflows, and any modern API-based platform.</p>
+            <h4 className="text-lg font-semibold text-white mb-2">What platforms do you support?</h4>
+            <p className="text-sm md:text-base">We work with Zapier, Make, n8n, custom Node.js workflows, and any modern API-based platform.</p>
           </div>
           <div>
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-1 sm:mb-2">Can you automate my current CRM?</h4>
-            <p className="text-xs sm:text-sm md:text-base">Yes, we specialize in integrating and automating HubSpot, Zoho, Salesforce, and custom CRMs.</p>
+            <h4 className="text-lg font-semibold text-white mb-2">Can you automate my current CRM?</h4>
+            <p className="text-sm md:text-base">Yes, we specialize in integrating and automating HubSpot, Zoho, Salesforce, and custom CRMs.</p>
           </div>
           <div>
-            <h4 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-1 sm:mb-2">Will I get reports on what automations do?</h4>
-            <p className="text-xs sm:text-sm md:text-base">Yes — we can build dashboards to track automation performance, errors, success rate, and value impact.</p>
+            <h4 className="text-lg font-semibold text-white mb-2">Will I get reports on what automations do?</h4>
+            <p className="text-sm md:text-base">Yes — we can build dashboards to track automation performance, errors, success rate, and value impact.</p>
           </div>
         </div>
       </section>
+
       <Footer />
     </main>
   );
