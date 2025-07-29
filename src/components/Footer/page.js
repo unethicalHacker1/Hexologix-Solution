@@ -61,10 +61,9 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { name: "Home", href: "/" },
-                { name: "Services", href: "/#services" },
                 { name: "Portfolio", href: "/Portfolio" },
-                { name: "About", href: "/#about" },
-                { name: "Contact", href: "/#contact" },
+                { name: "About Us", href: "/#about" },
+                { name: "Contact Us", href: "/#contact" },
               ].map((link) => (
                 <li key={link.name}>
                   <a
@@ -87,17 +86,20 @@ export default function Footer() {
             </h5>
             <ul className="space-y-3">
               {[
-                "AI Automation",
-                "Web Development",
-                "App Development",
-                "UI/UX Design",
-                "Digital Marketing"
+                { name: "AI Automation", href: "/inside-services/ai-automation" },
+                { name: "Web Development", href: "/inside-services/web-development" },
+                { name: "App Development", href: "/inside-services/app-development" },
+                { name: "UI/UX Design", href: "/inside-services/ui-ux-design" },
+                { name: "Digital Marketing", href: "/inside-services/digital-marketing" }
               ].map((service) => (
-                <li key={service}>
-                  <span className="text-purple-300 hover:text-white transition-colors duration-300 cursor-pointer flex items-center group">
+                <li key={service.name}>
+                  <a
+                    href={service.href}
+                    className="text-purple-300 hover:text-white transition-colors duration-300 flex items-center group"
+                  >
                     <span className="w-0 h-0.5 bg-gradient-to-r from-purple-400 to-fuchsia-400 group-hover:w-4 transition-all duration-300 mr-2"></span>
-                    {service}
-                  </span>
+                    {service.name}
+                  </a>
                 </li>
               ))}
             </ul>
