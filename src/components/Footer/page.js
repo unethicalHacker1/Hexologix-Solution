@@ -143,29 +143,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Newsletter Signup */}
-        <div className="border-t border-purple-800/50 pt-8 mb-8">
-          <div className="max-w-md">
-            <h5 className="text-lg font-semibold text-white mb-3">Stay Updated</h5>
-            <p className="text-purple-300 mb-4 text-sm">
-              Get the latest insights on AI, web development, and digital innovation.
-            </p>
-            <div className="flex space-x-3">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
-              />
-              <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:scale-105 transition-all">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
+        </div>        {/* Bottom Bar */}
         <div className="border-t border-purple-800/50 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-sm text-purple-400">
             © {new Date().getFullYear()} TechFlow. All rights reserved.

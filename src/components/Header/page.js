@@ -55,8 +55,8 @@ export default function Header() {
         </div>
 
         <Link href="/Portfolio" className="hover:text-white transition-colors">Portfolio</Link>
-        <Link href="/#about" className="hover:text-white transition-colors">About</Link>
-        <Link href="/#contact" className="hover:text-white transition-colors">Contact</Link>
+        <Link href="/about" className="hover:text-white transition-colors">About</Link>
+        <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
       </nav>
 
       {/* Mobile Menu Toggle */}

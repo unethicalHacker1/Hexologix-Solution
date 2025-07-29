@@ -1,22 +1,26 @@
 "use client";
 
+import { TypeAnimation } from "react-type-animation";
 import Footer from "@/components/Footer/page";
 import Header from "@/components/Header/page";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  ArrowRight, Code, Smartphone, Mail, Users, Zap, Globe, ChevronDown, Menu, X,
-  ExternalLink, Github, Eye, Calendar, Tag, Star, TrendingUp, Award
+  ExternalLink, Github, Calendar, Tag, Star
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function PortfolioPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      setIsVisible(window.scrollY > 100);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -144,6 +148,25 @@ export default function PortfolioPage() {
     ? projects 
     : projects.filter(project => project.category === activeFilter);
 
+  // Add CSS animation
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
       <Header/>
@@ -151,24 +174,123 @@ export default function PortfolioPage() {
       <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white">
         <div className="max-w-4xl mx-auto z-10 relative">
           <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
-            Our <span className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text">Portfolio</span>
+            Our <br />
+            <TypeAnimation
+              sequence={[
+                "Portfolio of Innovation", // first text
+                2000, // wait 2s
+                "Portfolio of Excellence",
+                2000,
+                "Portfolio of Success",
+                2000,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+            />
           </h2>
           <p className="text-xl text-purple-200 mb-8">
             Discover our latest projects and innovative solutions that drive business growth.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveFilter(category.id)}
-                className={`px-6 py-3 rounded-full transition-all ${
-                  activeFilter === category.id
-                    ? 'bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white'
-                    : 'bg-purple-900/30 border border-purple-700 text-purple-300 hover:bg-purple-800/50'
-                }`}
+              <div key={category.id} className="relative">
+                <button
+                  onClick={() => setActiveFilter(category.id)}
+                  className={`px-6 py-3 rounded-full transition-colors duration-300 ease-in-out h-12 flex items-center justify-center border ${
+                    activeFilter === category.id
+                      ? 'bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white border-purple-500'
+                      : 'bg-purple-900/30 border-purple-700 text-purple-300 hover:bg-purple-800/50 hover:border-purple-500'
+                  }`}
+                  style={{
+                    minHeight: '48px',
+                    minWidth: '120px'
+                  }}
+                >
+                  {category.name} ({category.count})
+                </button>
+                {activeFilter === category.id && (
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600 opacity-20 pointer-events-none"></div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* All Projects Grid */}
+      <section className="px-6 py-24 bg-gradient-to-r from-[#1a001f] via-[#2c003e] to-black text-white">
+        <div className="max-w-7xl mx-auto">
+          <h3 className="text-4xl font-bold text-center mb-12 text-purple-300 transition-all duration-500">
+            {activeFilter === "all" 
+              ? "All Projects" 
+              : categories.find(cat => cat.id === activeFilter)?.name || "All Projects"
+            }
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProjects.map((project, index) => (
+              <Card 
+                key={project.id} 
+                className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur border border-purple-800 text-white hover:scale-105 transition-all duration-500 ease-in-out group"
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animation: 'fadeInUp 0.6s ease-out forwards'
+                }}
               >
-                {category.name} ({category.count})
-              </button>
+                <div className="relative overflow-hidden rounded-t-lg">
+                  <div className="w-full h-48 bg-gradient-to-br from-purple-600/20 to-fuchsia-600/20 flex items-center justify-center">
+                    <div className="text-4xl">💻</div>
+                  </div>
+                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button size="sm" className="bg-purple-600/80 hover:bg-purple-500 text-white">
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" className="bg-purple-600/80 hover:bg-purple-500 text-white">
+                      <Github className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  {project.featured && (
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                      <Star className="w-4 h-4" />
+                      Featured
+                    </div>
+                  )}
+                </div>
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <CardTitle className="text-xl">{project.title}</CardTitle>
+                    <div className="flex items-center gap-1 text-yellow-400">
+                      {[...Array(project.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-purple-200 text-sm mb-4 line-clamp-3">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.slice(0, 3).map((tech) => (
+                      <span key={tech} className="px-2 py-1 bg-purple-800/50 border border-purple-700 rounded-full text-xs">
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                      <span className="px-2 py-1 bg-purple-800/50 border border-purple-700 rounded-full text-xs">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between text-sm text-purple-400">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      {project.year}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Tag className="w-4 h-4" />
+                      {project.category}
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
             ))}
           </div>
         </div>
@@ -232,71 +354,6 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* All Projects Grid */}
-      <section className="px-6 py-24 bg-gradient-to-r from-[#1a001f] via-[#2c003e] to-black text-white">
-        <div className="max-w-7xl mx-auto">
-          <h3 className="text-4xl font-bold text-center mb-12 text-purple-300">All Projects</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project) => (
-              <Card key={project.id} className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur border border-purple-800 text-white hover:scale-105 transition-all duration-300 group">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <div className="w-full h-48 bg-gradient-to-br from-purple-600/20 to-fuchsia-600/20 flex items-center justify-center">
-                    <div className="text-4xl">💻</div>
-                  </div>
-                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button size="sm" className="bg-purple-600/80 hover:bg-purple-500 text-white">
-                      <ExternalLink className="w-4 h-4" />
-                    </Button>
-                    <Button size="sm" className="bg-purple-600/80 hover:bg-purple-500 text-white">
-                      <Github className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  {project.featured && (
-                    <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                      <Star className="w-4 h-4" />
-                      Featured
-                    </div>
-                  )}
-                </div>
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <CardTitle className="text-xl">{project.title}</CardTitle>
-                    <div className="flex items-center gap-1 text-yellow-400">
-                      {[...Array(project.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-purple-200 text-sm mb-4 line-clamp-3">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.slice(0, 3).map((tech) => (
-                      <span key={tech} className="px-2 py-1 bg-purple-800/50 border border-purple-700 rounded-full text-xs">
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="px-2 py-1 bg-purple-800/50 border border-purple-700 rounded-full text-xs">
-                        +{project.technologies.length - 3}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center justify-between text-sm text-purple-400">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {project.year}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Tag className="w-4 h-4" />
-                      {project.category}
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Stats Section */}
       <section className="py-24 bg-black text-white px-6">
         <div className="max-w-5xl mx-auto text-center">
@@ -339,6 +396,31 @@ export default function PortfolioPage() {
       </section>
 
       <Footer/>
+
+      {isVisible && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm"
+          aria-label="Back to top"
+          style={{
+            boxShadow: '0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)'
+          }}
+        >
+          <svg 
+            className="w-6 h-6" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+            strokeWidth="2.5"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d="M5 10l7-7m0 0l7 7m-7-7v18" 
+            />
+          </svg>
+        </button>
+      )}
     </main>
   );
 }
