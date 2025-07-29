@@ -1,5 +1,5 @@
 "use client";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { motion } from "framer-motion";
 import Head from "next/head";
 import { TypeAnimation } from "react-type-animation";
