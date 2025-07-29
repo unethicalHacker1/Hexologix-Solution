@@ -1,59 +1,173 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Head from "next/head";
 import { TypeAnimation } from "react-type-animation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Smartphone,
   Zap,
   Globe,
+  Code,
+  Database,
+  Palette,
+  Mail,
+  MapPin,
+  TrendingUp,
+  Users,
+  Shield,
+  Clock,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
 import Image from "next/image";
 import Link from "next/link";
+import { 
+  containerVariants, 
+  itemVariants, 
+  cardVariants, 
+  fadeInUp, 
+  fadeInLeft, 
+  fadeInRight,
+  commonAnimationProps 
+} from "@/lib/animations";
 
-// Service, portfolio, and process data
+// Enhanced service data with more details and features
 const SERVICES = [
-  { title: "AI Automations", desc: "Custom workflows for CRM, leads, and business ops.", icon: <Zap className="w-8 h-8" /> },
-  { title: "Web Development", desc: "Next.js, WordPress & Shopify sites that convert.", icon: <Globe className="w-8 h-8" /> },
-  { title: "App Development", desc: "Flutter & React Native for iOS & Android.", icon: <Smartphone className="w-8 h-8" /> },
+  { 
+    title: "AI Automations", 
+    desc: "Custom workflows for CRM, leads, and business ops.", 
+    icon: <Zap className="w-8 h-8" />,
+    features: ["CRM Integration", "Lead Automation", "Workflow Optimization"],
+    href: "/inside-services/ai-automation",
+    comingSoon: false
+  },
+  { 
+    title: "Web Development", 
+    desc: "Next.js, WordPress & Shopify sites that convert.", 
+    icon: <Globe className="w-8 h-8" />,
+    features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
+    href: "/inside-services/web-dev",
+    comingSoon: false
+  },
+  { 
+    title: "App Development", 
+    desc: "Flutter & React Native for iOS & Android.", 
+    icon: <Smartphone className="w-8 h-8" />,
+    features: ["Cross-platform", "Native Performance", "App Store Ready"],
+    href: "/inside-services/app-dev",
+    comingSoon: false
+  },
+  { 
+    title: "UI/UX Design", 
+    desc: "Beautiful, intuitive interfaces that users love.", 
+    icon: <Palette className="w-8 h-8" />,
+    features: ["User Research", "Prototyping", "Design Systems"],
+    href: "/inside-services/ui-design",
+    comingSoon: false
+  },
+  { 
+    title: "Email Marketing", 
+    desc: "Automated campaigns that drive engagement and sales.", 
+    icon: <Mail className="w-8 h-8" />,
+    features: ["Automation", "Analytics", "A/B Testing"],
+    href: "/inside-services/email-marketing",
+    comingSoon: false
+  },
+  { 
+    title: "GIS Solutions", 
+    desc: "Geographic information systems for data visualization.", 
+    icon: <MapPin className="w-8 h-8" />,
+    features: ["Spatial Analysis", "Interactive Maps", "Data Integration"],
+    href: "/inside-services/gis",
+    comingSoon: false
+  },
 ];
+
+// Enhanced portfolio data with more projects
 const PORTFOLIO = [
-  { src: "/project1.jpg", alt: "E-commerce AI Store screenshot", title: "E-commerce AI Store", desc: "Smart product filters, AI chatbot, integrated analytics." },
-  { src: "/project2.jpg", alt: "Custom CRM Automation dashboard", title: "Custom CRM Automation", desc: "Workflow automation for lead tracking and reporting." },
+  { 
+    src: "/project1.jpg", 
+    alt: "E-commerce AI Store screenshot", 
+    title: "E-commerce AI Store", 
+    desc: "Smart product filters, AI chatbot, integrated analytics.",
+    category: "Web Development",
+    tech: ["Next.js", "AI Integration", "E-commerce"]
+  },
+  { 
+    src: "/project2.jpg", 
+    alt: "Custom CRM Automation dashboard", 
+    title: "Custom CRM Automation", 
+    desc: "Workflow automation for lead tracking and reporting.",
+    category: "AI Automation",
+    tech: ["Python", "React", "Database"]
+  },
+  { 
+    src: "/project1.jpg", 
+    alt: "Mobile App Development", 
+    title: "Cross-Platform Mobile App", 
+    desc: "Flutter-based app with real-time features and offline sync.",
+    category: "App Development",
+    tech: ["Flutter", "Firebase", "Real-time"]
+  },
+  { 
+    src: "/project2.jpg", 
+    alt: "UI/UX Design Project", 
+    title: "Modern Dashboard Design", 
+    desc: "Comprehensive design system with interactive prototypes.",
+    category: "UI/UX Design",
+    tech: ["Figma", "Prototyping", "Design System"]
+  },
 ];
+
+// Enhanced process data with better descriptions
 const PROCESS = [
-  { icon: "🔍", title: "Discover", desc: "We analyze your goals and uncover opportunities to automate and innovate." },
-  { icon: "🛠", title: "Build", desc: "Our expert team designs, codes, and integrates smart solutions tailored to you." },
-  { icon: "🚀", title: "Launch", desc: "We deploy with precision and support your journey post-launch for continued growth." },
+  { 
+    icon: <Code className="w-12 h-12 text-fuchsia-400" />, 
+    title: "Discover", 
+    desc: "We analyze your goals and uncover opportunities to automate and innovate.",
+    details: ["Requirements gathering", "Market research", "Strategy planning"]
+  },
+  { 
+    icon: <Database className="w-12 h-12 text-purple-400" />, 
+    title: "Build", 
+    desc: "Our expert team designs, codes, and integrates smart solutions tailored to you.",
+    details: ["Design & prototyping", "Development", "Testing & QA"]
+  },
+  { 
+    icon: <TrendingUp className="w-12 h-12 text-pink-400" />, 
+    title: "Launch", 
+    desc: "We deploy with precision and support your journey post-launch for continued growth.",
+    details: ["Deployment", "Monitoring", "Ongoing support"]
+  },
 ];
+
+// Animation variants imported from shared animations file
 
 export default function HomePage() {
-  const [scrollY, setScrollY] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
-      setIsVisible(window.scrollY > 100);
+      setShowBackToTop(window.scrollY > 400);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  function ServiceCard({ title, desc, icon, delay, href, comingSoon, features }) {
+  function ServiceCard({ title, desc, icon, href, comingSoon, features, index }) {
     const cardContent = (
       <Card
-        className={`relative group bg-white/10 backdrop-blur-lg p-5 border border-white/20 text-white shadow-xl hover:shadow-fuchsia-700/30 hover:border-fuchsia-400 transition-all duration-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-fuchsia-400 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
-        style={{ animationDelay: delay, minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+        className="relative group bg-white/10 backdrop-blur-lg p-6 border border-white/20 text-white shadow-xl hover:shadow-fuchsia-700/30 hover:border-fuchsia-400 transition-all duration-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
+        style={{ minHeight: '220px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         tabIndex={0}
         role="button"
         aria-label={title}
@@ -63,22 +177,24 @@ export default function HomePage() {
             Coming Soon
           </span>
         )}
-        <CardHeader>
+        <CardHeader className="pb-3">
           <div className="mb-3 flex justify-center text-3xl group-hover:scale-110 group-hover:text-fuchsia-400 transition-transform duration-300 drop-shadow-lg">{icon}</div>
-          <CardTitle className="text-lg font-bold mb-1 tracking-tight text-white/90">{title}</CardTitle>
+          <CardTitle className="text-lg font-bold mb-2 tracking-tight text-white/90">{title}</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-purple-100 mb-1">{desc}</CardContent>
-        {features && (
-          <ul className="text-xs text-purple-200 mb-1 space-y-0.5 text-left pl-2">
-            {features.map((f, idx) => (
-              <li key={idx} className="flex items-center gap-2">
-                <span className="text-fuchsia-400">•</span> {f}
-              </li>
-            ))}
-          </ul>
-        )}
+        <CardContent className="flex-1">
+          <p className="text-sm text-purple-100 mb-3">{desc}</p>
+          {features && (
+            <ul className="text-xs text-purple-200 space-y-1 text-left">
+              {features.map((f, idx) => (
+                <li key={idx} className="flex items-center gap-2">
+                  <span className="text-fuchsia-400">•</span> {f}
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
         {href && (
-          <div className="mt-2 flex justify-center">
+          <div className="mt-4 flex justify-center">
             <span className="inline-flex items-center gap-2 bg-fuchsia-600/90 text-white px-4 py-1.5 rounded-full font-semibold text-xs shadow hover:bg-fuchsia-700/90 transition group-hover:translate-x-1">
               Learn More
               <svg className="w-3 h-3 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -95,222 +211,333 @@ export default function HomePage() {
       <div className="opacity-80 cursor-not-allowed">{cardContent}</div>
     );
   }
-  function PortfolioCard({ src, alt, title, desc, delay }) {
+
+  function PortfolioCard({ src, alt, title, desc, category, tech }) {
     return (
-      <div
-        className={`bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
-        style={{ animationDelay: delay }}
+      <motion.div
+        variants={cardVariants}
+        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 focus-within:ring-offset-black"
+        tabIndex={0}
+        role="article"
+        aria-label={`Project: ${title}`}
       >
-        <Image src={src} alt={alt} width={600} height={400} className="rounded-lg mb-4 w-full h-auto object-cover" />
-        <h4 className="text-xl font-semibold mb-2 text-purple-200">{title}</h4>
-        <p className="text-sm text-purple-300">{desc}</p>
-      </div>
+        <div className="relative overflow-hidden rounded-lg mb-4">
+          <Image 
+            src={src} 
+            alt={alt} 
+            width={600} 
+            height={400} 
+            className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110 group-focus-within:scale-110" 
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300" />
+        </div>
+        <div className="mb-3">
+          <span className="inline-block bg-fuchsia-600/20 text-fuchsia-300 text-xs px-2 py-1 rounded-full mb-2">
+            {category}
+          </span>
+        </div>
+        <h4 className="text-xl font-semibold mb-2 text-purple-200 group-hover:text-white group-focus-within:text-white transition-colors">{title}</h4>
+        <p className="text-sm text-purple-300 mb-3 leading-relaxed">{desc}</p>
+        <div className="flex flex-wrap gap-1">
+          {tech.map((item, idx) => (
+            <span key={idx} className="text-xs bg-purple-900/30 text-purple-200 px-2 py-1 rounded">
+              {item}
+            </span>
+          ))}
+        </div>
+      </motion.div>
     );
   }
-  function ProcessStep({ icon, title, desc, delay }) {
+
+  function ProcessStep({ icon, title, desc, details }) {
     return (
-      <div
-        className={`p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-105 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
-        style={{ animationDelay: delay }}
+      <motion.div
+        variants={cardVariants}
+        className="group p-8 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-105 text-center"
       >
-        <div className="text-4xl mb-4">{icon}</div>
-        <h4 className="text-xl font-semibold text-purple-200 mb-2">{title}</h4>
-        <p className="text-sm text-purple-400">{desc}</p>
-      </div>
+        <div className="flex justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <h4 className="text-xl font-semibold text-purple-200 mb-3 group-hover:text-white transition-colors">{title}</h4>
+        <p className="text-sm text-purple-400 mb-4">{desc}</p>
+        <ul className="text-xs text-purple-300 space-y-1">
+          {details.map((detail, idx) => (
+            <li key={idx} className="flex items-center justify-center gap-2">
+              <span className="text-fuchsia-400">✓</span> {detail}
+            </li>
+          ))}
+        </ul>
+      </motion.div>
     );
   }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
       <Head>
-        <title>TechFlow | AI Automations & Web Apps</title>
+        <title>Hexologix | AI Automations & Web Apps</title>
         <meta name="description" content="We build automation-driven websites, apps, and solutions that scale your business." />
-        <meta property="og:title" content="TechFlow | AI Automations & Web Apps" />
+        <meta property="og:title" content="Hexologix | AI Automations & Web Apps" />
         <meta property="og:description" content="We build automation-driven websites, apps, and solutions that scale your business." />
         <meta property="og:type" content="website" />
       </Head>
       <div className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
         <Header />
+        
         {/* Hero Section */}
-        <section id="home" className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center" as="section">
+        <section id="home" className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
           <div className="max-w-4xl mx-auto z-10 relative">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white animate-fade-in-up">
-  Empowering Brands with <br />
-  <TypeAnimation
-    sequence={[
-      "Smart AI & Stunning Tech",
-      2000,
-      "AI Automations & Web Apps",
-      2000,
-      "Conversion-Focused Designs",
-      2000,
-    ]}
-    wrapper="span"
-    speed={50}
-    repeat={Infinity}
-    className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
-  />
-</h2>
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
+            >
+              Empowering Brands with <br />
+              <TypeAnimation
+                sequence={[
+                  "Smart AI & Stunning Tech",
+                  2000,
+                  "AI Automations & Web Apps",
+                  2000,
+                  "Conversion-Focused Designs",
+                  2000,
+                ]}
+                wrapper="span"
+                speed={50}
+                repeat={Infinity}
+                className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+              />
+            </motion.h2>
 
-<p className="text-base sm:text-lg text-purple-200 mb-8 animate-fade-in-up-delay">
-  We build automation-driven websites, apps, and solutions that scale your business.
-</p>
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-base sm:text-lg text-purple-200 mb-8"
+            >
+              We build automation-driven websites, apps, and solutions that scale your business.
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6 animate-fade-in-up-delay-2">
-  <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with TechFlow">
-    Get Started
-  </Button>
-  <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="Book a Call with TechFlow">
-    Book a Call
-  </Button>
-</div>
-
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
+            >
+              <Link href="/contact">
+                <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with Hexologix">
+                  Get Started
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="Book a Call with Hexologix">
+                  Book a Call
+                </Button>
+              </Link>
+            </motion.div>
           </div>
         </section>
-        {/* Our Services Section */}
-<section
-  id="services"
-  className="relative py-16 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden"
-  as="section"
->
-  {/* Animated glassy SVG background */}
-  <svg
-    className="absolute top-0 left-1/2 -translate-x-1/2 opacity-30 pointer-events-none animate-pulse"
-    width="900"
-    height="240"
-    fill="none"
-    viewBox="0 0 1000 260"
-    aria-hidden="true"
-  >
-    <ellipse cx="500" cy="130" rx="420" ry="95" fill="#a21caf" fillOpacity="0.15" />
-    <ellipse cx="500" cy="130" rx="320" ry="65" fill="#f472b6" fillOpacity="0.08" />
-  </svg>
 
-  <div className="max-w-6xl mx-auto text-center relative z-10">
-    {/* Smaller Heading */}
-    <h3
-      className={`text-3xl sm:text-4xl font-bold mb-6 text-white/90 tracking-tight transition-all duration-1000 ${
-        isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-      }`}
-    >
-      Our Services
-    </h3>
-
-    {/* Smaller Description */}
-    <p className="text-base text-purple-100 mb-8 max-w-xl mx-auto leading-relaxed">
-      Accelerate your business with our modern, AI-powered solutions and creative development expertise.
-    </p>
-
-    {/* Swiper */}
-    <Swiper
-      modules={[Pagination, Autoplay]}
-      spaceBetween={30}
-      slidesPerView={1}
-      breakpoints={{
-        640: { slidesPerView: 1 },
-        768: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 },
-      }}
-      loop={true}
-      pagination={{ clickable: true }}
-      autoplay={{ delay: 5000 }}
-      className="w-full max-w-4xl swiper-custom mb-8"
-    >
-      {SERVICES.map((service, i) => (
-        <SwiperSlide key={i}>
-          <ServiceCard
-            {...service}
-            delay={`${(i + 1) * 200}ms`}
-            href={service.title === "AI Automations" ? "/inside-services/ai-automation" : undefined}
-            comingSoon={service.title !== "AI Automations"}
-            features={service.features}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-
-    <style jsx global>{`
-      .swiper-pagination {
-        bottom: -25px !important;
-        text-align: center !important;
-      }
-      .swiper-pagination-bullet {
-        width: 8px;
-        height: 8px;
-      }
-      .swiper-pagination-bullet-active {
-        background: #a21caf;
-      }
-    `}</style>
-  </div>
-</section>
-
-        {/* Portfolio Highlights */}
-<section
-  id="portfolio"
-  className="py-16 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white"
-  as="section"
->
-  {/* Background Effects */}
-  <div className="absolute inset-0 pointer-events-none">
-    <div className="w-[450px] h-[450px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-14 left-1/4 -z-10"></div>
-    <div className="w-[380px] h-[380px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10"></div>
-  </div>
-
-  <div className="max-w-6xl mx-auto text-center relative z-10">
-    {/* Smaller Heading */}
-    <h3
-      className={`text-3xl sm:text-4xl font-semibold mb-10 text-purple-300 tracking-tight transition-all duration-1000 ${
-        isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-      }`}
-    >
-      Featured Work
-    </h3>
-
-    {/* Portfolio Grid - Cards Made Smaller */}
-    <div className="grid md:grid-cols-2 gap-6">
-      {PORTFOLIO.map((p, i) => (
-        <div key={i} className="transform transition-all hover:scale-[1.02]">
-          <PortfolioCard
-            {...p}
-            delay={`${(i + 1) * 200}ms`}
-            className="p-4 sm:p-5 rounded-lg text-sm sm:text-base max-w-[90%] mx-auto shadow-md"
-          />
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-
-        {/* How We Work */}
-        <section className="py-24 px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black relative text-white" as="section">
+        {/* Enhanced Our Services Section */}
+        <section
+          id="services"
+          className="relative py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden"
+          data-framer-motion="true"
+        >
+          {/* Enhanced animated background */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="w-96 h-96 bg-purple-900/20 rounded-full blur-3xl absolute top-0 left-1/2 -translate-x-1/2 -z-10"></div>
-            <div className="w-80 h-80 bg-fuchsia-800/10 rounded-full blur-2xl absolute bottom-0 right-1/3 -z-10"></div>
+            <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
+            <div className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse" style={{ animationDelay: '1s' }}></div>
           </div>
-          <div className="max-w-5xl mx-auto text-center relative z-10">
-            <h3 className={`text-4xl font-bold text-purple-300 mb-16 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}>
-              Our Process
-            </h3>
-            <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-10">
-              {PROCESS.map((step, i) => (
-                <ProcessStep key={i} {...step} delay={`${(i + 1) * 200}ms`} />
+
+          <div className="max-w-7xl mx-auto text-center relative z-10">
+            <motion.h3
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
+            >
+              Our Services
+            </motion.h3>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
+            >
+              Accelerate your business with our modern, AI-powered solutions and creative development expertise.
+            </motion.p>
+
+            {/* Enhanced Services Grid */}
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+            >
+              {SERVICES.map((service, i) => (
+                <motion.div key={i} variants={itemVariants}>
+                  <ServiceCard
+                    {...service}
+                    index={i}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
+
+            {/* Call to action */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="mt-12"
+            >
+              <Link href="/contact">
+                <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-8 py-3 text-base rounded-full hover:scale-105 transition-all">
+                  View All Services
+                </Button>
+              </Link>
+            </motion.div>
           </div>
         </section>
+
+        {/* Enhanced Featured Work Section */}
+        <section
+          id="portfolio"
+          className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white"
+          data-framer-motion="true"
+        >
+          {/* Enhanced Background Effects */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="w-[500px] h-[500px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10 animate-pulse"></div>
+            <div className="w-[400px] h-[400px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <motion.h3
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
+            >
+              Featured Work
+            </motion.h3>
+
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
+            >
+              Discover how we've transformed businesses with our innovative solutions and cutting-edge technology.
+            </motion.p>
+
+            {/* Enhanced Portfolio Grid */}
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
+            >
+              {PORTFOLIO.map((project, i) => (
+                <motion.div key={i} variants={itemVariants}>
+                  <PortfolioCard
+                    {...project}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* View More Projects Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className="text-center mt-12"
+            >
+              <Link href="/Portfolio">
+                <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-8 py-3 text-base rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black">
+                  View All Projects
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Enhanced Our Process Section */}
+        <section className="py-20 px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black relative text-white" data-framer-motion="true">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="w-96 h-96 bg-purple-900/20 rounded-full blur-3xl absolute top-0 left-1/2 -translate-x-1/2 -z-10 animate-pulse"></div>
+            <div className="w-80 h-80 bg-fuchsia-800/10 rounded-full blur-2xl absolute bottom-0 right-1/3 -z-10 animate-pulse" style={{ animationDelay: '1s' }}></div>
+          </div>
+          <div className="max-w-6xl mx-auto text-center relative z-10">
+            <motion.h3 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
+            >
+              Our Process
+            </motion.h3>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
+            >
+              We follow a proven methodology that ensures your project's success from concept to launch.
+            </motion.p>
+
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+              {PROCESS.map((step, i) => (
+                <motion.div key={i} variants={itemVariants}>
+                  <ProcessStep {...step} />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Process connection lines */}
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500/30 to-transparent -z-10" style={{ top: '60%' }}></div>
+          </div>
+        </section>
+
         {/* Testimonials (Slider) */}
-        <section className="px-6 py-24 bg-gradient-to-br from-black via-[#150022] to-black text-white relative" as="section">
+        <section className="px-6 py-24 bg-gradient-to-br from-black via-[#150022] to-black text-white relative">
           <div className="max-w-4xl mx-auto text-center">
-            <h3 className={`text-4xl font-bold mb-12 text-purple-300 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}>
+            <motion.h3 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="text-4xl font-bold mb-12 text-purple-300"
+            >
               What Our Clients Say
-            </h3>
-            <div
-              className={`transition-all duration-1000 ${
-                isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
-              style={{ animationDelay: "200ms" }}
+            </motion.h3>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true, margin: "-100px" }}
             >
               <Swiper
                 modules={[Pagination, Autoplay]}
@@ -349,7 +576,7 @@ export default function HomePage() {
                   </p>
                 </SwiperSlide>
               </Swiper>
-            </div>
+            </motion.div>
             {/* Custom Swiper styles */}
             <style jsx global>{`
               .swiper-pagination {
@@ -367,30 +594,44 @@ export default function HomePage() {
             `}</style>
           </div>
         </section>
+
         {/* Why Choose Us Section */}
-        <section className="px-6 py-24 bg-gradient-to-br from-[#2d004d] via-[#1a002f] to-black text-white relative" as="section">
+        <section className="px-6 py-24 bg-gradient-to-br from-[#2d004d] via-[#1a002f] to-black text-white relative">
           <div className="max-w-4xl mx-auto text-center">
-            <h3 className="text-4xl font-bold mb-10 text-purple-300">
+            <motion.h3 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="text-4xl font-bold mb-10 text-purple-300"
+            >
               Why Choose Us
-            </h3>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-purple-900/30 p-8 rounded-2xl border border-purple-800">
+            </motion.h3>
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="grid md:grid-cols-3 gap-8"
+            >
+              <motion.div variants={itemVariants} className="bg-purple-900/30 p-8 rounded-2xl border border-purple-800">
                 <h4 className="text-xl font-semibold mb-4 text-white">Expert Team</h4>
                 <p className="text-purple-200">Our professionals bring years of experience and a passion for innovation to every project.</p>
-              </div>
-              <div className="bg-purple-900/30 p-8 rounded-2xl border border-purple-800">
+              </motion.div>
+              <motion.div variants={itemVariants} className="bg-purple-900/30 p-8 rounded-2xl border border-purple-800">
                 <h4 className="text-xl font-semibold mb-4 text-white">Client-Centric Approach</h4>
                 <p className="text-purple-200">We prioritize your goals and tailor our solutions to fit your unique needs.</p>
-              </div>
-              <div className="bg-purple-900/30 p-8 rounded-2xl border border-purple-800">
+              </motion.div>
+              <motion.div variants={itemVariants} className="bg-purple-900/30 p-8 rounded-2xl border border-purple-800">
                 <h4 className="text-xl font-semibold mb-4 text-white">Proven Results</h4>
                 <p className="text-purple-200">Our track record speaks for itself—delivering measurable value and lasting partnerships.</p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
+
         {/* CTA Section */}
-        <section className="relative py-28 px-6 bg-gradient-to-br from-fuchsia-800 via-purple-700 to-black text-white text-center overflow-hidden" as="section">
+        <section className="relative py-28 px-6 bg-gradient-to-br from-fuchsia-800 via-purple-700 to-black text-white text-center overflow-hidden">
           {/* ✨ Animated Glow Effects */}
           <div className="absolute inset-0 -z-10">
             <div className="w-[700px] h-[700px] bg-fuchsia-500/20 blur-3xl rounded-full absolute -top-48 left-1/2 -translate-x-1/2 animate-pulse" />
@@ -398,68 +639,49 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.06),_transparent)] opacity-50" />
           </div>
           <div className="max-w-4xl mx-auto relative z-10">
-            <h3 className={`text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}>
+            <motion.h3 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
+            >
               Let&apos;s Build Something
               <br className="hidden sm:inline" /> Amazing Together
-            </h3>
-            <p
-              className={`text-lg mb-10 text-purple-100 transition-all duration-1000 ${
-                isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
-              style={{ animationDelay: "200ms" }}
+            </motion.h3>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="text-lg mb-10 text-purple-100"
             >
               Schedule a call or send us your ideas. We&apos;ll bring them to life
               with precision.
-            </p>
-            <div
-              className={`transition-all duration-1000 ${
-                isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
-              style={{ animationDelay: "400ms" }}
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true, margin: "-100px" }}
             >
-              <Button className="bg-white text-purple-800 px-8 py-4 text-lg font-semibold rounded-full hover:scale-110 transition-transform duration-300 animate-pulse-slow">
-                Get Started
-              </Button>
-            </div>
+              <Link href="/contact">
+                <Button className="bg-white text-purple-800 px-8 py-4 text-lg font-semibold rounded-full hover:scale-110 transition-transform duration-300 animate-pulse-slow">
+                  Get Started
+                </Button>
+              </Link>
+            </motion.div>
           </div>
-          {/* Custom Animation */}
-          <style jsx>{`
-            @keyframes fadeInUp {
-              0% {
-                opacity: 0;
-                transform: translateY(30px);
-              }
-              100% {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-
-            .animate-fade-in-up {
-              animation: fadeInUp 1s ease-out forwards;
-            }
-
-            .animate-fade-in-up-delay {
-              animation: fadeInUp 1s ease-out forwards;
-              animation-delay: 0.3s;
-            }
-
-            .animate-fade-in-up-delay-2 {
-              animation: fadeInUp 1s ease-out forwards;
-              animation-delay: 0.6s;
-            }
-
-            .animate-pulse-slow {
-              animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-            }
-          `}</style>
         </section>
         <Footer />
       </div>
-      {isVisible && (
-        <button
+      {showBackToTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm animate-fade-in-up"
+          className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm"
           aria-label="Back to top"
           style={{
             boxShadow: '0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)'
@@ -468,7 +690,7 @@ export default function HomePage() {
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
           </svg>
-        </button>
+        </motion.button>
       )}
     </main>
   );

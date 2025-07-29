@@ -1,6 +1,7 @@
 "use client";
 
 import { TypeAnimation } from "react-type-animation";
+import Link from "next/link";
 import Footer from "@/components/Footer/page";
 import Header from "@/components/Header/page";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,16 @@ import {
   ExternalLink, Github, Calendar, Tag, Star
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { 
+  containerVariants, 
+  itemVariants, 
+  cardVariants, 
+  fadeInUp, 
+  fadeInLeft, 
+  fadeInRight,
+  commonAnimationProps 
+} from "@/lib/animations";
 
 export default function PortfolioPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -385,12 +396,16 @@ export default function PortfolioPage() {
           <h3 className="text-4xl md:text-5xl font-bold mb-6">Ready to Start Your Project?</h3>
           <p className="text-lg mb-8 text-purple-100">Let`s create something amazing together. Get in touch to discuss your ideas.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-white text-purple-800 px-8 py-4 text-lg font-semibold rounded-full hover:scale-105 transition-all">
-              Start a Project
-            </Button>
-            <Button className="bg-transparent border-2 border-white text-white px-8 py-4 text-lg rounded-full hover:bg-white hover:text-purple-800 transition-all">
-              View Case Studies
-            </Button>
+            <Link href="/contact">
+              <Button className="bg-white text-purple-800 px-8 py-4 text-lg font-semibold rounded-full hover:scale-105 transition-all">
+                Start a Project
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button className="bg-transparent border-2 border-white text-white px-8 py-4 text-lg rounded-full hover:bg-white hover:text-purple-800 transition-all">
+                View Case Studies
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

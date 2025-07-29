@@ -12,6 +12,7 @@ import {
   Cog,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function AiAutomationsPage() {
   // Typewriter effect for heading
@@ -44,9 +45,11 @@ export default function AiAutomationsPage() {
         <p className="text-purple-200 text-sm sm:text-base md:text-lg mb-6 max-w-xl mx-auto">
           Automate tasks, increase efficiency, and scale operations using intelligent workflows crafted by Hexologix.
         </p>
-        <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 text-base rounded-full w-full sm:w-auto max-w-xs">
-          Schedule Free Consultation
-        </Button>
+        <Link href="/contact">
+          <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 text-base rounded-full w-full sm:w-auto max-w-xs">
+            Schedule Free Consultation
+          </Button>
+        </Link>
       </section>
 
       {/* Features Section */}
@@ -108,9 +111,11 @@ export default function AiAutomationsPage() {
           <p className="text-sm sm:text-base mb-6 text-purple-100">
             Let’s build workflows that work even while you sleep.
           </p>
-          <Button className="bg-white text-purple-800 px-5 py-3 text-base font-semibold rounded-full w-full sm:w-auto max-w-xs hover:scale-105 transition-all">
-            Book a Strategy Session
-          </Button>
+          <Link href="/contact">
+            <Button className="bg-white text-purple-800 px-5 py-3 text-base font-semibold rounded-full w-full sm:w-auto max-w-xs hover:scale-105 transition-all">
+              Book a Strategy Session
+            </Button>
+          </Link>
         </div>
       </section>
 

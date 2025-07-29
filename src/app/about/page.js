@@ -1,11 +1,21 @@
 "use client";
 
 import { TypeAnimation } from "react-type-animation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
 import { Star, Award, Users, Target, Heart, Zap, Globe, Code, Smartphone, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import { 
+  containerVariants, 
+  itemVariants, 
+  cardVariants, 
+  fadeInUp, 
+  fadeInLeft, 
+  fadeInRight,
+  commonAnimationProps 
+} from "@/lib/animations";
 
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState("mission");
@@ -59,9 +69,10 @@ export default function AboutPage() {
         <section className="px-6 py-20">
           <div className="max-w-6xl mx-auto text-center">
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 0.6 }}
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-6">
                 <span className="bg-gradient-to-r from-fuchsia-400 to-purple-500 text-transparent bg-clip-text">
@@ -88,12 +99,16 @@ export default function AboutPage() {
                 At TechFlow, we don't just build software – we build the future.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 text-lg font-semibold">
-                  Start Your Project
-                </button>
-                <button className="bg-transparent border-2 border-purple-500 text-purple-300 px-8 py-4 rounded-full hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg font-semibold">
-                  Learn More
-                </button>
+                <Link href="/contact">
+                  <button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 text-lg font-semibold">
+                    Start Your Project
+                  </button>
+                </Link>
+                <Link href="/contact">
+                  <button className="bg-transparent border-2 border-purple-500 text-purple-300 px-8 py-4 rounded-full hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg font-semibold">
+                    Learn More
+                  </button>
+                </Link>
               </div>
             </motion.div>
           </div>
@@ -103,9 +118,11 @@ export default function AboutPage() {
         <section className="px-6 py-20 bg-gradient-to-br from-purple-900/20 to-black/20">
           <div className="max-w-6xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Our Mission & Vision</h2>
@@ -113,9 +130,11 @@ export default function AboutPage() {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                variants={fadeInLeft}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: 0.2 }}
                 className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800"
               >
                 <div className="flex items-center mb-6">
@@ -129,9 +148,11 @@ export default function AboutPage() {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                variants={fadeInRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: 0.3 }}
                 className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800"
               >
                 <div className="flex items-center mb-6">
@@ -151,9 +172,11 @@ export default function AboutPage() {
         <section className="px-6 py-20">
           <div className="max-w-6xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="text-center mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Our Core Values</h2>
@@ -162,7 +185,13 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
               {[
                 { title: "Innovation", desc: "Pushing boundaries with cutting-edge technology", icon: "🚀", color: "from-blue-500 to-cyan-500" },
                 { title: "Excellence", desc: "Delivering exceptional quality in everything we do", icon: "⭐", color: "from-yellow-500 to-orange-500" },
@@ -173,9 +202,7 @@ export default function AboutPage() {
               ].map((value, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                  variants={itemVariants}
                   className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800 text-center hover:scale-105 transition-all duration-300"
                 >
                   <div className={`w-16 h-16 bg-gradient-to-r ${value.color} rounded-full flex items-center justify-center text-2xl mx-auto mb-6`}>
@@ -185,7 +212,7 @@ export default function AboutPage() {
                   <p className="text-purple-200">{value.desc}</p>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -623,12 +650,16 @@ export default function AboutPage() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-                <button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-10 py-4 rounded-full hover:scale-105 transition-all duration-300 text-lg font-semibold">
-                  Start Your Project
-                </button>
-                <button className="bg-transparent border-2 border-purple-500 text-purple-300 px-10 py-4 rounded-full hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg font-semibold">
-                  Schedule a Call
-                </button>
+                <Link href="/contact">
+                  <button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-10 py-4 rounded-full hover:scale-105 transition-all duration-300 text-lg font-semibold">
+                    Start Your Project
+                  </button>
+                </Link>
+                <Link href="/contact">
+                  <button className="bg-transparent border-2 border-purple-500 text-purple-300 px-10 py-4 rounded-full hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg font-semibold">
+                    Schedule a Call
+                  </button>
+                </Link>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

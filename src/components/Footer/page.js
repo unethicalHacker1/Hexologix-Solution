@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Code, Mail, Users, Globe } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -18,25 +20,31 @@ export default function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-xl flex items-center justify-center">
-                <Code className="w-7 h-7 text-white" />
-              </div>
-              <h4 className="text-2xl font-bold bg-gradient-to-r from-fuchsia-400 to-purple-500 text-transparent bg-clip-text">
-                TechFlow
-              </h4>
+              <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                <Image
+                  src="/transparent logo.png"
+                  alt="Hexologix Logo"
+                  width={48}
+                  height={48}
+                  className="rounded-xl object-contain"
+                />
+                <h4 className="text-2xl font-bold bg-gradient-to-r from-fuchsia-400 to-purple-500 text-transparent bg-clip-text">
+                  Hexologix Solutions
+                </h4>
+              </Link>
             </div>
             <p className="text-purple-300 mb-6 leading-relaxed max-w-md">
               Innovative AI solutions and beautiful code for modern businesses.
-              We transform ideas into powerful digital experiences that drive growth.
+              We transform ideas into powerful digital experiences that drive growth and success.
             </p>
 
             {/* Social Media Links */}
             <div className="flex space-x-4">
               {[
-                { name: "Twitter", icon: "𝕏", href: "#" },
-                { name: "LinkedIn", icon: "💼", href: "#" },
-                { name: "GitHub", icon: "🐙", href: "#" },
-                { name: "Instagram", icon: "📸", href: "#" },
+                { name: "Twitter", icon: "𝕏", href: "https://twitter.com/hexologix" },
+                { name: "LinkedIn", icon: "💼", href: "https://linkedin.com/company/hexologix" },
+                { name: "GitHub", icon: "🐙", href: "https://github.com/hexologix" },
+                { name: "Instagram", icon: "📸", href: "https://instagram.com/hexologix" },
               ].map((social) => (
                 <a
                   key={social.name}
@@ -62,8 +70,8 @@ export default function Footer() {
               {[
                 { name: "Home", href: "/" },
                 { name: "Portfolio", href: "/Portfolio" },
-                { name: "About Us", href: "/#about" },
-                { name: "Contact Us", href: "/#contact" },
+                { name: "About Us", href: "/about" },
+                { name: "Contact Us", href: "/contact" },
               ].map((link) => (
                 <li key={link.name}>
                   <a
@@ -87,10 +95,13 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { name: "AI Automation", href: "/inside-services/ai-automation" },
-                { name: "Web Development", href: "/inside-services/web-development" },
-                { name: "App Development", href: "/inside-services/app-development" },
-                { name: "UI/UX Design", href: "/inside-services/ui-ux-design" },
-                { name: "Digital Marketing", href: "/inside-services/digital-marketing" }
+                { name: "Web Development", href: "/inside-services/web-dev" },
+                { name: "App Development", href: "/inside-services/app-dev" },
+                { name: "Email Marketing", href: "/inside-services/email-marketing" },
+                { name: "Social Media Marketing", href: "/inside-services/ss-marketing" },
+                { name: "UI/UX Design", href: "/inside-services/ui-design" },
+                { name: "GIS Services", href: "/inside-services/gis" },
+                { name: "Cloud Computing", href: "/inside-services/cloud-computing" }
               ].map((service) => (
                 <li key={service.name}>
                   <a
@@ -116,7 +127,7 @@ export default function Footer() {
               <div>
                 <p className="text-sm text-purple-400 font-medium">Email</p>
                 <p className="text-white hover:text-purple-300 transition-colors">
-                  hello@techflow.com
+                  hello@hexologix.com
                 </p>
               </div>
             </div>
@@ -148,16 +159,16 @@ export default function Footer() {
         </div>        {/* Bottom Bar */}
         <div className="border-t border-purple-800/50 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-sm text-purple-400">
-            © {new Date().getFullYear()} TechFlow. All rights reserved.
+            © {new Date().getFullYear()} Hexologix Solutions. All rights reserved.
           </div>
           <div className="flex space-x-6 text-sm">
-            <a href="#" className="text-purple-400 hover:text-white transition-colors">
+            <a href="/privacy-policy" className="text-purple-400 hover:text-white transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="text-purple-400 hover:text-white transition-colors">
+            <a href="/terms-of-service" className="text-purple-400 hover:text-white transition-colors">
               Terms of Service
             </a>
-            <a href="#" className="text-purple-400 hover:text-white transition-colors">
+            <a href="/cookie-policy" className="text-purple-400 hover:text-white transition-colors">
               Cookie Policy
             </a>
           </div>
