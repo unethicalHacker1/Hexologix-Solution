@@ -49,26 +49,50 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  function ServiceCard({ title, desc, icon, delay, href }) {
+  function ServiceCard({ title, desc, icon, delay, href, comingSoon, features }) {
     const cardContent = (
       <Card
-        className={`bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-4 sm:p-6 md:p-8 border border-purple-800 text-white hover:scale-105 active:scale-100 transition-all duration-300 shadow-lg hover:shadow-purple-700/30 focus:outline-none focus:ring-2 focus:ring-purple-400 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
-        style={{ animationDelay: delay, minHeight: '220px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+        className={`relative group bg-white/10 backdrop-blur-lg p-5 border border-white/20 text-white shadow-xl hover:shadow-fuchsia-700/30 hover:border-fuchsia-400 transition-all duration-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-fuchsia-400 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}
+        style={{ animationDelay: delay, minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
         tabIndex={0}
         role="button"
         aria-label={title}
       >
+        {comingSoon && (
+          <span className="absolute top-3 right-3 bg-fuchsia-700/90 text-xs px-2 py-0.5 rounded-full font-semibold text-white shadow">
+            Coming Soon
+          </span>
+        )}
         <CardHeader>
-          <div className="mb-4 flex justify-center text-3xl sm:text-4xl md:text-5xl">{icon}</div>
-          <CardTitle className="text-lg sm:text-xl md:text-2xl font-semibold mb-2">{title}</CardTitle>
+          <div className="mb-3 flex justify-center text-3xl group-hover:scale-110 group-hover:text-fuchsia-400 transition-transform duration-300 drop-shadow-lg">{icon}</div>
+          <CardTitle className="text-lg font-bold mb-1 tracking-tight text-white/90">{title}</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm sm:text-base md:text-lg text-purple-200">{desc}</CardContent>
+        <CardContent className="text-sm text-purple-100 mb-1">{desc}</CardContent>
+        {features && (
+          <ul className="text-xs text-purple-200 mb-1 space-y-0.5 text-left pl-2">
+            {features.map((f, idx) => (
+              <li key={idx} className="flex items-center gap-2">
+                <span className="text-fuchsia-400">•</span> {f}
+              </li>
+            ))}
+          </ul>
+        )}
+        {href && (
+          <div className="mt-2 flex justify-center">
+            <span className="inline-flex items-center gap-2 bg-fuchsia-600/90 text-white px-4 py-1.5 rounded-full font-semibold text-xs shadow hover:bg-fuchsia-700/90 transition group-hover:translate-x-1">
+              Learn More
+              <svg className="w-3 h-3 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </span>
+          </div>
+        )}
       </Card>
     );
     return href ? (
-      <Link href={href} className="block h-full focus:outline-none focus:ring-2 focus:ring-purple-400">{cardContent}</Link>
+      <Link href={href} className="block h-full focus:outline-none focus:ring-2 focus:ring-fuchsia-400">
+        {cardContent}
+      </Link>
     ) : (
-      <div className="opacity-60 cursor-not-allowed">{cardContent}</div>
+      <div className="opacity-80 cursor-not-allowed">{cardContent}</div>
     );
   }
   function PortfolioCard({ src, alt, title, desc, delay }) {
@@ -110,71 +134,155 @@ export default function HomePage() {
         {/* Hero Section */}
         <section id="home" className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center" as="section">
           <div className="max-w-4xl mx-auto z-10 relative">
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight text-white animate-fade-in-up">
-              Empowering Brands with <br />
-              <TypeAnimation
-                sequence={[
-                  "Smart AI & Stunning Tech",
-                  2000,
-                  "AI Automations & Web Apps",
-                  2000,
-                  "Conversion-Focused Designs",
-                  2000,
-                ]}
-                wrapper="span"
-                speed={50}
-                repeat={Infinity}
-                className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
-              />
-            </h2>
-            <p className="text-xl text-purple-200 mb-8 animate-fade-in-up-delay">
-              We build automation-driven websites, apps, and solutions that scale your business.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up-delay-2">
-              <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-8 py-4 text-lg rounded-full hover:scale-105 transition-all" aria-label="Get Started with TechFlow">
-                Get Started
-              </Button>
-              <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-8 py-4 text-lg rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="Book a Call with TechFlow">
-                Book a Call
-              </Button>
-            </div>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white animate-fade-in-up">
+  Empowering Brands with <br />
+  <TypeAnimation
+    sequence={[
+      "Smart AI & Stunning Tech",
+      2000,
+      "AI Automations & Web Apps",
+      2000,
+      "Conversion-Focused Designs",
+      2000,
+    ]}
+    wrapper="span"
+    speed={50}
+    repeat={Infinity}
+    className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+  />
+</h2>
+
+<p className="text-base sm:text-lg text-purple-200 mb-8 animate-fade-in-up-delay">
+  We build automation-driven websites, apps, and solutions that scale your business.
+</p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6 animate-fade-in-up-delay-2">
+  <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with TechFlow">
+    Get Started
+  </Button>
+  <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="Book a Call with TechFlow">
+    Book a Call
+  </Button>
+</div>
+
           </div>
         </section>
         {/* Our Services Section */}
-        <section id="services" className="py-16 sm:py-24 px-2 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black relative text-white" as="section">
-          <div className="max-w-6xl mx-auto text-center relative z-10">
-            <h3 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-16 text-purple-300 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}>
-              Our Services
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
-              {SERVICES.map((service, i) => (
-                <ServiceCard
-                  key={i}
-                  {...service}
-                  delay={`${(i + 1) * 200}ms`}
-                  href={service.title === "AI Automations" ? "/inside-services/ai-automation" : undefined}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+<section
+  id="services"
+  className="relative py-16 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden"
+  as="section"
+>
+  {/* Animated glassy SVG background */}
+  <svg
+    className="absolute top-0 left-1/2 -translate-x-1/2 opacity-30 pointer-events-none animate-pulse"
+    width="900"
+    height="240"
+    fill="none"
+    viewBox="0 0 1000 260"
+    aria-hidden="true"
+  >
+    <ellipse cx="500" cy="130" rx="420" ry="95" fill="#a21caf" fillOpacity="0.15" />
+    <ellipse cx="500" cy="130" rx="320" ry="65" fill="#f472b6" fillOpacity="0.08" />
+  </svg>
+
+  <div className="max-w-6xl mx-auto text-center relative z-10">
+    {/* Smaller Heading */}
+    <h3
+      className={`text-3xl sm:text-4xl font-bold mb-6 text-white/90 tracking-tight transition-all duration-1000 ${
+        isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
+      }`}
+    >
+      Our Services
+    </h3>
+
+    {/* Smaller Description */}
+    <p className="text-base text-purple-100 mb-8 max-w-xl mx-auto leading-relaxed">
+      Accelerate your business with our modern, AI-powered solutions and creative development expertise.
+    </p>
+
+    {/* Swiper */}
+    <Swiper
+      modules={[Pagination, Autoplay]}
+      spaceBetween={30}
+      slidesPerView={1}
+      breakpoints={{
+        640: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+      }}
+      loop={true}
+      pagination={{ clickable: true }}
+      autoplay={{ delay: 5000 }}
+      className="w-full max-w-4xl swiper-custom mb-8"
+    >
+      {SERVICES.map((service, i) => (
+        <SwiperSlide key={i}>
+          <ServiceCard
+            {...service}
+            delay={`${(i + 1) * 200}ms`}
+            href={service.title === "AI Automations" ? "/inside-services/ai-automation" : undefined}
+            comingSoon={service.title !== "AI Automations"}
+            features={service.features}
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+
+    <style jsx global>{`
+      .swiper-pagination {
+        bottom: -25px !important;
+        text-align: center !important;
+      }
+      .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+      }
+      .swiper-pagination-bullet-active {
+        background: #a21caf;
+      }
+    `}</style>
+  </div>
+</section>
+
         {/* Portfolio Highlights */}
-        <section id="portfolio" className="py-24 px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white" as="section">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="w-[600px] h-[600px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10"></div>
-            <div className="w-[500px] h-[500px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10"></div>
-          </div>
-          <div className="max-w-7xl mx-auto text-center relative z-10">
-            <h3 className={`text-4xl font-bold mb-16 text-purple-300 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"}`}>
-              Featured Work
-            </h3>
-            <div className="grid md:grid-cols-2 gap-10">
-              {PORTFOLIO.map((p, i) => (
-                <PortfolioCard key={i} {...p} delay={`${(i + 1) * 200}ms`} />
-              ))}
-            </div>
-          </div>
-        </section>
+<section
+  id="portfolio"
+  className="py-16 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white"
+  as="section"
+>
+  {/* Background Effects */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="w-[450px] h-[450px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-14 left-1/4 -z-10"></div>
+    <div className="w-[380px] h-[380px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10"></div>
+  </div>
+
+  <div className="max-w-6xl mx-auto text-center relative z-10">
+    {/* Smaller Heading */}
+    <h3
+      className={`text-3xl sm:text-4xl font-semibold mb-10 text-purple-300 tracking-tight transition-all duration-1000 ${
+        isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
+      }`}
+    >
+      Featured Work
+    </h3>
+
+    {/* Portfolio Grid - Cards Made Smaller */}
+    <div className="grid md:grid-cols-2 gap-6">
+      {PORTFOLIO.map((p, i) => (
+        <div key={i} className="transform transition-all hover:scale-[1.02]">
+          <PortfolioCard
+            {...p}
+            delay={`${(i + 1) * 200}ms`}
+            className="p-4 sm:p-5 rounded-lg text-sm sm:text-base max-w-[90%] mx-auto shadow-md"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+
         {/* How We Work */}
         <section className="py-24 px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black relative text-white" as="section">
           <div className="absolute inset-0 pointer-events-none">
