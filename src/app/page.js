@@ -1,8 +1,6 @@
 "use client";
 
 import { TypeAnimation } from "react-type-animation";
-import { Link } from "react-scroll";
-import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -10,23 +8,15 @@ import "swiper/css/pagination";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  ArrowRight,
-  Code,
   Smartphone,
-  Mail,
-  Users,
   Zap,
   Globe,
-  ChevronDown,
-  Menu,
-  X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
 
 export default function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
