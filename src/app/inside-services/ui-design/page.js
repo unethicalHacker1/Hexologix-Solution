@@ -1,5 +1,7 @@
 "use client";
 import Header from "@/components/Header/page";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import Footer from "@/components/Footer/page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,9 +38,11 @@ export default function UIUXDesignPage() {
         <p className="text-purple-200 text-sm sm:text-base md:text-lg mb-6 max-w-xl mx-auto">
           Delight your users and grow your brand with professional design for web, mobile, and product experiences.
         </p>
-        <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
-          Start My Design Project
-        </Button>
+        <Link href="/contact">
+          <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
+            Start My Design Project
+          </Button>
+        </Link>
       </section>
       <section className="w-full max-w-5xl mx-auto py-16 px-6">
         <h2 className="text-2xl font-bold text-center mb-8 text-purple-300">Design Expertise</h2>
@@ -81,9 +85,11 @@ export default function UIUXDesignPage() {
           <p className="text-base mb-6 text-purple-100">
             Let's create a design that users love and remember.
           </p>
-          <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
-            Book a Free Design Call
-          </Button>
+          <Link href="/contact">
+            <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
+              Book a Free Design Call
+            </Button>
+          </Link>
         </div>
       </section>
       <section className="max-w-2xl mx-auto py-16 px-6">

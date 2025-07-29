@@ -1,6 +1,8 @@
 "use client";
 
 import { TypeAnimation } from "react-type-animation";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +20,15 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
+import { 
+  containerVariants, 
+  itemVariants, 
+  cardVariants, 
+  fadeInUp, 
+  fadeInLeft, 
+  fadeInRight,
+  commonAnimationProps 
+} from "@/lib/animations";
 
 export default function ContactPage() {
   const [scrollY, setScrollY] = useState(0);

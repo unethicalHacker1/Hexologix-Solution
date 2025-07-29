@@ -1,6 +1,8 @@
 "use client";
 import Header from "@/components/Header/page";
-import Footer from "@/components/Footer/page";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import Footer from "@/components/Footer/page";  
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Map, Globe, Workflow, ShieldCheck, BarChart, Cog } from "lucide-react";
@@ -36,9 +38,11 @@ export default function GISPage() {
         <p className="text-purple-200 text-sm sm:text-base md:text-lg mb-6 max-w-xl mx-auto">
           Unlock spatial insights, mapping, and advanced analysis for better business and environmental decisions.
         </p>
-        <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
-          Schedule GIS Demo
-        </Button>
+        <Link href="/contact">
+          <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
+            Schedule GIS Demo
+          </Button>
+        </Link>
       </section>
       <section className="w-full max-w-5xl mx-auto py-16 px-6">
         <h2 className="text-2xl font-bold text-center mb-8 text-purple-300">Our GIS Capabilities</h2>
@@ -81,9 +85,11 @@ export default function GISPage() {
           <p className="text-base mb-6 text-purple-100">
             Our GIS team is ready to tackle your mapping and analytics challenges.
           </p>
-          <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
-            Book a GIS Consultation
-          </Button>
+          <Link href="/contact">
+            <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
+              Book a GIS Consultation
+            </Button>
+          </Link>
         </div>
       </section>
       <section className="max-w-2xl mx-auto py-16 px-6">

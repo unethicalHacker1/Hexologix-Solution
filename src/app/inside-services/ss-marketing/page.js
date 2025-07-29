@@ -1,5 +1,7 @@
 "use client";
 import Header from "@/components/Header/page";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import Footer from "@/components/Footer/page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,9 +45,11 @@ export default function SocialMediaMarketingPage() {
           Build your brand, connect with customers, and drive sales with
           data-driven campaigns on every major platform.
         </p>
-        <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
-          Free Social Audit
-        </Button>
+        <Link href="/contact">
+          <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
+            Free Social Audit
+          </Button>
+        </Link>
       </section>
       <section className="w-full max-w-5xl mx-auto py-16 px-6">
         <h2 className="text-2xl font-bold text-center mb-8 text-purple-300">
@@ -124,9 +128,11 @@ export default function SocialMediaMarketingPage() {
           <p className="text-base mb-6 text-purple-100">
             Our experts are ready to manage and grow your social presence.
           </p>
-          <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
-            Book a Social Strategy Call
-          </Button>
+          <Link href="/contact">
+            <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
+              Book a Social Strategy Call
+            </Button>
+          </Link>
         </div>
       </section>
       <section className="max-w-2xl mx-auto py-16 px-6">

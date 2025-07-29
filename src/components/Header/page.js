@@ -47,7 +47,7 @@ export default function Header() {
 >
 
       {/* Logo */}
-<div className="flex items-center space-x-2">
+<Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
   <Image 
     src="/transparent logo.png" 
     alt="Hexologix Logo" 
@@ -58,7 +58,7 @@ export default function Header() {
   <h1 className="text-sm md:text-base font-semibold bg-gradient-to-r from-fuchsia-400 to-purple-500 text-transparent bg-clip-text">
     Hexologix Solutions
   </h1>
-</div>
+</Link>
 
 
       {/* Desktop Navigation */}
@@ -84,11 +84,13 @@ export default function Header() {
           >
             <ul className="flex flex-col text-xs text-purple-200 p-3 space-y-1.5">
               <li><Link href="/inside-services/ai-automation" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">AI Automation</Link></li>
-              <li><Link href="/#web" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">Web Development</Link></li>
-              <li><Link href="/#app" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">App Development</Link></li>
-              <li><Link href="/#email" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">Email Marketing</Link></li>
-              <li><Link href="/#social" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">Social Media Marketing</Link></li>
-              <li><Link href="/#uiux" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">UI/UX Design</Link></li>
+              <li><Link href="/inside-services/web-dev" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">Web Development</Link></li>
+              <li><Link href="/inside-services/app-dev" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">App Development</Link></li>
+              <li><Link href="/inside-services/email-marketing" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">Email Marketing</Link></li>
+              <li><Link href="/inside-services/ss-marketing" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">Social Media Marketing</Link></li>
+              <li><Link href="/inside-services/ui-design" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">UI/UX Design</Link></li>
+              <li><Link href="/inside-services/gis" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">GIS Services</Link></li>
+              <li><Link href="/inside-services/cloud-computing" className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white">Cloud Computing</Link></li>
             </ul>
           </div>
         </div>
@@ -126,11 +128,13 @@ export default function Header() {
             {isServicesOpen && (
               <div className="ml-3 flex flex-col space-y-1 text-purple-300 text-xs">
                 <Link href="/inside-services/ai-automation" className="hover:text-white">AI Automation</Link>
-                <Link href="/#web" className="hover:text-white">Web Development</Link>
-                <Link href="/#app" className="hover:text-white">App Development</Link>
-                <Link href="/#email" className="hover:text-white">Email Marketing</Link>
-                <Link href="/#social" className="hover:text-white">Social Media Marketing</Link>
-                <Link href="/#uiux" className="hover:text-white">UI/UX Design</Link>
+                <Link href="/inside-services/web-dev" className="hover:text-white">Web Development</Link>
+                <Link href="/inside-services/app-dev" className="hover:text-white">App Development</Link>
+                <Link href="/inside-services/email-marketing" className="hover:text-white">Email Marketing</Link>
+                <Link href="/inside-services/ss-marketing" className="hover:text-white">Social Media Marketing</Link>
+                <Link href="/inside-services/ui-design" className="hover:text-white">UI/UX Design</Link>
+                <Link href="/inside-services/gis" className="hover:text-white">GIS Services</Link>
+                <Link href="/inside-services/cloud-computing" className="hover:text-white">Cloud Computing</Link>
               </div>
             )}
 

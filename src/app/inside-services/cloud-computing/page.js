@@ -1,6 +1,8 @@
 "use client";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -43,9 +45,11 @@ export default function CloudComputingPage() {
           Scale your business with secure, high-availability cloud and DevOps
           solutions on AWS, Azure, GCP, or custom stacks.
         </p>
-        <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
-          Request Cloud Assessment
-        </Button>
+        <Link href="/contact">
+          <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-5 py-3 rounded-full w-full sm:w-auto max-w-xs">
+            Request Cloud Assessment
+          </Button>
+        </Link>
       </section>
       <section className="w-full max-w-5xl mx-auto py-16 px-6">
         <h2 className="text-2xl font-bold text-center mb-8 text-purple-300">
@@ -128,9 +132,11 @@ export default function CloudComputingPage() {
           <p className="text-base mb-6 text-purple-100">
             Schedule a discovery call with our cloud architects.
           </p>
-          <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
-            Book Consultation
-          </Button>
+          <Link href="/contact">
+            <Button className="bg-white text-purple-800 px-5 py-3 font-semibold rounded-full hover:scale-105">
+              Book Consultation
+            </Button>
+          </Link>
         </div>
       </section>
       <section className="max-w-2xl mx-auto py-16 px-6">
