@@ -20,15 +20,16 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
-import { 
-  containerVariants, 
-  itemVariants, 
-  cardVariants, 
-  fadeInUp, 
-  fadeInLeft, 
+import {
+  containerVariants,
+  itemVariants,
+  cardVariants,
+  fadeInUp,
+  fadeInLeft,
   fadeInRight,
-  commonAnimationProps 
+  commonAnimationProps
 } from "@/lib/animations";
+import { supabase } from "@/supabase/client"; // ✅ Import Supabase client
 
 export default function ContactPage() {
   const [scrollY, setScrollY] = useState(0);
@@ -54,16 +55,34 @@ export default function ContactPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleSubmit = (e) => {
+  // ✅ Updated handleSubmit with Supabase logic
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
+
+    const { data, error } = await supabase
+      .from("projects")
+      .insert([formData]);
+
+    if (error) {
+      console.error("Error saving project:", error.message);
+      alert("Something went wrong. Please try again.");
+    } else {
+      alert("Project submitted successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        projectType: "",
+        budget: "",
+        message: ""
+      });
+    }
   };
 
   const contactInfo = [
