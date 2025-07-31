@@ -666,7 +666,7 @@ export default function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
             >
               <Link href="/contact">
-                <Button className="bg-white text-purple-800 px-8 py-4 text-lg font-semibold rounded-full hover:scale-110 transition-transform duration-300 animate-pulse-slow">
+                <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
                   Get Started
                 </Button>
               </Link>

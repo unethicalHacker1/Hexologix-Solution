@@ -14,21 +14,9 @@ import {
   Workflow,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { TypeAnimation } from "react-type-animation";
 
 export default function AppDevelopmentPage() {
-  const gradientText = "App Development";
-  const restText = " for Every Platform";
-  const fullHeading = gradientText + restText;
-  const [typedHeading, setTypedHeading] = useState("");
-  useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setTypedHeading(fullHeading.slice(0, i + 1));
-      i++;
-      if (i === fullHeading.length) clearInterval(interval);
-    }, 30);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <main className="w-full min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans m-0 p-0 overflow-x-hidden">
@@ -37,11 +25,22 @@ export default function AppDevelopmentPage() {
       <section className="w-full max-w-5xl mx-auto pt-24 sm:pt-32 md:pt-40 pb-12 text-center px-6">
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4">
           <span className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text">
-            {typedHeading.slice(0, gradientText.length)}
-          </span>
-          {typedHeading.length > gradientText.length && (
-            <>{typedHeading.slice(gradientText.length)}</>
-          )}
+            App Development
+          </span>{" "}
+          <TypeAnimation
+            sequence={[
+              "for Every Platform",
+              2000,
+              "That Users Love",
+              2000,
+              "That Performs",
+              2000,
+            ]}
+            wrapper="span"
+            speed={50}
+            repeat={Infinity}
+            className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+          />
         </h1>
         <p className="text-purple-200 text-sm sm:text-base md:text-lg mb-6 max-w-xl mx-auto">
           Build iOS, Android, and cross-platform apps with blazing performance

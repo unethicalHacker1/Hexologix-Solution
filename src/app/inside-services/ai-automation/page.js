@@ -13,21 +13,9 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { TypeAnimation } from "react-type-animation";
 
 export default function AiAutomationsPage() {
-  // Typewriter effect for heading
-  const fullHeading = "AI Automations That Supercharge Your Business";
-  const [typedHeading, setTypedHeading] = useState("");
-
-  useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setTypedHeading(fullHeading.slice(0, i + 1));
-      i++;
-      if (i === fullHeading.length) clearInterval(interval);
-    }, 30);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <main className="w-full min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans m-0 p-0 overflow-x-hidden">
@@ -40,7 +28,20 @@ export default function AiAutomationsPage() {
           <span className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text">
             AI Automations
           </span>{" "}
-          {typedHeading.slice("AI Automations".length)}
+          <TypeAnimation
+            sequence={[
+              "That Supercharge Your Business",
+              2000,
+              "For Modern Workflows",
+              2000,
+              "That Scale Operations",
+              2000,
+            ]}
+            wrapper="span"
+            speed={50}
+            repeat={Infinity}
+            className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+          />
         </h1>
         <p className="text-purple-200 text-sm sm:text-base md:text-lg mb-6 max-w-xl mx-auto">
           Automate tasks, increase efficiency, and scale operations using intelligent workflows crafted by Hexologix.
