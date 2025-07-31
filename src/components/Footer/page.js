@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Code, Mail, Users, Globe } from "lucide-react";
+import { Mail, Users, Globe, Twitter, Linkedin, Github, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -41,10 +40,10 @@ export default function Footer() {
             {/* Social Media Links */}
             <div className="flex space-x-4">
               {[
-                { name: "Twitter", icon: "𝕏", href: "https://twitter.com/hexologix" },
-                { name: "LinkedIn", icon: "💼", href: "https://linkedin.com/company/hexologix" },
-                { name: "GitHub", icon: "🐙", href: "https://github.com/hexologix" },
-                { name: "Instagram", icon: "📸", href: "https://instagram.com/hexologix" },
+                { name: "Twitter", icon: Twitter, href: "https://twitter.com/hexologix" },
+                { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/hexologix" },
+                { name: "GitHub", icon: Github, href: "https://github.com/hexologix" },
+                { name: "Instagram", icon: Instagram, href: "https://instagram.com/hexologix" },
               ].map((social) => (
                 <a
                   key={social.name}
@@ -52,9 +51,7 @@ export default function Footer() {
                   className="w-10 h-10 bg-gradient-to-br from-purple-800/50 to-fuchsia-800/50 border border-purple-700 rounded-lg flex items-center justify-center text-lg hover:scale-110 hover:bg-purple-700/50 transition-all duration-300 group"
                   aria-label={social.name}
                 >
-                  <span className="group-hover:scale-110 transition-transform duration-300">
-                    {social.icon}
-                  </span>
+                  <social.icon className="w-5 h-5 text-purple-300 group-hover:scale-110 transition-transform duration-300" />
                 </a>
               ))}
             </div>
