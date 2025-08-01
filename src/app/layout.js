@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,12 +17,10 @@ export const metadata = {
   description: "Innovative AI solutions and beautiful code for modern businesses. We transform ideas into powerful digital experiences that drive growth and success.",
   icons: {
     icon: [
-      { url: '/fav_icon2.ico', type: 'image/x-icon' },
+      { url: '/favicon.ico', type: 'image/x-icon' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/transparent logo.png', type: 'image/png' },
-      { url: '/favicon.ico', type: 'image/x-icon' }
     ],
-    apple: '/transparent logo.png',
+    apple: '/apple-touch-icon.png', // Changed from PNG to proper apple touch icon
   },
 };
 
@@ -31,7 +30,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
       </body>
     </html>
   );
