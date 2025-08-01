@@ -1,12 +1,31 @@
 "use client";
+import { motion } from "framer-motion";
 
 import { TypeAnimation } from "react-type-animation";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Users,
+  Target,
+  Award,
+  Globe,
+  Code,
+  Heart,
+  TrendingUp,
+  Shield,
+  Clock,
+  Zap,
+  Palette,
+  Database,
+} from "lucide-react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
-import { Star, Award, Users, Target, Heart, Zap, Globe, Code, Smartphone, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import SectionWrapper from "@/components/ui/SectionWrapper";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CTAButton from "@/components/ui/CTAButton";
 import { 
   containerVariants, 
   itemVariants, 
@@ -17,672 +36,465 @@ import {
   commonAnimationProps 
 } from "@/lib/animations";
 
+// Team data
+const TEAM = [
+  {
+    name: "Sarah Johnson",
+    role: "CEO & Founder",
+    image: "/team1.jpg",
+    bio: "Visionary leader with 10+ years in tech innovation",
+    expertise: ["AI Strategy", "Business Development", "Product Vision"],
+    linkedin: "#",
+    twitter: "#"
+  },
+  {
+    name: "Michael Chen",
+    role: "CTO & Lead Developer",
+    image: "/team2.jpg",
+    bio: "Full-stack expert specializing in scalable architectures",
+    expertise: ["System Architecture", "AI Integration", "Cloud Solutions"],
+    linkedin: "#",
+    twitter: "#"
+  },
+  {
+    name: "Emily Rodriguez",
+    role: "Head of Design",
+    image: "/team3.jpg",
+    bio: "Creative director focused on user-centered design",
+    expertise: ["UX Research", "Design Systems", "Brand Strategy"],
+    linkedin: "#",
+    twitter: "#"
+  },
+  {
+    name: "David Kim",
+    role: "AI Solutions Architect",
+    image: "/team4.jpg",
+    bio: "Machine learning specialist with deep automation expertise",
+    expertise: ["ML Models", "Automation", "Data Science"],
+    linkedin: "#",
+    twitter: "#"
+  }
+];
+
+// Values data
+const VALUES = [
+  {
+    icon: <Heart className="w-12 h-12 text-fuchsia-400" />,
+    title: "Passion for Innovation",
+    desc: "We're driven by the endless possibilities of technology and its power to transform businesses.",
+    details: ["Cutting-edge solutions", "Continuous learning", "Creative problem-solving"]
+  },
+  {
+    icon: <Target className="w-12 h-12 text-purple-400" />,
+    title: "Client Success Focus",
+    desc: "Your success is our success. We measure our achievements by the impact we create for our clients.",
+    details: ["Results-driven approach", "Long-term partnerships", "Measurable outcomes"]
+  },
+  {
+    icon: <Shield className="w-12 h-12 text-pink-400" />,
+    title: "Quality & Reliability",
+    desc: "We maintain the highest standards in every project, ensuring robust and scalable solutions.",
+    details: ["Best practices", "Thorough testing", "Ongoing support"]
+  }
+];
+
+// Stats data
+const STATS = [
+  { number: "150+", label: "Projects Completed", icon: <Code className="w-8 h-8" /> },
+  { number: "50+", label: "Happy Clients", icon: <Users className="w-8 h-8" /> },
+  { number: "5+", label: "Years Experience", icon: <Clock className="w-8 h-8" /> },
+  { number: "99%", label: "Client Satisfaction", icon: <Award className="w-8 h-8" /> }
+];
+
+// Timeline data
+const TIMELINE = [
+  {
+    year: "2019",
+    title: "Company Founded",
+    desc: "Started with a vision to democratize AI and automation for businesses of all sizes."
+  },
+  {
+    year: "2020",
+    title: "First Major Client",
+    desc: "Successfully delivered our first enterprise AI automation solution."
+  },
+  {
+    year: "2021",
+    title: "Team Expansion",
+    desc: "Grew our team to 10+ experts and expanded service offerings."
+  },
+  {
+    year: "2022",
+    title: "International Reach",
+    desc: "Started serving clients globally across multiple industries."
+  },
+  {
+    year: "2023",
+    title: "Innovation Hub",
+    desc: "Launched our innovation lab for cutting-edge AI research and development."
+  },
+  {
+    year: "2024",
+    title: "Future Forward",
+    desc: "Continuing to push boundaries with next-generation AI solutions."
+  }
+];
+
 export default function AboutPage() {
-  const [activeTab, setActiveTab] = useState("mission");
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
-  const services = [
-    { name: "AI Automation", icon: "🤖", desc: "Intelligent process automation solutions" },
-    { name: "Web Development", icon: "🌐", desc: "Modern, responsive web applications" },
-    { name: "App Development", icon: "📱", desc: "Native and cross-platform mobile apps" },
-    { name: "UI/UX Design", icon: "🎨", desc: "User-centered design experiences" },
-    { name: "Digital Marketing", icon: "📈", desc: "Data-driven marketing strategies" },
-    { name: "Email Marketing", icon: "📧", desc: "Automated email campaigns" }
-  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
 
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "CEO, TechStart Inc.",
-      content: "TechFlow transformed our business with their AI automation solutions. Our efficiency increased by 300%!",
-      rating: 5
-    },
-    {
-      name: "Michael Chen",
-      role: "Founder, DigitalCraft",
-      content: "The team at TechFlow delivered an exceptional website that perfectly captures our brand vision.",
-      rating: 5
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Marketing Director, GrowthCo",
-      content: "Their digital marketing strategies helped us achieve 150% growth in just 6 months.",
-      rating: 5
-    }
-  ];
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const achievements = [
-    { year: "2023", title: "Best AI Solution Provider", org: "Tech Awards 2023" },
-    { year: "2022", title: "Top 10 Web Development Companies", org: "Design Weekly" },
-    { year: "2021", title: "Innovation Excellence Award", org: "Digital Innovation Summit" },
-    { year: "2020", title: "Startup of the Year", org: "TechCrunch" }
-  ];
+  function TeamCard({ name, role, image, bio, expertise, linkedin, twitter }) {
+    return (
+      <motion.div
+        variants={cardVariants}
+        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 text-center"
+      >
+        <div className="relative mb-6">
+          <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-purple-700/30 group-hover:border-fuchsia-400/50 transition-colors">
+            <Image 
+              src={image} 
+              alt={name} 
+              width={96} 
+              height={96} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+        <h4 className="text-xl font-semibold mb-2 text-purple-200 group-hover:text-white transition-colors">{name}</h4>
+        <p className="text-fuchsia-400 text-sm mb-3 font-medium">{role}</p>
+        <p className="text-sm text-purple-300 mb-4 leading-relaxed">{bio}</p>
+        <div className="flex flex-wrap gap-2 justify-center mb-4">
+          {expertise.map((skill, idx) => (
+            <span key={idx} className="text-xs bg-purple-900/30 text-purple-200 px-2 py-1 rounded">
+              {skill}
+            </span>
+          ))}
+        </div>
+        <div className="flex justify-center space-x-3">
+          <a href={linkedin} className="text-purple-400 hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href={twitter} className="text-purple-400 hover:text-white transition-colors">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+            </svg>
+          </a>
+        </div>
+      </motion.div>
+    );
+  }
+
+  function ValueCard({ icon, title, desc, details }) {
+    return (
+      <motion.div
+        variants={cardVariants}
+        className="group p-8 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-105 text-center"
+      >
+        <div className="flex justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <h4 className="text-xl font-semibold text-purple-200 mb-3 group-hover:text-white transition-colors">{title}</h4>
+        <p className="text-sm text-purple-400 mb-4">{desc}</p>
+        <ul className="text-xs text-purple-300 space-y-1">
+          {details.map((detail, idx) => (
+            <li key={idx} className="flex items-center justify-center gap-2">
+              <span className="text-fuchsia-400">✓</span> {detail}
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    );
+  }
+
+  function StatCard({ number, label, icon }) {
+    return (
+      <motion.div
+        variants={itemVariants}
+        className="text-center p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/40 backdrop-blur-md"
+      >
+        <div className="flex justify-center mb-4 text-fuchsia-400">
+          {icon}
+        </div>
+        <div className="text-3xl font-bold text-white mb-2">{number}</div>
+        <div className="text-sm text-purple-300">{label}</div>
+      </motion.div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
-      {/* Header */}
       <Header />
+      
+      {/* Hero Section */}
+      <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
+          <div className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+        <div className="max-w-4xl mx-auto z-10 relative">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
+          >
+            About <br />
+            <TypeAnimation
+              sequence={[
+                "Hexologix Solutions",
+                2000,
+                "Our Mission",
+                2000,
+                "Our Vision",
+                2000,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+            />
+          </motion.h2>
 
-      {/* Main Content */}
-      <div className="pt-20">
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-base sm:text-lg text-purple-200 mb-8"
+          >
+            We're a team of passionate innovators dedicated to transforming businesses through cutting-edge technology and creative solutions.
+          </motion.p>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
+          >
+            <CTAButton variant="primary">Get Started</CTAButton>
+            <CTAButton variant="secondary">View Our Work</CTAButton>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Mission & Vision Section */}
+      <SectionWrapper backgroundType="secondary">
+        <SectionHeader 
+          title="Our Mission & Vision"
+          subtitle="Driving innovation and empowering businesses through technology"
+        />
         
-        {/* 1. Introduction Section */}
-        <section className="px-6 py-20">
-          <div className="max-w-6xl mx-auto text-center">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ duration: 0.6 }}
-            >
-              <h1 className="text-5xl md:text-7xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-fuchsia-400 to-purple-500 text-transparent bg-clip-text">
-                  Transforming Ideas
-                </span>
-                <br />
-                <TypeAnimation
-                  sequence={[
-                    "Into Digital Reality", // first text
-                    2000, // wait 2s
-                    "Into Smart Solutions",
-                    2000,
-                    "Into Future Success",
-                    2000,
-                  ]}
-                  wrapper="span"
-                  speed={50}
-                  repeat={Infinity}
-                  className="text-purple-200"
-                />
-              </h1>
-              <p className="text-xl md:text-2xl text-purple-300 leading-relaxed max-w-4xl mx-auto mb-8">
-                We are a team of passionate tech innovators crafting intelligent solutions that drive business growth. 
-                At TechFlow, we don't just build software – we build the future.
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+        >
+          <motion.div variants={itemVariants} className="space-y-6">
+            <div className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20">
+              <h4 className="text-2xl font-semibold mb-4 text-fuchsia-400">Our Mission</h4>
+              <p className="text-purple-200 leading-relaxed">
+                To democratize AI and automation technology, making powerful digital solutions accessible to businesses of all sizes. We believe every company deserves the tools to compete in the digital age.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact">
-                  <button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 text-lg font-semibold">
-                    Start Your Project
-                  </button>
-                </Link>
-                <Link href="/contact">
-                  <button className="bg-transparent border-2 border-purple-500 text-purple-300 px-8 py-4 rounded-full hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg font-semibold">
-                    Learn More
-                  </button>
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+            </div>
+            <div className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20">
+              <h4 className="text-2xl font-semibold mb-4 text-purple-400">Our Vision</h4>
+              <p className="text-purple-200 leading-relaxed">
+                To be the leading force in AI-driven business transformation, creating a future where technology enhances human potential and drives sustainable growth for organizations worldwide.
+              </p>
+            </div>
+          </motion.div>
+          
+          <motion.div variants={itemVariants} className="relative">
+            <div className="bg-gradient-to-br from-fuchsia-600/20 to-purple-600/20 p-8 rounded-2xl border border-fuchsia-400/30">
+              <h4 className="text-2xl font-semibold mb-6 text-white">Why Choose Us?</h4>
+              <ul className="space-y-4">
+                {[
+                  "Expert team with deep technical expertise",
+                  "Proven track record of successful projects",
+                  "Client-centric approach to every solution",
+                  "Cutting-edge technology and methodologies",
+                  "Ongoing support and maintenance",
+                  "Scalable and future-proof solutions"
+                ].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-purple-200">
+                    <span className="text-fuchsia-400">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </motion.div>
+      </SectionWrapper>
 
-        {/* 2. Mission & Vision Section */}
-        <section className="px-6 py-20 bg-gradient-to-br from-purple-900/20 to-black/20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Our Mission & Vision</h2>
+      {/* Stats Section */}
+      <SectionWrapper backgroundType="tertiary">
+        <SectionHeader 
+          title="Our Impact"
+          subtitle="Numbers that tell our story of success and growth"
+        />
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6"
+        >
+          {STATS.map((stat, i) => (
+            <motion.div key={i} variants={itemVariants}>
+              <StatCard {...stat} />
             </motion.div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <motion.div
-                variants={fadeInLeft}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800"
+          ))}
+        </motion.div>
+      </SectionWrapper>
+
+      {/* Values Section */}
+      <SectionWrapper backgroundType="secondary">
+        <SectionHeader 
+          title="Our Core Values"
+          subtitle="The principles that guide everything we do"
+        />
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          {VALUES.map((value, i) => (
+            <motion.div key={i} variants={itemVariants}>
+              <ValueCard {...value} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </SectionWrapper>
+
+      {/* Team Section */}
+      <SectionWrapper backgroundType="tertiary">
+        <SectionHeader 
+          title="Meet Our Team"
+          subtitle="The brilliant minds behind our innovative solutions"
+        />
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {TEAM.map((member, i) => (
+            <motion.div key={i} variants={itemVariants}>
+              <TeamCard {...member} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </SectionWrapper>
+
+      {/* Timeline Section */}
+      <SectionWrapper backgroundType="secondary">
+        <SectionHeader 
+          title="Our Journey"
+          subtitle="Key milestones in our growth and development"
+        />
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="relative"
+        >
+          {/* Timeline line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-fuchsia-400 to-purple-400 hidden md:block"></div>
+          
+          <div className="space-y-8">
+            {TIMELINE.map((item, i) => (
+              <motion.div 
+                key={i} 
+                variants={itemVariants}
+                className={`flex items-center ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} flex-col md:gap-8`}
               >
-                <div className="flex items-center mb-6">
-                  <Target className="w-8 h-8 text-fuchsia-400 mr-4" />
-                  <h3 className="text-2xl font-bold text-fuchsia-400">Our Mission</h3>
+                <div className="md:w-1/2 mb-4 md:mb-0">
+                  <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20">
+                    <div className="text-2xl font-bold text-fuchsia-400 mb-2">{item.year}</div>
+                    <h4 className="text-xl font-semibold text-white mb-2">{item.title}</h4>
+                    <p className="text-purple-200">{item.desc}</p>
+                  </div>
                 </div>
-                <p className="text-purple-200 text-lg leading-relaxed">
-                  To empower businesses with cutting-edge technology solutions that automate, enhance, and accelerate their growth. 
-                  We strive to be the catalyst that transforms traditional operations into intelligent, efficient, and scalable digital enterprises.
-                </p>
+                
+                {/* Timeline dot */}
+                <div className="relative z-10">
+                  <div className="w-4 h-4 bg-fuchsia-400 rounded-full border-4 border-purple-900 shadow-lg"></div>
+                </div>
+                
+                <div className="md:w-1/2"></div>
               </motion.div>
-
-              <motion.div
-                variants={fadeInRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800"
-              >
-                <div className="flex items-center mb-6">
-                  <Globe className="w-8 h-8 text-fuchsia-400 mr-4" />
-                  <h3 className="text-2xl font-bold text-fuchsia-400">Our Vision</h3>
-                </div>
-                <p className="text-purple-200 text-lg leading-relaxed">
-                  To become the global leader in AI-driven digital transformation, setting new standards for innovation, 
-                  quality, and client success. We envision a future where every business operates with intelligent automation at its core.
-                </p>
-              </motion.div>
-            </div>
+            ))}
           </div>
-        </section>
+        </motion.div>
+      </SectionWrapper>
 
-        {/* 3. Values Section */}
-        <section className="px-6 py-20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Our Core Values</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                The principles that guide every decision we make and every solution we deliver
-              </p>
-            </motion.div>
+      {/* CTA Section */}
+      <SectionWrapper backgroundType="cta">
+        <div className="text-center">
+          <motion.h3 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
+          >
+            Ready to Work Together?
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="text-lg mb-10 text-purple-100"
+          >
+            Let's discuss how we can help transform your business with our innovative solutions.
+          </motion.p>
+          <CTAButton variant="primary" delay={0.4}>
+            Start Your Project
+          </CTAButton>
+        </div>
+      </SectionWrapper>
 
-            <motion.div 
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {[
-                { title: "Innovation", desc: "Pushing boundaries with cutting-edge technology", icon: "🚀", color: "from-blue-500 to-cyan-500" },
-                { title: "Excellence", desc: "Delivering exceptional quality in everything we do", icon: "⭐", color: "from-yellow-500 to-orange-500" },
-                { title: "Collaboration", desc: "Working together to achieve extraordinary results", icon: "🤝", color: "from-green-500 to-emerald-500" },
-                { title: "Integrity", desc: "Building trust through honest, transparent relationships", icon: "💎", color: "from-purple-500 to-pink-500" },
-                { title: "Customer-Centric", desc: "Putting our clients' success at the heart of everything", icon: "❤️", color: "from-red-500 to-pink-500" },
-                { title: "Agility", desc: "Adapting quickly to changing needs and technologies", icon: "⚡", color: "from-indigo-500 to-purple-500" }
-              ].map((value, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800 text-center hover:scale-105 transition-all duration-300"
-                >
-                  <div className={`w-16 h-16 bg-gradient-to-r ${value.color} rounded-full flex items-center justify-center text-2xl mx-auto mb-6`}>
-                    {value.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold text-fuchsia-400 mb-4">{value.title}</h3>
-                  <p className="text-purple-200">{value.desc}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* 4. Meet the Team Section */}
-        <section className="px-6 py-20 bg-gradient-to-br from-purple-900/20 to-black/20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Meet Our Team</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                The brilliant minds behind every innovative solution we deliver
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                { 
-                  name: "Hanan Mehmood", 
-                  role: "AI/Automation Expert", 
-                  emoji: "🤖",
-                  bio: "Leading our AI initiatives with 8+ years of experience in machine learning and automation",
-                  expertise: ["Machine Learning", "Process Automation", "AI Strategy"]
-                },
-                { 
-                  name: "Ali Raza", 
-                  role: "Frontend Developer", 
-                  emoji: "💻",
-                  bio: "Crafting beautiful, responsive user interfaces with modern web technologies",
-                  expertise: ["React", "Next.js", "UI/UX"]
-                },
-                { 
-                  name: "Areeba Khan", 
-                  role: "UI/UX Designer", 
-                  emoji: "🎨",
-                  bio: "Creating intuitive and engaging user experiences that users love",
-                  expertise: ["User Research", "Prototyping", "Design Systems"]
-                },
-                { 
-                  name: "Usman Tariq", 
-                  role: "Backend Developer", 
-                  emoji: "⚙️",
-                  bio: "Building robust, scalable backend systems that power our applications",
-                  expertise: ["Node.js", "Python", "Database Design"]
-                },
-                { 
-                  name: "Sara Naveed", 
-                  role: "Marketing Strategist", 
-                  emoji: "📈",
-                  bio: "Driving growth through data-driven marketing strategies and campaigns",
-                  expertise: ["Digital Marketing", "Analytics", "Growth Hacking"]
-                },
-                { 
-                  name: "Ahmed Hassan", 
-                  role: "DevOps Engineer", 
-                  emoji: "🚀",
-                  bio: "Ensuring seamless deployment and infrastructure management",
-                  expertise: ["AWS", "Docker", "CI/CD"]
-                }
-              ].map((member, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-6 rounded-2xl border border-purple-800 hover:scale-105 transition-all duration-300"
-                >
-                  <div className="text-4xl mb-4">{member.emoji}</div>
-                  <h4 className="text-xl font-semibold text-white mb-2">{member.name}</h4>
-                  <p className="text-fuchsia-400 font-medium mb-3">{member.role}</p>
-                  <p className="text-purple-200 text-sm mb-4">{member.bio}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {member.expertise.map((skill, skillIndex) => (
-                      <span key={skillIndex} className="px-3 py-1 bg-purple-800/30 rounded-full text-xs text-purple-200">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Services Section */}
-        <section className="px-6 py-20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Our Services</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                Comprehensive solutions designed to solve your business challenges
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800 hover:scale-105 transition-all duration-300 group cursor-pointer"
-                >
-                  <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold text-fuchsia-400 mb-4">{service.name}</h3>
-                  <p className="text-purple-200 mb-6">{service.desc}</p>
-                  <div className="flex items-center text-purple-300 group-hover:text-fuchsia-400 transition-colors duration-300">
-                    <span className="text-sm font-medium">Learn More</span>
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Our Story Section */}
-        <section className="px-6 py-20 bg-gradient-to-br from-purple-900/20 to-black/20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Our Story</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                From a small startup to a leading technology company
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <h3 className="text-3xl font-bold text-fuchsia-400 mb-6">The Journey Begins</h3>
-                <p className="text-purple-200 text-lg leading-relaxed mb-6">
-                  Founded in 2020 by a group of passionate developers and designers, TechFlow started as a small team 
-                  with a big vision: to make technology accessible and beneficial for businesses of all sizes.
-                </p>
-                <p className="text-purple-200 text-lg leading-relaxed mb-6">
-                  What began as a web development agency quickly evolved into a comprehensive technology partner, 
-                  as we recognized the growing need for intelligent automation and AI-driven solutions.
-                </p>
-                <p className="text-purple-200 text-lg leading-relaxed">
-                  Today, we're proud to have helped over 200+ businesses transform their operations and achieve 
-                  remarkable growth through our innovative solutions.
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800"
-              >
-                <h4 className="text-2xl font-bold text-fuchsia-400 mb-6">Key Milestones</h4>
-                <div className="space-y-6">
-                  {[
-                    { year: "2020", title: "Company Founded", desc: "Started with 3 team members" },
-                    { year: "2021", title: "First 50 Clients", desc: "Reached our first major milestone" },
-                    { year: "2022", title: "AI Division Launch", desc: "Expanded into AI automation" },
-                    { year: "2023", title: "200+ Clients", desc: "Served over 200 businesses" }
-                  ].map((milestone, index) => (
-                    <div key={index} className="flex items-start space-x-4">
-                      <div className="w-16 h-16 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                        {milestone.year}
-                      </div>
-                      <div>
-                        <h5 className="text-white font-semibold mb-1">{milestone.title}</h5>
-                        <p className="text-purple-300 text-sm">{milestone.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* 7. Testimonials Section */}
-        <section className="px-6 py-20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">What Our Clients Say</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                Real feedback from businesses we've helped transform
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800"
-                >
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-purple-200 mb-6 italic">"{testimonial.content}"</p>
-                  <div>
-                    <h4 className="text-white font-semibold">{testimonial.name}</h4>
-                    <p className="text-fuchsia-400 text-sm">{testimonial.role}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 8. What Sets Us Apart Section */}
-        <section className="px-6 py-20 bg-gradient-to-br from-purple-900/20 to-black/20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">What Sets Us Apart</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                The unique advantages that make us your ideal technology partner
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[
-                {
-                  title: "AI-First Approach",
-                  desc: "We integrate AI into every solution, ensuring maximum efficiency and intelligence",
-                  icon: "🧠"
-                },
-                {
-                  title: "Rapid Delivery",
-                  desc: "Agile development process that delivers results in weeks, not months",
-                  icon: "⚡"
-                },
-                {
-                  title: "24/7 Support",
-                  desc: "Round-the-clock technical support and maintenance for all our solutions",
-                  icon: "🛡️"
-                },
-                {
-                  title: "Scalable Solutions",
-                  desc: "Built to grow with your business, from startup to enterprise",
-                  icon: "📈"
-                },
-                {
-                  title: "Industry Expertise",
-                  desc: "Deep knowledge across multiple industries and use cases",
-                  icon: "🎯"
-                },
-                {
-                  title: "Future-Proof Technology",
-                  desc: "Using cutting-edge technologies that stand the test of time",
-                  icon: "🔮"
-                }
-              ].map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-6 rounded-2xl border border-purple-800"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className="text-3xl">{feature.icon}</div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-fuchsia-400 mb-2">{feature.title}</h3>
-                      <p className="text-purple-200">{feature.desc}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 9. Company Culture Section */}
-        <section className="px-6 py-20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Our Culture</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                The environment that fuels our creativity and innovation
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800"
-              >
-                <h3 className="text-2xl font-bold text-fuchsia-400 mb-6">Work Environment</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <Heart className="w-5 h-5 text-fuchsia-400" />
-                    <span className="text-purple-200">Flexible remote-first culture</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Users className="w-5 h-5 text-fuchsia-400" />
-                    <span className="text-purple-200">Collaborative team environment</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Zap className="w-5 h-5 text-fuchsia-400" />
-                    <span className="text-purple-200">Continuous learning and growth</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Code className="w-5 h-5 text-fuchsia-400" />
-                    <span className="text-purple-200">Innovation-driven mindset</span>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                <h3 className="text-2xl font-bold text-fuchsia-400 mb-6">How We Work</h3>
-                <p className="text-purple-200 text-lg leading-relaxed mb-6">
-                  Our culture is built on trust, transparency, and teamwork. We believe in empowering our team members 
-                  to take ownership of their work and contribute their unique perspectives to every project.
-                </p>
-                <p className="text-purple-200 text-lg leading-relaxed mb-6">
-                  We foster an environment where creativity thrives, innovation is encouraged, and continuous learning 
-                  is a way of life. This culture directly translates into the quality and creativity of solutions we deliver to our clients.
-                </p>
-                <p className="text-purple-200 text-lg leading-relaxed">
-                  From weekly innovation sessions to monthly team building activities, we ensure our team stays motivated, 
-                  connected, and inspired to deliver exceptional results.
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* 10. Achievements & Milestones Section */}
-        <section className="px-6 py-20 bg-gradient-to-br from-purple-900/20 to-black/20">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Achievements & Recognition</h2>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                Celebrating our milestones and industry recognition
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {achievements.map((achievement, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                  className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-6 rounded-2xl border border-purple-800 text-center"
-                >
-                  <Award className="w-12 h-12 text-fuchsia-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-white mb-2">{achievement.title}</h3>
-                  <p className="text-fuchsia-400 text-sm mb-2">{achievement.org}</p>
-                  <p className="text-purple-300 text-lg font-bold">{achievement.year}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-16 text-center"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800">
-                  <div className="text-4xl font-bold text-fuchsia-400 mb-2">200+</div>
-                  <p className="text-purple-200">Happy Clients</p>
-                </div>
-                <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800">
-                  <div className="text-4xl font-bold text-fuchsia-400 mb-2">500+</div>
-                  <p className="text-purple-200">Projects Completed</p>
-                </div>
-                <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-8 rounded-2xl border border-purple-800">
-                  <div className="text-4xl font-bold text-fuchsia-400 mb-2">98%</div>
-                  <p className="text-purple-200">Client Satisfaction</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* 11. Call to Action Section */}
-        <section className="px-6 py-20">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-purple-300 mb-8">Ready to Transform Your Business?</h2>
-              <p className="text-xl text-purple-200 mb-12 leading-relaxed">
-                Let's discuss how our innovative technology solutions can help you achieve your business goals 
-                and stay ahead of the competition.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-                <Link href="/contact">
-                  <button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-10 py-4 rounded-full hover:scale-105 transition-all duration-300 text-lg font-semibold">
-                    Start Your Project
-                  </button>
-                </Link>
-                <Link href="/contact">
-                  <button className="bg-transparent border-2 border-purple-500 text-purple-300 px-10 py-4 rounded-full hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg font-semibold">
-                    Schedule a Call
-                  </button>
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="flex items-center justify-center space-x-3">
-                  <Mail className="w-6 h-6 text-fuchsia-400" />
-                  <span className="text-purple-200">hello@techflow.com</span>
-                </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <Phone className="w-6 h-6 text-fuchsia-400" />
-                  <span className="text-purple-200">+1 (555) 123-4567</span>
-                </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <MapPin className="w-6 h-6 text-fuchsia-400" />
-                  <span className="text-purple-200">San Francisco, CA</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      </div>
-
-      {/* Footer */}
       <Footer />
+      
+      {showBackToTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm"
+          aria-label="Back to top"
+          style={{
+            boxShadow: '0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)'
+          }}
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </motion.button>
+      )}
     </main>
   );
 }

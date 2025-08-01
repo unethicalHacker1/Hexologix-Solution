@@ -1,9 +1,6 @@
 "use client";
-
-import { TypeAnimation } from "react-type-animation";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -12,214 +9,239 @@ import {
   MapPin,
   Clock,
   Send,
+  MessageSquare,
+  Calendar,
   Users,
   Globe,
   Zap,
+  Shield,
   CheckCircle,
-  Star,
 } from "lucide-react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
-import {
-  containerVariants,
-  itemVariants,
-  cardVariants,
-  fadeInUp,
-  fadeInLeft,
+import Image from "next/image";
+import Link from "next/link";
+import SectionWrapper from "@/components/ui/SectionWrapper";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CTAButton from "@/components/ui/CTAButton";
+import { 
+  containerVariants, 
+  itemVariants, 
+  cardVariants, 
+  fadeInUp, 
+  fadeInLeft, 
   fadeInRight,
-  commonAnimationProps,
+  commonAnimationProps 
 } from "@/lib/animations";
 
+// Contact methods data
+const CONTACT_METHODS = [
+  {
+    icon: <Mail className="w-8 h-8" />,
+    title: "Email Us",
+    desc: "Send us a message anytime",
+    value: "hello@hexologix.com",
+    href: "mailto:hello@hexologix.com",
+    color: "text-fuchsia-400"
+  },
+  {
+    icon: <Phone className="w-8 h-8" />,
+    title: "Call Us",
+    desc: "Speak with our team",
+    value: "+1 (555) 123-4567",
+    href: "tel:+15551234567",
+    color: "text-purple-400"
+  },
+  {
+    icon: <MapPin className="w-8 h-8" />,
+    title: "Visit Us",
+    desc: "Our office location",
+    value: "San Francisco, CA",
+    href: "#",
+    color: "text-pink-400"
+  },
+  {
+    icon: <Clock className="w-8 h-8" />,
+    title: "Business Hours",
+    desc: "When we're available",
+    value: "Mon-Fri: 9AM-6PM PST",
+    href: "#",
+    color: "text-blue-400"
+  }
+];
 
+// Services data for contact form
+const SERVICES = [
+  "AI Automation",
+  "Web Development", 
+  "App Development",
+  "UI/UX Design",
+  "Email Marketing",
+  "Social Media Marketing",
+  "GIS Solutions",
+  "Cloud Computing",
+  "Other"
+];
+
+// FAQ data
+const FAQ = [
+  {
+    question: "What is your typical project timeline?",
+    answer: "Project timelines vary based on complexity. Simple websites take 2-4 weeks, while complex applications can take 2-6 months. We'll provide a detailed timeline during our initial consultation."
+  },
+  {
+    question: "Do you provide ongoing support after launch?",
+    answer: "Yes, we offer comprehensive post-launch support including maintenance, updates, and technical assistance. We also provide training and documentation for your team."
+  },
+  {
+    question: "What technologies do you specialize in?",
+    answer: "We work with modern technologies including React, Next.js, Python, AI/ML frameworks, Flutter, and cloud platforms like AWS and Azure."
+  },
+  {
+    question: "How do you handle project communication?",
+    answer: "We maintain regular communication through scheduled calls, progress reports, and project management tools. You'll have a dedicated project manager as your main point of contact."
+  },
+  {
+    question: "What is your pricing structure?",
+    answer: "We offer flexible pricing models including fixed-price projects, hourly rates, and retainer agreements. Pricing depends on project scope, complexity, and timeline."
+  },
+  {
+    question: "Do you work with international clients?",
+    answer: "Absolutely! We serve clients globally and have experience working across different time zones and cultures. We use modern collaboration tools to ensure seamless communication."
+  }
+];
 
 export default function ContactPage() {
-  const [scrollY, setScrollY] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    projectType: "",
-    message: "",
+    name: '',
+    email: '',
+    company: '',
+    service: '',
+    budget: '',
+    message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
-      setIsVisible(window.scrollY > 100);
+      setShowBackToTop(window.scrollY > 400);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Auto-scroll to contact form when page loads
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const contactForm = document.getElementById('contact-form');
-      if (contactForm) {
-        contactForm.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-      }
-    }, 500); // Small delay to ensure page is fully loaded
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  // Scroll functions for buttons
-  const scrollToForm = () => {
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-      contactForm.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
-    }
-  };
-
-  const scrollUpToForm = () => {
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-      contactForm.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  };
-
-  // ✅ Updated handleSubmit with API route
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to submit project');
-      }
-
-      alert("Project submitted successfully!");
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitStatus('success');
       setFormData({
-        name: "",
-        email: "",
-        company: "",
-        projectType: "",
-        message: "",
+        name: '',
+        email: '',
+        company: '',
+        service: '',
+        budget: '',
+        message: ''
       });
-    } catch (error) {
-      console.error("Error saving project:", error.message);
-      alert("Something went wrong. Please try again.");
-    }
+      
+      // Reset status after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+    }, 2000);
   };
 
-  const contactInfo = [
-    {
-      icon: <Mail className="w-6 h-6" />,
-      title: "Email Us",
-      details: "hello@techflow.com",
-      description: "Get in touch for project inquiries",
-    },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: "Call Us",
-      details: "+1 (555) 123-4567",
-      description: "Available Mon-Fri, 9AM-6PM EST",
-    },
-    {
-      icon: <MapPin className="w-6 h-6" />,
-      title: "Visit Us",
-      details: "New York, NY",
-      description: "Remote-first, global reach",
-    },
-    {
-      icon: <Clock className="w-6 h-6" />,
-      title: "Response Time",
-      details: "< 24 hours",
-      description: "We'll get back to you quickly",
-    },
-  ];
+  function ContactMethodCard({ icon, title, desc, value, href, color }) {
+    return (
+      <motion.div
+        variants={cardVariants}
+        className="group bg-white/10 backdrop-blur-lg p-6 border border-white/20 text-white shadow-xl hover:shadow-fuchsia-700/30 hover:border-fuchsia-400 transition-all duration-300 rounded-2xl"
+      >
+        <div className={`mb-4 flex justify-center text-3xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg ${color}`}>
+          {icon}
+        </div>
+        <h4 className="text-lg font-bold mb-2 tracking-tight text-white/90">{title}</h4>
+        <p className="text-sm text-purple-100 mb-3">{desc}</p>
+        <a 
+          href={href} 
+          className="text-fuchsia-400 hover:text-fuchsia-300 transition-colors font-medium"
+        >
+          {value}
+        </a>
+      </motion.div>
+    );
+  }
 
-  const services = [
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: "AI Automation",
-      description: "Custom workflows and intelligent systems",
-    },
-    {
-      icon: <Globe className="w-6 h-6" />,
-      title: "Web Development",
-      description: "Modern, scalable web applications",
-    },
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "App Development",
-      description: "Cross-platform mobile solutions",
-    },
-  ];
+  function FAQCard({ question, answer }) {
+    const [isOpen, setIsOpen] = useState(false);
 
-  const testimonials = [
-    {
-      quote:
-        "TechFlow delivered our project on time and exceeded expectations. Their AI integration saved us hours every day.",
-      author: "Sarah Johnson",
-      role: "CEO, NextGen Corp",
-      rating: 5,
-    },
-    {
-      quote:
-        "Exceptional team with deep technical expertise. They transformed our business with smart automation solutions.",
-      author: "Michael Chen",
-      role: "CTO, FinLogic",
-      rating: 5,
-    },
-    {
-      quote:
-        "Professional, responsive, and results-driven. Our conversion rates increased by 40% after their redesign.",
-      author: "Emily Rodriguez",
-      role: "Marketing Director, GrowthCo",
-      rating: 5,
-    },
-  ];
+    return (
+      <motion.div
+        variants={cardVariants}
+        className="bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500"
+      >
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full text-left flex justify-between items-center"
+        >
+          <h4 className="text-lg font-semibold text-purple-200 hover:text-white transition-colors">
+            {question}
+          </h4>
+          <span className={`text-fuchsia-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+            ▼
+          </span>
+        </button>
+        {isOpen && (
+          <motion.p
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="text-sm text-purple-300 mt-4 leading-relaxed"
+          >
+            {answer}
+          </motion.p>
+        )}
+      </motion.div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
       <Header />
-
+      
       {/* Hero Section */}
       <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="w-[600px] h-[600px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10"></div>
-          <div className="w-[500px] h-[500px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10"></div>
+          <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
+          <div className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
-
         <div className="max-w-4xl mx-auto z-10 relative">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
-            Let's Build Something <br />
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
+          >
+            Get In Touch <br />
             <TypeAnimation
               sequence={[
-                "Amazing Together", // first text
-                2000, // wait 2s
-                "Innovative Solutions",
+                "Let's Build Together",
                 2000,
-                "Future-Ready Apps",
+                "Start Your Project",
+                2000,
+                "Transform Your Business",
                 2000,
               ]}
               wrapper="span"
@@ -227,405 +249,312 @@ export default function ContactPage() {
               repeat={Infinity}
               className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
             />
-          </h1>
-          <p className="text-xl text-purple-200 mb-8">
-            Ready to transform your business with cutting-edge technology? Let's
-            discuss your project and bring your vision to life.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" onClick={scrollToForm}>
-              Start Your Project
-            </Button>
-            <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-8 py-4 text-lg rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" onClick={scrollUpToForm}>
-              Schedule a Call
-            </Button>
-          </div>
-        </div>
-      </section>
+          </motion.h2>
 
-      {/* Contact Information */}
-      <section className="px-6 py-24 bg-black text-white">
-        <div className="max-w-7xl mx-auto">
-          <h2
-            className={`text-4xl font-bold text-center mb-16 text-purple-300 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-base sm:text-lg text-purple-200 mb-8"
           >
-            Get in Touch
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {contactInfo.map((info, index) => (
-              <Card
-                key={index}
-                className={`bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-6 border border-purple-800 text-white hover:scale-105 transition-all duration-500 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-                  }`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <CardHeader className="text-center">
-                  <div className="mb-4 text-purple-300">{info.icon}</div>
-                  <CardTitle className="text-xl">{info.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-lg font-semibold text-purple-200 mb-2">
-                    {info.details}
-                  </p>
-                  <p className="text-sm text-purple-400">{info.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+            Ready to start your next project? Let's discuss how we can help bring your vision to life with our innovative solutions.
+          </motion.p>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
+          >
+            <CTAButton variant="primary">Start Your Project</CTAButton>
+            <CTAButton variant="secondary">Schedule a Call</CTAButton>
+          </motion.div>
         </div>
       </section>
 
-      {/* Contact Form & Services */}
-      <section className="px-6 py-24 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="w-[600px] h-[600px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10"></div>
-          <div className="w-[500px] h-[500px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10"></div>
-        </div>
+      {/* Contact Methods Section */}
+      <SectionWrapper backgroundType="secondary">
+        <SectionHeader 
+          title="Get In Touch"
+          subtitle="Multiple ways to reach us and start your project"
+        />
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {CONTACT_METHODS.map((method, i) => (
+            <motion.div key={i} variants={itemVariants}>
+              <ContactMethodCard {...method} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </SectionWrapper>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <div
-              className={`transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-                }`}
-            >
-              <h3 className="text-3xl font-bold mb-8 text-purple-300">
-                Start Your Project
-              </h3>
-              <Card className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur border border-purple-800">
-                <CardContent className="p-8">
-                  <form id="contact-form" onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-purple-200 mb-2">
-                          Name *
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors"
-                          placeholder="Your name"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-purple-200 mb-2">
-                          Email *
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors"
-                          placeholder="your@email.com"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-purple-200 mb-2">
-                          Company
-                        </label>
-                        <input
-                          type="text"
-                          name="company"
-                          value={formData.company}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors"
-                          placeholder="Your company"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-purple-200 mb-2">
-                          Project Type
-                        </label>
-                        <select
-                          name="projectType"
-                          value={formData.projectType}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors appearance-none cursor-pointer"
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a855f7' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                            backgroundPosition: "right 0.5rem center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "1.5em 1.5em",
-                            paddingRight: "2.5rem",
-                          }}
-                        >
-                          <option value="" className="text-purple-400">
-                            Select project type
-                          </option>
-                          <option
-                            value="Web Development"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            Web Development
-                          </option>
-                          <option
-                            value="Mobile App"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            Mobile App
-                          </option>
-                          <option
-                            value="AI Automation"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            AI Automation
-                          </option>
-                          <option
-                            value="UI/UX Design"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            UI/UX Design
-                          </option>
-                          <option
-                            value="Cloud Computing"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            Cloud Computing
-                          </option>
-                          <option
-                            value="Email Marketing"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            Email Marketing
-                          </option>
-                          <option
-                            value="GIS-Remote Sensing"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            GIS-Remote Sensing
-                          </option>
-                          <option
-                            value="Social Media Marketing"
-                            className="text-white bg-purple-900 hover:bg-purple-800"
-                          >
-                            Social Media Marketing
-                          </option>
-                        </select>
-                      </div>
-                    </div>
+      {/* Contact Form Section */}
+      <SectionWrapper backgroundType="tertiary">
+        <SectionHeader 
+          title="Start Your Project"
+          subtitle="Tell us about your project and we'll get back to you within 24 hours"
+        />
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+        >
+          {/* Contact Form */}
+          <motion.div variants={itemVariants}>
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-white">Project Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                    </div>
-                    <div>
-                      <label className="block text-purple-200 mb-2">
-                        Project Details *
+                      <label className="block text-sm font-medium text-purple-200 mb-2">
+                        Name *
                       </label>
-                      <textarea
-                        name="message"
-                        value={formData.message}
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
                         onChange={handleInputChange}
-                        rows={6}
-                        className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors resize-none"
-                        placeholder="Tell us about your project, goals, and requirements..."
                         required
-                      ></textarea>
-                    </div>
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white py-4 text-lg rounded-lg hover:scale-105 transition-all flex items-center justify-center gap-2"
-                    >
-                      <Send className="w-5 h-5" />
-                      Send Message
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Services & Info */}
-            <div
-              className={`space-y-8 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-                }`}
-              style={{ animationDelay: "400ms" }}
-            >
-              <div>
-                <h3 className="text-3xl font-bold mb-6 text-purple-300">
-                  Our Services
-                </h3>
-                <div className="space-y-4">
-                  {services.map((service, index) => (
-                    <Card
-                      key={index}
-                      className="bg-gradient-to-br from-purple-900/20 to-purple-800/10 backdrop-blur border border-purple-800 hover:scale-105 transition-all duration-300"
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <div className="text-purple-300 mt-1">
-                            {service.icon}
-                          </div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-purple-200 mb-2">
-                              {service.title}
-                            </h4>
-                            <p className="text-purple-400 text-sm">
-                              {service.description}
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-3xl font-bold mb-6 text-purple-300">
-                  Why Choose Us
-                </h3>
-                <div className="space-y-4">
-                  {[
-                    "Fast response time (< 24 hours)",
-                    "Transparent pricing & timelines",
-                    "Ongoing support & maintenance",
-                    "Modern tech stack & best practices",
-                    "Scalable & future-proof solutions",
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                      <span className="text-purple-200">{benefit}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="px-6 py-24 bg-black text-white">
-        <div className="max-w-6xl mx-auto">
-          <h2
-            className={`text-4xl font-bold text-center mb-16 text-purple-300 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
-          >
-            What Our Clients Say
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card
-                key={index}
-                className={`bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur border border-purple-800 text-white hover:scale-105 transition-all duration-500 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-                  }`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-5 h-5 text-yellow-400 fill-current"
+                        className="w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:border-transparent backdrop-blur-sm"
+                        placeholder="Your full name"
                       />
-                    ))}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-purple-200 mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:border-transparent backdrop-blur-sm"
+                        placeholder="your@email.com"
+                      />
+                    </div>
                   </div>
-                  <blockquote className="text-lg italic text-purple-200 mb-6 leading-relaxed">
-                    "{testimonial.quote}"
-                  </blockquote>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-purple-200 mb-2">
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:border-transparent backdrop-blur-sm"
+                        placeholder="Your company name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-purple-200 mb-2">
+                        Service Needed *
+                      </label>
+                      <select
+                        name="service"
+                        value={formData.service}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:border-transparent backdrop-blur-sm"
+                      >
+                        <option value="">Select a service</option>
+                        {SERVICES.map((service, i) => (
+                          <option key={i} value={service}>{service}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  
                   <div>
-                    <p className="font-semibold text-purple-300">
-                      {testimonial.author}
-                    </p>
-                    <p className="text-sm text-purple-400">
-                      {testimonial.role}
-                    </p>
+                    <label className="block text-sm font-medium text-purple-200 mb-2">
+                      Budget Range
+                    </label>
+                    <select
+                      name="budget"
+                      value={formData.budget}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:border-transparent backdrop-blur-sm"
+                    >
+                      <option value="">Select budget range</option>
+                      <option value="5k-10k">$5,000 - $10,000</option>
+                      <option value="10k-25k">$10,000 - $25,000</option>
+                      <option value="25k-50k">$25,000 - $50,000</option>
+                      <option value="50k+">$50,000+</option>
+                    </select>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-purple-200 mb-2">
+                      Project Details *
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      rows={6}
+                      className="w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:border-transparent backdrop-blur-sm resize-none"
+                      placeholder="Tell us about your project, goals, and requirements..."
+                    />
+                  </div>
+                  
+                  {submitStatus === 'success' && (
+                    <div className="flex items-center gap-2 text-green-400 text-sm">
+                      <CheckCircle className="w-4 h-4" />
+                      Thank you! We'll get back to you within 24 hours.
+                    </div>
+                  )}
+                  
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white py-3 rounded-lg hover:scale-105 transition-all disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Sending...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Send className="w-4 h-4" />
+                        Send Message
+                      </div>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </motion.div>
+          
+          {/* Project Benefits */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <div className="bg-gradient-to-br from-fuchsia-600/20 to-purple-600/20 p-8 rounded-2xl border border-fuchsia-400/30">
+              <h4 className="text-2xl font-semibold mb-6 text-white">Why Choose Us?</h4>
+              <ul className="space-y-4">
+                {[
+                  "Free consultation and project assessment",
+                  "Transparent pricing with no hidden fees",
+                  "Dedicated project manager throughout",
+                  "Regular progress updates and communication",
+                  "Post-launch support and maintenance",
+                  "Scalable solutions that grow with your business"
+                ].map((benefit, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-purple-200">
+                    <CheckCircle className="w-5 h-5 text-fuchsia-400 flex-shrink-0" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20">
+              <h4 className="text-xl font-semibold mb-4 text-white">What Happens Next?</h4>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-fuchsia-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                  <span className="text-purple-200">We'll review your project details</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                  <span className="text-purple-200">Schedule a consultation call</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                  <span className="text-purple-200">Receive a detailed proposal</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                  <span className="text-purple-200">Start your project journey</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </SectionWrapper>
+
+      {/* FAQ Section */}
+      <SectionWrapper backgroundType="secondary">
+        <SectionHeader 
+          title="Frequently Asked Questions"
+          subtitle="Common questions about working with us"
+        />
+        
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+        >
+          {FAQ.map((item, i) => (
+            <motion.div key={i} variants={itemVariants}>
+              <FAQCard {...item} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </SectionWrapper>
 
       {/* CTA Section */}
-      <section className="relative py-28 px-6 bg-gradient-to-br from-fuchsia-800 via-purple-700 to-black text-white text-center overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="w-[700px] h-[700px] bg-fuchsia-500/20 blur-3xl rounded-full absolute -top-48 left-1/2 -translate-x-1/2 animate-pulse" />
-          <div className="w-[400px] h-[400px] bg-white/5 rounded-full blur-2xl absolute bottom-0 left-1/3" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.06),_transparent)] opacity-50" />
+      <SectionWrapper backgroundType="cta">
+        <div className="text-center">
+          <motion.h3 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
+          >
+            Ready to Get Started?
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="text-lg mb-10 text-purple-100"
+          >
+            Let's discuss your project and bring your vision to life with our innovative solutions.
+          </motion.p>
+          <CTAButton variant="primary" delay={0.4}>
+            Start Your Project
+          </CTAButton>
         </div>
-
-        <div className="max-w-4xl mx-auto relative z-10">
-          <h3
-            className={`text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
-          >
-            Ready to Transform
-            <br className="hidden sm:inline" /> Your Business?
-          </h3>
-          <p
-            className={`text-lg mb-10 text-purple-100 transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
-            style={{ animationDelay: "200ms" }}
-          >
-            Let's discuss your project and create something extraordinary
-            together.
-          </p>
-          <div
-            className={`transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-              }`}
-            style={{ animationDelay: "400ms" }}
-          >
-            <Button className="bg-white text-purple-800 px-8 py-4 text-lg font-semibold rounded-full hover:scale-110 transition-transform duration-300 animate-pulse-slow" onClick={scrollUpToForm}>
-              Start Your Project
-            </Button>
-          </div>
-        </div>
-
-        <style jsx>{`
-          @keyframes fadeInUp {
-            0% {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          .animate-fade-in-up {
-            animation: fadeInUp 1s ease-out forwards;
-          }
-
-          .animate-pulse-slow {
-            animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-          }
-        `}</style>
-      </section>
+      </SectionWrapper>
 
       <Footer />
-
-      {isVisible && (
-        <button
+      
+      {showBackToTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm"
           aria-label="Back to top"
           style={{
-            boxShadow:
-              "0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)",
+            boxShadow: '0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)'
           }}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            strokeWidth="2.5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 10l7-7m0 0l7 7m-7-7v18"
-            />
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
           </svg>
-        </button>
+        </motion.button>
       )}
     </main>
   );
