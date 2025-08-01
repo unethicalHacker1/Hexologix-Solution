@@ -1,8 +1,6 @@
 // next.config.js
 const nextConfig = {
-    eslint: {
-      ignoreDuringBuilds: true, // disables linting during builds
-    },
-  };
-  
-export default nextConfig; //hello
+  // Removed eslint ignoreDuringBuilds to enable proper linting
+};
+
+export default nextConfig;
