@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Button } from "@/components/ui/button";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Smartphone,
@@ -38,6 +39,7 @@ import {
   fadeInRight,
   commonAnimationProps 
 } from "@/lib/animations";
+import CTAButton from "@/components/ui/CTAButton";
 
 // Enhanced service data with more details and features
 const SERVICES = [
@@ -326,13 +328,13 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
             >
-              <Link href="/contact">
+              <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with Hexologix">
                   Get Started
                 </Button>
               </Link>
-              <Link href="/contact">
-                <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="Book a Call with Hexologix">
+              <Link href="/contact#form">
+              <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="View Our Work">
                   Book a Call
                 </Button>
               </Link>
@@ -399,7 +401,7 @@ export default function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
               className="mt-12"
             >
-              <Link href="/contact">
+              <Link href="/Portfolio">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-8 py-3 text-base rounded-full hover:scale-105 transition-all">
                   View All Services
                 </Button>
@@ -665,11 +667,12 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true, margin: "-100px" }}
             >
-              <Link href="/contact">
+              <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
                   Get Started
                 </Button>
               </Link>
+
             </motion.div>
           </div>
         </section>

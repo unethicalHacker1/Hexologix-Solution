@@ -476,8 +476,16 @@ export default function PortfolioPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
           >
-            <CTAButton variant="primary">Start Your Project</CTAButton>
-            <CTAButton variant="secondary">View All Services</CTAButton>
+            <Link href="/contact#form">
+              <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with Hexologix">
+                Start Your Project
+              </Button>
+            </Link>
+            <Link href="/Portfolio">
+              <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="Get Started with Hexologix">
+                View All Services
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -581,9 +589,11 @@ export default function PortfolioPage() {
           >
             Let's discuss how we can help bring your vision to life with our innovative solutions.
           </motion.p>
-          <CTAButton variant="primary" delay={0.4}>
-            Start Your Project
-          </CTAButton>
+          <Link href="/contact#form">
+            <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with Hexologix">
+              Start Your Project
+            </Button>
+          </Link>
         </div>
       </SectionWrapper>
 
