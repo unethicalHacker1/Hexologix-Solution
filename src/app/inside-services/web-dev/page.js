@@ -383,12 +383,12 @@ export default function WebDevPage() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
             >
-              <Link href="/contact">
+              <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
                   Get Started
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/contact#form">
                 <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105">
                   Book a Call
                 </Button>
@@ -634,7 +634,7 @@ export default function WebDevPage() {
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true, margin: "-100px" }}
             >
-              <Link href="/contact">
+              <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
                   Get Started
                 </Button>
