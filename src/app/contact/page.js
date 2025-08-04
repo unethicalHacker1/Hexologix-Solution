@@ -25,14 +25,14 @@ import Link from "next/link";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CTAButton from "@/components/ui/CTAButton";
-import { 
-  containerVariants, 
-  itemVariants, 
-  cardVariants, 
-  fadeInUp, 
-  fadeInLeft, 
+import {
+  containerVariants,
+  itemVariants,
+  cardVariants,
+  fadeInUp,
+  fadeInLeft,
   fadeInRight,
-  commonAnimationProps 
+  commonAnimationProps
 } from "@/lib/animations";
 
 // Contact methods data
@@ -41,8 +41,8 @@ const CONTACT_METHODS = [
     icon: <Mail className="w-8 h-8" />,
     title: "Email Us",
     desc: "Send us a message anytime",
-    value: "hello@hexologix.com",
-    href: "mailto:hello@hexologix.com",
+    value: "hexologixsolutions@gmail.com",
+    href: "mailto:hexologixsolutions@gmail.com",
     color: "text-fuchsia-400"
   },
   {
@@ -74,7 +74,7 @@ const CONTACT_METHODS = [
 // Services data for contact form
 const SERVICES = [
   "AI Automation",
-  "Web Development", 
+  "Web Development",
   "App Development",
   "UI/UX Design",
   "Email Marketing",
@@ -119,8 +119,7 @@ export default function ContactPage() {
     email: '',
     company: '',
     service: '',
-    budget: '',
-    message: ''
+    message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -144,24 +143,25 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    setIsSubmitting(false);
+
+    if (res.ok) {
       setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        service: '',
-        budget: '',
-        message: ''
-      });
-      
-      // Reset status after 5 seconds
+      setFormData({ name: '', email: '', company: '', service: '', message: '' });
       setTimeout(() => setSubmitStatus(null), 5000);
-    }, 2000);
+    } else {
+      const { error } = await res.json();
+      alert(error || 'Something went wrong. Please try again.');
+    }
   };
+
 
   function ContactMethodCard({ icon, title, desc, value, href, color }) {
     return (
@@ -174,8 +174,8 @@ export default function ContactPage() {
         </div>
         <h4 className="text-lg font-bold mb-2 tracking-tight text-white/90">{title}</h4>
         <p className="text-sm text-purple-100 mb-3">{desc}</p>
-        <a 
-          href={href} 
+        <a
+          href={href}
           className="text-fuchsia-400 hover:text-fuchsia-300 transition-colors font-medium"
         >
           {value}
@@ -220,7 +220,7 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
         <div className="absolute inset-0 pointer-events-none">
@@ -228,7 +228,7 @@ export default function ContactPage() {
           <div className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
         <div className="max-w-4xl mx-auto z-10 relative">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -251,7 +251,7 @@ export default function ContactPage() {
             />
           </motion.h2>
 
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -260,7 +260,7 @@ export default function ContactPage() {
             Ready to start your next project? Let's discuss how we can help bring your vision to life with our innovative solutions.
           </motion.p>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -274,12 +274,12 @@ export default function ContactPage() {
 
       {/* Contact Methods Section */}
       <SectionWrapper backgroundType="secondary">
-        <SectionHeader 
+        <SectionHeader
           title="Get In Touch"
           subtitle="Multiple ways to reach us and start your project"
         />
-        
-        <motion.div 
+
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -296,12 +296,12 @@ export default function ContactPage() {
 
       {/* Contact Form Section */}
       <SectionWrapper backgroundType="tertiary">
-        <SectionHeader 
+        <SectionHeader
           title="Start Your Project"
           subtitle="Tell us about your project and we'll get back to you within 24 hours"
         />
-        
-        <motion.div 
+
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -346,7 +346,7 @@ export default function ContactPage() {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-purple-200 mb-2">
@@ -379,25 +379,7 @@ export default function ContactPage() {
                       </select>
                     </div>
                   </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-purple-200 mb-2">
-                      Budget Range
-                    </label>
-                    <select
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-400 focus:border-transparent backdrop-blur-sm"
-                    >
-                      <option value="">Select budget range</option>
-                      <option value="5k-10k">$5,000 - $10,000</option>
-                      <option value="10k-25k">$10,000 - $25,000</option>
-                      <option value="25k-50k">$25,000 - $50,000</option>
-                      <option value="50k+">$50,000+</option>
-                    </select>
-                  </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-purple-200 mb-2">
                       Project Details *
@@ -412,14 +394,14 @@ export default function ContactPage() {
                       placeholder="Tell us about your project, goals, and requirements..."
                     />
                   </div>
-                  
+
                   {submitStatus === 'success' && (
                     <div className="flex items-center gap-2 text-green-400 text-sm">
                       <CheckCircle className="w-4 h-4" />
                       Thank you! We'll get back to you within 24 hours.
                     </div>
                   )}
-                  
+
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -441,7 +423,7 @@ export default function ContactPage() {
               </CardContent>
             </Card>
           </motion.div>
-          
+
           {/* Project Benefits */}
           <motion.div variants={itemVariants} className="space-y-6">
             <div className="bg-gradient-to-br from-fuchsia-600/20 to-purple-600/20 p-8 rounded-2xl border border-fuchsia-400/30">
@@ -462,7 +444,7 @@ export default function ContactPage() {
                 ))}
               </ul>
             </div>
-            
+
             <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20">
               <h4 className="text-xl font-semibold mb-4 text-white">What Happens Next?</h4>
               <div className="space-y-3">
@@ -490,12 +472,12 @@ export default function ContactPage() {
 
       {/* FAQ Section */}
       <SectionWrapper backgroundType="secondary">
-        <SectionHeader 
+        <SectionHeader
           title="Frequently Asked Questions"
           subtitle="Common questions about working with us"
         />
-        
-        <motion.div 
+
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -513,7 +495,7 @@ export default function ContactPage() {
       {/* CTA Section */}
       <SectionWrapper backgroundType="cta">
         <div className="text-center">
-          <motion.h3 
+          <motion.h3
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -538,7 +520,7 @@ export default function ContactPage() {
       </SectionWrapper>
 
       <Footer />
-      
+
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
