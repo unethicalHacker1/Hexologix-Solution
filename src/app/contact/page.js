@@ -207,7 +207,7 @@ export default function ContactPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-8 text-base text-purple-200 sm:text-lg"
           >
-            Ready to start your next project? Let's discuss how we can help bring your vision to life with our innovative solutions.
+            Ready to start your next project? Let&apos;s discuss how we can help bring your vision to life with our innovative solutions.
           </motion.p>
 
           <motion.div
@@ -253,7 +253,7 @@ export default function ContactPage() {
 
       {/* ── Contact form ─────────────────────────────────────── */}
       <SectionWrapper backgroundType="tertiary">
-        <SectionHeader title="Start Your Project" subtitle="Tell us about your project and we'll get back to you within 24 hours" />
+        <SectionHeader title="Start Your Project" subtitle="Tell us about your project and we&apos;ll get back to you within 24 hours" />
 
         <motion.div
           variants={containerVariants}
@@ -330,7 +330,7 @@ export default function ContactPage() {
                   {/* success note */}
                   {submitStatus === "success" && (
                     <div className="flex items-center gap-2 text-sm text-green-400">
-                      <CheckCircle className="h-4 w-4" /> Thank you! We'll get back to you within 24 hours.
+                      <CheckCircle className="h-4 w-4" /> Thank you! We&apos;ll get back to you within 24 hours.
                     </div>
                   )}
 
@@ -381,7 +381,7 @@ export default function ContactPage() {
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-fuchsia-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
-                  <span className="text-purple-200">We'll review your project details</span>
+                  <span className="text-purple-200">We&apos;ll review your project details</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
@@ -436,7 +436,7 @@ export default function ContactPage() {
             Ready to Get Started?
           </motion.h3>
           <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true, margin: "-100px" }} className="mb-10 text-lg text-purple-100">
-            Let's discuss your project and bring your vision to life with our innovative solutions.
+            Let&apos;s discuss your project and bring your vision to life with our innovative solutions.
           </motion.p>
           <CTAButton variant="primary" delay={0.4}>
             Start Your Project

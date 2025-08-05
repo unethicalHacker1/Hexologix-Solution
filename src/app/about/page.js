@@ -272,7 +272,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-base sm:text-lg text-purple-200 mb-8"
           >
-            We're a team of passionate innovators dedicated to transforming businesses through cutting-edge technology and creative solutions.
+            We are a team of passionate innovators dedicated to transforming businesses through cutting-edge technology and creative solutions.
           </motion.p>
 
           <motion.div 
@@ -478,7 +478,7 @@ export default function AboutPage() {
             viewport={{ once: true, margin: "-100px" }}
             className="text-lg mb-10 text-purple-100"
           >
-            Let's discuss how we can help transform your business with our innovative solutions.
+            Let&apos;s discuss how we can help transform your business with our innovative solutions.
           </motion.p>
           <Link href="/contact#form">
           <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with Hexologix">
