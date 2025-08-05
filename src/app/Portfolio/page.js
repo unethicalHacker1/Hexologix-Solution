@@ -86,7 +86,7 @@ const PORTFOLIO_PROJECTS = [
   },
   {
     id: 3,
-    title: "Cross-Platform Mobile App",
+    title: "HRMS",
     category: "App Development",
     image: "/project1.jpg",
     description: "Flutter-based app with real-time features and offline sync.",
@@ -467,7 +467,7 @@ export default function PortfolioPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-base sm:text-lg text-purple-200 mb-8"
           >
-            Discover how we've transformed businesses with our innovative solutions and cutting-edge technology.
+            Discover how we&apos;ve transformed businesses with our innovative solutions and cutting-edge technology.
           </motion.p>
 
           <motion.div 
@@ -587,7 +587,7 @@ export default function PortfolioPage() {
             viewport={{ once: true, margin: "-100px" }}
             className="text-lg mb-10 text-purple-100"
           >
-            Let's discuss how we can help bring your vision to life with our innovative solutions.
+            Let&apos;s discuss how we can help bring your vision to life with our innovative solutions.
           </motion.p>
           <Link href="/contact#form">
             <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Get Started with Hexologix">

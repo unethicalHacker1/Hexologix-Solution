@@ -53,6 +53,7 @@ export default function SectionWrapper({
         className={containerClass}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
+        //animate={{ opacity: 1, y: 0 }}
         animate={{ opacity: 1, y: 0 }}   // ✅ ensures it stays visible
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.3 }} // ✅ plays animation only once

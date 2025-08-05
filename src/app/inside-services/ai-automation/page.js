@@ -395,6 +395,7 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true, margin: "-50px" }}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
@@ -405,6 +406,7 @@ export default function AIAutomationPage() {
             <motion.p 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true, margin: "-50px" }}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
@@ -439,6 +441,7 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true, margin: "-50px" }}
               className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
@@ -449,6 +452,7 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true, margin: "-50px" }}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
@@ -482,6 +486,7 @@ export default function AIAutomationPage() {
             <motion.h3 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true, margin: "-100px" }}
               className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
@@ -492,6 +497,7 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true, margin: "-100px" }}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
@@ -523,6 +529,7 @@ export default function AIAutomationPage() {
             <motion.h3 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true, margin: "-100px" }}
               className="text-4xl font-bold mb-12 text-purple-300"
@@ -556,6 +563,7 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true, margin: "-50px" }}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
@@ -566,6 +574,7 @@ export default function AIAutomationPage() {
             <motion.p 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true, margin: "-50px" }}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
@@ -600,6 +609,7 @@ export default function AIAutomationPage() {
             <motion.h3 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true, margin: "-100px" }}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
@@ -609,7 +619,8 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true, margin: "-100px" }}
               className="text-lg mb-10 text-purple-100"
             >
@@ -618,6 +629,7 @@ export default function AIAutomationPage() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true, margin: "-100px" }}
             >

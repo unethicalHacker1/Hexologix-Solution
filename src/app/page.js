@@ -440,7 +440,7 @@ export default function HomePage() {
               viewport={{ once: true, margin: "-50px" }}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
             >
-              Discover how we've transformed businesses with our innovative solutions and cutting-edge technology.
+              Discover how we&apos;ve transformed businesses with our innovative solutions and cutting-edge technology.
             </motion.p>
 
             {/* Enhanced Portfolio Grid */}
@@ -501,7 +501,7 @@ export default function HomePage() {
               viewport={{ once: true, margin: "-100px" }}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
             >
-              We follow a proven methodology that ensures your project's success from concept to launch.
+              We follow a proven methodology that ensures your project&apos;s success from concept to launch.
             </motion.p>
 
             <motion.div 
@@ -551,18 +551,19 @@ export default function HomePage() {
                 className="w-full max-w-3xl swiper-custom"
               >
                 <SwiperSlide>
-                  <blockquote className="text-xl italic text-purple-200 leading-relaxed">
-                    "TechFlow delivered exactly what we needed. Their AI
-                    integration saved us hours every day."
-                  </blockquote>
-                  <p className="text-sm text-purple-400 mt-4">
-                    — CEO, NextGen Corp
-                  </p>
+                <blockquote className="text-xl italic text-purple-200 leading-relaxed">
+  &quot;TechFlow delivered exactly what we needed. Their AI
+  integration saved us hours every day.&quot;
+</blockquote>
+<p className="text-sm text-purple-400 mt-4">
+  — CEO, NextGen Corp
+</p>
+
                 </SwiperSlide>
                 <SwiperSlide>
                   <blockquote className="text-xl italic text-purple-200 leading-relaxed">
-                    "Hexologix redesigned our entire frontend and boosted our
-                    conversions by 30%."
+                    &quot;Hexologix redesigned our entire frontend and boosted our
+                    conversions by 30%.&quot;
                   </blockquote>
                   <p className="text-sm text-purple-400 mt-4">
                     — Sarah Malik, Product Manager
@@ -570,8 +571,8 @@ export default function HomePage() {
                 </SwiperSlide>
                 <SwiperSlide>
                   <blockquote className="text-xl italic text-purple-200 leading-relaxed">
-                    "Exceptional team. Delivered on time and exceeded
-                    expectations on every milestone."
+                    &quot;Exceptional team. Delivered on time and exceeded
+                    expectations on every milestone.&quot;
                   </blockquote>
                   <p className="text-sm text-purple-400 mt-4">
                     — Jonathan A., CTO at FinLogic
