@@ -1,6 +1,5 @@
-
-
 "use client";
+
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
@@ -11,20 +10,12 @@ import {
   MapPin,
   Clock,
   Send,
-  MessageSquare,
-  Calendar,
-  Users,
-  Globe,
-  Zap,
-  Shield,
   CheckCircle,
   ChevronDown, // 🔻 NEW: for dropdown arrow
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
-import Image from "next/image";
-import Link from "next/link";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CTAButton from "@/components/ui/CTAButton";
@@ -157,7 +148,13 @@ export default function ContactPage() {
     setIsSubmitting(false);
     if (res.ok) {
       setSubmitStatus("success");
-      setFormData({ name: "", email: "", company: "", service: "", message: "" });
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        service: "",
+        message: "",
+      });
       setTimeout(() => setSubmitStatus(null), 5000);
     } else {
       const { error } = await res.json();
@@ -181,7 +178,10 @@ export default function ContactPage() {
         {/* gradient blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 left-1/2 w-[800px] h-[800px] -translate-x-1/2 rounded-full bg-fuchsia-700/10 blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 right-1/3 w-[600px] h-[600px] rounded-full bg-purple-800/10 blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
+          <div
+            className="absolute bottom-0 right-1/3 w-[600px] h-[600px] rounded-full bg-purple-800/10 blur-2xl animate-pulse"
+            style={{ animationDelay: "1s" }}
+          />
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl">
@@ -193,7 +193,14 @@ export default function ContactPage() {
           >
             Get In Touch <br />
             <TypeAnimation
-              sequence={["Let's Build Together", 2000, "Start Your Project", 2000, "Transform Your Business", 2000]}
+              sequence={[
+                "Let's Build Together",
+                2000,
+                "Start Your Project",
+                2000,
+                "Transform Your Business",
+                2000,
+              ]}
               wrapper="span"
               speed={50}
               repeat={Infinity}
@@ -207,7 +214,8 @@ export default function ContactPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-8 text-base text-purple-200 sm:text-lg"
           >
-            Ready to start your next project? Let&apos;s discuss how we can help bring your vision to life with our innovative solutions.
+            Ready to start your next project? Let&apos;s discuss how we can help
+            bring your vision to life with our innovative solutions.
           </motion.p>
 
           <motion.div
@@ -216,21 +224,28 @@ export default function ContactPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <CTAButton variant="primary" anchor="form">Start Your Project</CTAButton>
-            <CTAButton variant="secondary" anchor="form">Schedule a Call</CTAButton>
+            <CTAButton variant="primary" anchor="form">
+              Start Your Project
+            </CTAButton>
+            <CTAButton variant="secondary" anchor="form">
+              Schedule a Call
+            </CTAButton>
           </motion.div>
         </div>
       </section>
 
       {/* ── Contact methods ──────────────────────────────────── */}
       <SectionWrapper backgroundType="secondary">
-        <SectionHeader title="Get In Touch" subtitle="Multiple ways to reach us and start your project" />
+        <SectionHeader
+          title="Get In Touch"
+          subtitle="Multiple ways to reach us and start your project"
+        />
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: false, amount: 0.3 }}
           className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
         >
           {CONTACT_METHODS.map((method, i) => (
@@ -239,10 +254,19 @@ export default function ContactPage() {
                 variants={cardVariants}
                 className="group rounded-2xl border border-white/20 bg-white/10 p-6 text-white shadow-xl backdrop-blur-lg transition-all duration-300 hover:border-fuchsia-400 hover:shadow-fuchsia-700/30"
               >
-                <div className={`mb-4 flex justify-center text-3xl transition-transform duration-300 group-hover:scale-110 drop-shadow-lg ${method.color}`}>{method.icon}</div>
-                <h4 className="mb-2 text-lg font-bold tracking-tight text-white/90">{method.title}</h4>
+                <div
+                  className={`mb-4 flex justify-center text-3xl transition-transform duration-300 group-hover:scale-110 drop-shadow-lg ${method.color}`}
+                >
+                  {method.icon}
+                </div>
+                <h4 className="mb-2 text-lg font-bold tracking-tight text-white/90">
+                  {method.title}
+                </h4>
                 <p className="mb-3 text-sm text-purple-100">{method.desc}</p>
-                <a href={method.href} className="font-medium text-fuchsia-400 transition-colors hover:text-fuchsia-300">
+                <a
+                  href={method.href}
+                  className="font-medium text-fuchsia-400 transition-colors hover:text-fuchsia-300"
+                >
                   {method.value}
                 </a>
               </motion.div>
@@ -253,43 +277,80 @@ export default function ContactPage() {
 
       {/* ── Contact form ─────────────────────────────────────── */}
       <SectionWrapper backgroundType="tertiary">
-        <SectionHeader title="Start Your Project" subtitle="Tell us about your project and we&apos;ll get back to you within 24 hours" />
+        <SectionHeader
+          title="Start Your Project"
+          subtitle="Tell us about your project and we'll get back to you within 24 hours"
+        />
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: false, amount: 0.3 }}
           className="grid gap-12 lg:grid-cols-2"
         >
           {/* form */}
           <motion.div variants={itemVariants}>
             <Card className="border border-white/20 bg-white/10 shadow-xl backdrop-blur-lg">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-white">Project Details</CardTitle>
+                <CardTitle className="text-2xl font-bold text-white">
+                  Project Details
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <form id="form" onSubmit={handleSubmit} className="space-y-6">
+                <div id="form">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   {/* name + email */}
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-purple-200">Name *</label>
-                      <input type="text" name="name" required placeholder="Your full name" value={formData.name} onChange={handleInputChange} className={InputStyles} />
+                      <label className="mb-2 block text-sm font-medium text-purple-200">
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        required
+                        placeholder="Your full name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className={InputStyles}
+                      />
                     </div>
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-purple-200">Email *</label>
-                      <input type="email" name="email" required placeholder="your@email.com" value={formData.email} onChange={handleInputChange} className={InputStyles} />
+                      <label className="mb-2 block text-sm font-medium text-purple-200">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="your@email.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className={InputStyles}
+                      />
                     </div>
                   </div>
 
                   {/* company + service */}
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-purple-200">Company</label>
-                      <input type="text" name="company" placeholder="Your company name" value={formData.company} onChange={handleInputChange} className={InputStyles} />
+                      <label className="mb-2 block text-sm font-medium text-purple-200">
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        name="company"
+                        placeholder="Your company name"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        className={InputStyles}
+                      />
                     </div>
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-purple-200">Service Needed *</label>
+                      <label className="mb-2 block text-sm font-medium text-purple-200">
+                        Service Needed *
+                      </label>
                       {/* ── custom dropdown with arrow */}
                       <div className="relative">
                         <select
@@ -303,7 +364,11 @@ export default function ContactPage() {
                             Select a service
                           </option>
                           {SERVICES.map((service) => (
-                            <option key={service} value={service} className="bg-[#2c003e] text-white">
+                            <option
+                              key={service}
+                              value={service}
+                              className="bg-[#2c003e] text-white"
+                            >
                               {service}
                             </option>
                           ))}
@@ -315,7 +380,9 @@ export default function ContactPage() {
 
                   {/* message */}
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-purple-200">Project Details *</label>
+                    <label className="mb-2 block text-sm font-medium text-purple-200">
+                      Project Details *
+                    </label>
                     <textarea
                       name="message"
                       rows={6}
@@ -330,7 +397,8 @@ export default function ContactPage() {
                   {/* success note */}
                   {submitStatus === "success" && (
                     <div className="flex items-center gap-2 text-sm text-green-400">
-                      <CheckCircle className="h-4 w-4" /> Thank you! We&apos;ll get back to you within 24 hours.
+                      <CheckCircle className="h-4 w-4" /> Thank you! We&apos;ll
+                      get back to you within 24 hours.
                     </div>
                   )}
 
@@ -351,6 +419,7 @@ export default function ContactPage() {
                     )}
                   </Button>
                 </form>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -358,7 +427,9 @@ export default function ContactPage() {
           {/* benefits */}
           <motion.div variants={itemVariants} className="space-y-6">
             <div className="rounded-2xl border border-fuchsia-400/30 bg-gradient-to-br from-fuchsia-600/20 to-purple-600/20 p-8">
-              <h4 className="mb-6 text-2xl font-semibold text-white">Why Choose Us?</h4>
+              <h4 className="mb-6 text-2xl font-semibold text-white">
+                Why Choose Us?
+              </h4>
               <ul className="space-y-4">
                 {[
                   "Free consultation and project assessment",
@@ -368,7 +439,10 @@ export default function ContactPage() {
                   "Post-launch support and maintenance",
                   "Scalable solutions that grow with your business",
                 ].map((benefit) => (
-                  <li key={benefit} className="flex items-center gap-3 text-purple-200">
+                  <li
+                    key={benefit}
+                    className="flex items-center gap-3 text-purple-200"
+                  >
                     <CheckCircle className="h-5 w-5 flex-shrink-0 text-fuchsia-400" />
                     {benefit}
                   </li>
@@ -377,23 +451,41 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20">
-              <h4 className="text-xl font-semibold mb-4 text-white">What Happens Next?</h4>
+              <h4 className="text-xl font-semibold mb-4 text-white">
+                What Happens Next?
+              </h4>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-fuchsia-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
-                  <span className="text-purple-200">We&apos;ll review your project details</span>
+                  <div className="w-8 h-8 bg-fuchsia-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    1
+                  </div>
+                  <span className="text-purple-200">
+                    We&apos;ll review your project details
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
-                  <span className="text-purple-200">Schedule a consultation call</span>
+                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    2
+                  </div>
+                  <span className="text-purple-200">
+                    Schedule a consultation call
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
-                  <span className="text-purple-200">Receive a detailed proposal</span>
+                  <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    3
+                  </div>
+                  <span className="text-purple-200">
+                    Receive a detailed proposal
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
-                  <span className="text-purple-200">Start your project journey</span>
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    4
+                  </div>
+                  <span className="text-purple-200">
+                    Start your project journey
+                  </span>
                 </div>
               </div>
             </div>
@@ -403,12 +495,15 @@ export default function ContactPage() {
 
       {/* ── FAQ ──────────────────────────────────────────────── */}
       <SectionWrapper backgroundType="secondary">
-        <SectionHeader title="Frequently Asked Questions" subtitle="Common questions about working with us" />
+        <SectionHeader
+          title="Frequently Asked Questions"
+          subtitle="Common questions about working with us"
+        />
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: false, amount: 0.3 }}
           className="grid gap-6 lg:grid-cols-2"
         >
           {FAQ.map((item, i) => (
@@ -417,10 +512,19 @@ export default function ContactPage() {
                 variants={cardVariants}
                 className="rounded-2xl border border-purple-900 bg-white/5 p-6 shadow-md backdrop-blur-xl transition-all duration-500 hover:bg-white/10 hover:shadow-purple-700/30"
               >
-                <button className="flex w-full items-center justify-between text-left" onClick={() => setOpen((o) => !o)}>
-                  <h4 className="text-lg font-semibold text-purple-200 transition-colors hover:text-white">{item.question}</h4>
+                <button
+                  className="flex w-full items-center justify-between text-left"
+                  onClick={() => setOpen((o) => !o)}
+                >
+                  <h4 className="text-lg font-semibold text-purple-200 transition-colors hover:text-white">
+                    {item.question}
+                  </h4>
                 </button>
-                <motion.p initial={{ opacity: 0, height: 0 }} whileInView={{ opacity: 1, height: "auto" }} className="mt-4 text-sm leading-relaxed text-purple-300">
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  whileInView={{ opacity: 1, height: "auto" }}
+                  className="mt-4 text-sm leading-relaxed text-purple-300"
+                >
                   {item.answer}
                 </motion.p>
               </motion.div>
@@ -432,11 +536,24 @@ export default function ContactPage() {
       {/* ── CTA ─────────────────────────────────────────────── */}
       <SectionWrapper backgroundType="cta">
         <div className="text-center">
-          <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true, margin: "-100px" }} className="mb-8 text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-6xl">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: false, amount: 0.3 }}
+            className="mb-8 text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-6xl"
+          >
             Ready to Get Started?
           </motion.h3>
-          <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={{ once: true, margin: "-100px" }} className="mb-10 text-lg text-purple-100">
-            Let&apos;s discuss your project and bring your vision to life with our innovative solutions.
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: false, amount: 0.3 }}
+            className="mb-10 text-lg text-purple-100"
+          >
+            Let&apos;s discuss your project and bring your vision to life with
+            our innovative solutions.
           </motion.p>
           <CTAButton variant="primary" delay={0.4}>
             Start Your Project
@@ -454,10 +571,23 @@ export default function ContactPage() {
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Back to top"
           className="fixed bottom-8 right-8 rounded-full border border-purple-400/20 bg-gradient-to-r from-purple-600 to-fuchsia-600 p-4 text-white shadow-2xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:from-purple-700 hover:to-fuchsia-700 hover:shadow-purple-500/50"
-          style={{ boxShadow: "0 10px 25px -5px rgba(147 51 234 / 0.3), 0 4px 6px -2px rgba(147 51 234 / 0.1)" }}
+          style={{
+            boxShadow:
+              "0 10px 25px -5px rgba(147 51 234 / 0.3), 0 4px 6px -2px rgba(147 51 234 / 0.1)",
+          }}
         >
-          <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 10l7-7m0 0l7 7m-7-7v18"
+            />
           </svg>
         </motion.button>
       )}
