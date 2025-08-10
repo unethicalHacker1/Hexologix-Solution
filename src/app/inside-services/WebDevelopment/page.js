@@ -1,9 +1,15 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { TypeAnimation } from "react-type-animation";
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Header from "@/components/Header/page";
+import Footer from "@/components/Footer/page";
+
 import {
   Globe,
   Code,
@@ -21,11 +27,7 @@ import {
   Cloud,
   Server,
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import Header from "@/components/Header/page";
-import Footer from "@/components/Footer/page";
 
-import Link from "next/link";
 import {
   containerVariants,
   itemVariants,
@@ -34,6 +36,12 @@ import {
 
 /** Shared viewport config for consistent on-scroll reveals */
 const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+
+/** Avoid hydration mismatch with TypeAnimation (client-only) */
+const TypeAnimation = dynamic(
+  () => import("react-type-animation").then((m) => m.TypeAnimation),
+  { ssr: false }
+);
 
 // Web Development features
 const WEB_FEATURES = [
@@ -206,477 +214,436 @@ const RELATED_SERVICES = [
   },
 ];
 
-export default function WebDevPage() {
-  const [showBackToTop, setShowBackToTop] = useState(false);
+/* ------------------------------ Card Components ------------------------------ */
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-    };
+function FeatureCard({ icon, title, description, benefits }) {
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-[1.02] sm:hover:scale-105 h-full flex flex-col"
+    >
+      <div className="mb-4 flex justify-center text-3xl group-hover:scale-110 group-hover:text-fuchsia-400 transition-transform duration-300">
+        {icon}
+      </div>
+      <h4 className="text-xl font-semibold mb-3 text-purple-200 group-hover:text-white transition-colors">
+        {title}
+      </h4>
+      <p className="text-sm text-purple-300 mb-4 leading-relaxed">
+        {description}
+      </p>
+      <ul className="mt-auto text-xs text-purple-200 space-y-1">
+        {benefits.map((benefit, idx) => (
+          <li key={idx} className="flex items-center gap-2">
+            <span className="text-fuchsia-400">•</span> {benefit}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+function TechnologyCard({ category, title, description, icon, benefits }) {
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-[1.02] sm:hover:scale-105 h-full flex flex-col"
+    >
+      <div className="flex items-center gap-3 mb-4">
+        <div className="text-fuchsia-400">{icon}</div>
+        <span className="text-sm font-semibold text-purple-300">
+          {category}
+        </span>
+      </div>
+      <h4 className="text-lg font-semibold mb-3 text-purple-200 group-hover:text-white transition-colors">
+        {title}
+      </h4>
+      <p className="text-sm text-purple-300 mb-4 leading-relaxed">
+        {description}
+      </p>
+      <ul className="mt-auto text-xs text-purple-200 space-y-1">
+        {benefits.map((benefit, idx) => (
+          <li key={idx} className="flex items-center gap-2">
+            <span className="text-fuchsia-400">✓</span> {benefit}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
 
-  function FeatureCard({ icon, title, description, benefits }) {
-    return (
+function ProcessStepCard({ step, title, description, icon, details }) {
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="group p-8 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-[1.02] sm:hover:scale-105 text-center h-full flex flex-col"
+    >
+      <div className="flex justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+        {icon}
+      </div>
+      <div className="text-sm font-bold text-fuchsia-400 mb-2">{step}</div>
+      <h4 className="text-xl font-semibold text-purple-200 mb-3 group-hover:text-white transition-colors">
+        {title}
+      </h4>
+      <p className="text-sm text-purple-400 mb-4">{description}</p>
+      <ul className="mt-auto text-xs text-purple-300 space-y-1">
+        {details.map((detail, idx) => (
+          <li key={idx} className="flex items-center justify-center gap-2">
+            <span className="text-fuchsia-400">•</span> {detail}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
+
+function BenefitCard({ icon, title, description }) {
+  return (
+    <motion.div
+      variants={cardVariants}
+      className="group p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-[1.02] sm:hover:scale-105 text-center h-full flex flex-col"
+    >
+      <div className="flex justify-center mb-4 group-hover:scale-110 transition-transform duration-300 text-fuchsia-400">
+        {icon}
+      </div>
+      <h4 className="text-lg font-semibold text-purple-200 mb-2 group-hover:text-white transition-colors">
+        {title}
+      </h4>
+      <p className="text-sm text-purple-400">{description}</p>
+    </motion.div>
+  );
+}
+
+function ServiceCard({ title, desc, icon, href, features }) {
+  return (
+    <Link href={href} className="block h-full">
       <motion.div
         variants={cardVariants}
-        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 h-full flex flex-col"
+        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-[1.02] sm:hover:scale-105 h-full flex flex-col"
       >
         <div className="mb-4 flex justify-center text-3xl group-hover:scale-110 group-hover:text-fuchsia-400 transition-transform duration-300">
           {icon}
         </div>
-        <h4 className="text-xl font-semibold mb-3 text-purple-200 group-hover:text-white transition-colors">
-          {title}
-        </h4>
-        <p className="text-sm text-purple-300 mb-4 leading-relaxed flex-grow">
-          {description}
-        </p>
-        <ul className="text-xs text-purple-200 space-y-1 mt-auto">
-          {benefits.map((benefit, idx) => (
-            <li key={idx} className="flex items-center gap-2">
-              <span className="text-fuchsia-400">•</span> {benefit}
-            </li>
-          ))}
-        </ul>
-      </motion.div>
-    );
-  }
-
-  function TechnologyCard({ category, title, description, icon, benefits }) {
-    return (
-      <motion.div
-        variants={cardVariants}
-        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 h-full flex flex-col"
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="text-fuchsia-400">{icon}</div>
-          <span className="text-sm font-semibold text-purple-300">
-            {category}
-          </span>
-        </div>
         <h4 className="text-lg font-semibold mb-3 text-purple-200 group-hover:text-white transition-colors">
           {title}
         </h4>
-        <p className="text-sm text-purple-300 mb-4 leading-relaxed flex-grow">
-          {description}
-        </p>
-        <ul className="text-xs text-purple-200 space-y-1 mt-auto">
-          {benefits.map((benefit, idx) => (
+        <p className="text-sm text-purple-300 mb-4">{desc}</p>
+        <ul className="mt-auto text-xs text-purple-200 space-y-1">
+          {features.map((feature, idx) => (
             <li key={idx} className="flex items-center gap-2">
-              <span className="text-fuchsia-400">✓</span> {benefit}
+              <span className="text-fuchsia-400">•</span> {feature}
             </li>
           ))}
         </ul>
       </motion.div>
-    );
-  }
+    </Link>
+  );
+}
 
-  function ProcessStepCard({ step, title, description, icon, details }) {
-    return (
-      <motion.div
-        variants={cardVariants}
-        className="group p-8 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-105 text-center h-full flex flex-col"
-      >
-        <div className="flex justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-          {icon}
-        </div>
-        <div className="text-sm font-bold text-fuchsia-400 mb-2">{step}</div>
-        <h4 className="text-xl font-semibold text-purple-200 mb-3 group-hover:text-white transition-colors">
-          {title}
-        </h4>
-        <p className="text-sm text-purple-400 mb-4 flex-grow">{description}</p>
-        <ul className="text-xs text-purple-300 space-y-1 mt-auto">
-          {details.map((detail, idx) => (
-            <li key={idx} className="flex items-center justify-center gap-2">
-              <span className="text-fuchsia-400">•</span> {detail}
-            </li>
-          ))}
-        </ul>
-      </motion.div>
-    );
-  }
+/* ----------------------------------- Page ----------------------------------- */
 
-  function BenefitCard({ icon, title, description }) {
-    return (
-      <motion.div
-        variants={cardVariants}
-        className="group p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-105 text-center h-full flex flex-col"
-      >
-        <div className="flex justify-center mb-4 group-hover:scale-110 transition-transform duration-300 text-fuchsia-400">
-          {icon}
-        </div>
-        <h4 className="text-lg font-semibold text-purple-200 mb-2 group-hover:text-white transition-colors">
-          {title}
-        </h4>
-        <p className="text-sm text-purple-400 flex-grow">{description}</p>
-      </motion.div>
-    );
-  }
+export default function WebDevPage() {
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
-  function ServiceCard({ title, desc, icon, href, features }) {
-    return (
-      <Link href={href} className="block h-full">
-        <motion.div
-          variants={cardVariants}
-          className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 h-full flex flex-col"
-        >
-          <div className="mb-4 flex justify-center text-3xl group-hover:scale-110 group-hover:text-fuchsia-400 transition-transform duration-300">
-            {icon}
-          </div>
-          <h4 className="text-lg font-semibold mb-3 text-purple-200 group-hover:text-white transition-colors">
-            {title}
-          </h4>
-          <p className="text-sm text-purple-300 mb-4 flex-grow">{desc}</p>
-          <ul className="text-xs text-purple-200 space-y-1 mt-auto">
-            {features.map((feature, idx) => (
-              <li key={idx} className="flex items-center gap-2">
-                <span className="text-fuchsia-400">•</span> {feature}
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      </Link>
-    );
-  }
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 400);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
-      <div className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
-        <Header />
+    <main className="min-h-screen overflow-x-clip bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans">
+      <Header />
 
-        {/* Hero Section */}
-        <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
-            <div
-              className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse"
-              style={{ animationDelay: "1s" }}
-            ></div>
-          </div>
-          <div className="max-w-4xl mx-auto z-10 relative">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
-            >
-              Build Websites That <br />
+      {/* Hero Section */}
+      <section className="relative overflow-hidden text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-[70vh] flex items-center">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="hidden md:block w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
+          <div
+            className="hidden md:block w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
+        </div>
+        <div className="max-w-4xl mx-auto z-10 relative">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
+          >
+            Build Websites That <br />
+            <span className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block">
               <TypeAnimation
-                sequence={[
-                  "Convert & Scale",
-                  2000,
-                  "Rank & Perform",
-                  2000,
-                  "Engage & Delight",
-                  2000,
-                ]}
-                wrapper="span"
+                sequence={["Convert & Scale", 2000, "Rank & Perform", 2000, "Engage & Delight", 2000]}
                 speed={50}
                 repeat={Infinity}
-                className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
               />
-            </motion.h2>
+            </span>
+          </motion.h2>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-base sm:text-lg text-purple-200 mb-8"
-            >
-              Modern, responsive websites built with cutting-edge technologies
-              that drive results and grow your business.
-            </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-base sm:text-lg text-purple-200 mb-8"
+          >
+            Modern, responsive websites built with cutting-edge technologies
+            that drive results and grow your business.
+          </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
-            >
-              <Link href="/contact#form">
-                <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
-                  Get Started
-                </Button>
-              </Link>
-              <Link href="/contact#form">
-                <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105">
-                  Book a Call
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </section>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
+          >
+            <Link href="/contact#form">
+              <Button className="w-full sm:w-auto bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
+                Get Started
+              </Button>
+            </Link>
+            <Link href="/contact#form">
+              <Button className="w-full sm:w-auto bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105">
+                Book a Call
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* Web Development Features Section */}
-        <section className="relative py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
-            <div
-              className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse"
-              style={{ animationDelay: "1s" }}
-            ></div>
-          </div>
+      {/* Web Development Features Section */}
+      <section className="relative overflow-hidden py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={inView}
+            className="text-3xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
+          >
+            Web Development Solutions
+          </motion.h3>
 
-          <div className="max-w-7xl mx-auto text-center relative z-10">
-            <motion.h3
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={inView}
-              className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
-            >
-              Web Development Solutions
-            </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={inView}
+            className="text-base sm:text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
+          >
+            From simple websites to complex web applications, we build digital
+            solutions that drive business growth.
+          </motion.p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={inView}
-              className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
-            >
-              From simple websites to complex web applications, we build digital
-              solutions that drive business growth.
-            </motion.p>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={inView}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
+          >
+            {WEB_FEATURES.map((feature, i) => (
+              <motion.div key={i} variants={itemVariants} className="h-full">
+                <FeatureCard {...feature} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={inView}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"
-            >
-              {WEB_FEATURES.map((feature, i) => (
-                <motion.div key={i} variants={itemVariants} className="h-full">
-                  <FeatureCard {...feature} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+      {/* Technologies Section */}
+      <section className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative overflow-hidden text-white">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={inView}
+            className="text-3xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
+          >
+            Technologies We Use
+          </motion.h3>
 
-        {/* Technologies Section */}
-        <section className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="w-[500px] h-[500px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10 animate-pulse"></div>
-            <div
-              className="w-[400px] h-[400px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10 animate-pulse"
-              style={{ animationDelay: "1.5s" }}
-            ></div>
-          </div>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={inView}
+            className="text-base sm:text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
+          >
+            Cutting-edge technologies and frameworks to build fast, scalable,
+            and maintainable web solutions.
+          </motion.p>
 
-          <div className="max-w-7xl mx-auto relative z-10">
-            <motion.h3
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={inView}
-              className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
-            >
-              Technologies We Use
-            </motion.h3>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={inView}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch"
+          >
+            {TECHNOLOGIES.map((tech, i) => (
+              <motion.div key={i} variants={itemVariants} className="h-full">
+                <TechnologyCard {...tech} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={inView}
-              className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
-            >
-              Cutting-edge technologies and frameworks to build fast, scalable,
-              and maintainable web solutions.
-            </motion.p>
+      {/* Process Section */}
+      <section className="py-20 px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black relative overflow-hidden text-white">
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={inView}
+            className="text-3xl sm:text-5xl font-bold text-purple-300 mb-6"
+          >
+            Our Development Process
+          </motion.h3>
 
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={inView}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch"
-            >
-              {TECHNOLOGIES.map((tech, i) => (
-                <motion.div key={i} variants={itemVariants} className="h-full">
-                  <TechnologyCard {...tech} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={inView}
+            className="text-base sm:text-lg text-purple-200 mb-12 sm:mb-16 max-w-2xl mx-auto"
+          >
+            A proven methodology that ensures your website is built to the
+            highest standards and delivers results.
+          </motion.p>
 
-        {/* Process Section */}
-        <section className="py-20 px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black relative text-white">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="w-96 h-96 bg-purple-900/20 rounded-full blur-3xl absolute top-0 left-1/2 -translate-x-1/2 -z-10 animate-pulse"></div>
-            <div
-              className="w-80 h-80 bg-fuchsia-800/10 rounded-full blur-2xl absolute bottom-0 right-1/3 -z-10 animate-pulse"
-              style={{ animationDelay: "1s" }}
-            ></div>
-          </div>
-          <div className="max-w-6xl mx-auto text-center relative z-10">
-            <motion.h3
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={inView}
-              className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
-            >
-              Our Development Process
-            </motion.h3>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={inView}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch"
+          >
+            {PROCESS_STEPS.map((step, i) => (
+              <motion.div key={i} variants={itemVariants} className="h-full">
+                <ProcessStepCard {...step} />
+              </motion.div>
+            ))}
+          </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={inView}
-              className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
-            >
-              A proven methodology that ensures your website is built to the
-              highest standards and delivers results.
-            </motion.p>
+          <div
+            className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500/30 to-transparent -z-10"
+            style={{ top: "60%" }}
+          />
+        </div>
+      </section>
 
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={inView}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch"
-            >
-              {PROCESS_STEPS.map((step, i) => (
-                <motion.div key={i} variants={itemVariants} className="h-full">
-                  <ProcessStepCard {...step} />
-                </motion.div>
-              ))}
-            </motion.div>
+      {/* Benefits Section */}
+      <section className="px-6 py-24 bg-gradient-to-br from-black via-[#150022] to-black text-white relative overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={inView}
+            className="text-3xl sm:text-5xl font-bold mb-12 text-purple-300"
+          >
+            Why Choose Our Web Development
+          </motion.h3>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={inView}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch"
+          >
+            {BENEFITS.map((benefit, i) => (
+              <motion.div key={i} variants={itemVariants} className="h-full">
+                <BenefitCard {...benefit} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-            <div
-              className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500/30 to-transparent -z-10"
-              style={{ top: "60%" }}
-            ></div>
-          </div>
-        </section>
+      {/* Related Services Section */}
+      <section className="py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={inView}
+            className="text-3xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
+          >
+            Explore Our Other Services
+          </motion.h3>
 
-        {/* Benefits Section */}
-        <section className="px-6 py-24 bg-gradient-to-br from-black via-[#150022] to-black text-white relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h3
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={inView}
-              className="text-4xl font-bold mb-12 text-purple-300"
-            >
-              Why Choose Our Web Development
-            </motion.h3>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={inView}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch"
-            >
-              {BENEFITS.map((benefit, i) => (
-                <motion.div key={i} variants={itemVariants} className="h-full">
-                  <BenefitCard {...benefit} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={inView}
+            className="text-base sm:text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
+          >
+            Discover our comprehensive suite of digital solutions to
+            accelerate your business growth.
+          </motion.p>
 
-        {/* Related Services Section */}
-        <section className="py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
-            <div
-              className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse"
-              style={{ animationDelay: "1s" }}
-            ></div>
-          </div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={inView}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch"
+          >
+            {RELATED_SERVICES.map((service, i) => (
+              <motion.div key={i} variants={itemVariants} className="h-full">
+                <ServiceCard {...service} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-          <div className="max-w-7xl mx-auto text-center relative z-10">
-            <motion.h3
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={inView}
-              className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
-            >
-              Explore Our Other Services
-            </motion.h3>
+      {/* CTA Section */}
+      <section className="relative overflow-hidden py-28 px-6 bg-gradient-to-br from-fuchsia-800 via-purple-700 to-black text-white text-center">
+        <div className="max-w-4xl mx-auto relative z-10">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={inView}
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
+          >
+            Ready to Build Your Website?
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={inView}
+            className="text-base sm:text-lg mb-10 text-purple-100"
+          >
+            Let&apos;s discuss your project and create a website that drives
+            results and grows your business.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={inView}
+          >
+            <Link href="/contact#form">
+              <Button className="w-full sm:w-auto bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
+                Get Started
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={inView}
-              className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
-            >
-              Discover our comprehensive suite of digital solutions to
-              accelerate your business growth.
-            </motion.p>
+      <Footer />
 
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={inView}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch"
-            >
-              {RELATED_SERVICES.map((service, i) => (
-                <motion.div key={i} variants={itemVariants} className="h-full">
-                  <ServiceCard {...service} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="relative py-28 px-6 bg-gradient-to-br from-fuchsia-800 via-purple-700 to-black text-white text-center overflow-hidden">
-          <div className="absolute inset-0 -z-10">
-            <div className="w-[700px] h-[700px] bg-fuchsia-500/20 blur-3xl rounded-full absolute -top-48 left-1/2 -translate-x-1/2 animate-pulse" />
-            <div className="w-[400px] h-[400px] bg-white/5 rounded-full blur-2xl absolute bottom-0 left-1/3" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.06),_transparent)] opacity-50" />
-          </div>
-          <div className="max-w-4xl mx-auto relative z-10">
-            <motion.h3
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={inView}
-              className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
-            >
-              Ready to Build Your Website?
-            </motion.h3>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={inView}
-              className="text-lg mb-10 text-purple-100"
-            >
-              Let&apos;s discuss your project and create a website that drives
-              results and grows your business.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={inView}
-            >
-              <Link href="/contact#form">
-                <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
-                  Get Started
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </section>
-        <Footer />
-      </div>
       <WhatsAppButton />
+
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
@@ -697,11 +664,7 @@ export default function WebDevPage() {
             viewBox="0 0 24 24"
             strokeWidth="2.5"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 10l7-7m0 0l7 7m-7-7v18"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
           </svg>
         </motion.button>
       )}
