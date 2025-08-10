@@ -3,31 +3,33 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import {
-  Users,
-  Code,
-  Palette,
   Mail,
+  Code,
+  Globe,
+  Palette,
   Zap,
   TrendingUp,
+  Users,
   Shield,
-  Play,
+  Target,
   Rocket,
   Lightbulb,
+  ShoppingCart,
   Search,
   Eye,
-  Share2,
-  Users as Community,
-  Users as Influencer,
-  Users as Content,
-  Users as Analytics,
-  Users as Advertising,
-  Users as Strategy,
+  Mail as Newsletter,
+  Mail as Automation,
+  Mail as Campaign,
+  Mail as Analytics,
+  Mail as Segmentation,
+  Mail as Personalization,
+  Mail as Integration,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
-
 import Link from "next/link";
 import {
   containerVariants,
@@ -35,93 +37,92 @@ import {
   cardVariants,
 } from "@/lib/animations";
 
-// Social Media Marketing features
-const SOCIAL_FEATURES = [
+/** Shared viewport config for on-scroll animations */
+const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+
+// Email Marketing features
+const EMAIL_FEATURES = [
   {
-    icon: <Strategy className="w-8 h-8" />,
-    title: "Social Media Strategy",
+    icon: <Automation className="w-8 h-8" />,
+    title: "Email Automation",
     description:
-      "Comprehensive social media strategies tailored to your brand and audience.",
-    benefits: ["Platform selection", "Content planning", "Audience targeting"],
+      "Automated email sequences that nurture leads and drive conversions.",
+    benefits: ["Drip campaigns", "Trigger-based emails", "Lead nurturing"],
   },
   {
-    icon: <Content className="w-8 h-8" />,
-    title: "Content Creation",
+    icon: <Campaign className="w-8 h-8" />,
+    title: "Campaign Management",
     description:
-      "Engaging, high-quality content that resonates with your target audience.",
-    benefits: ["Visual design", "Copywriting", "Video production"],
+      "Create, send, and track email campaigns with advanced analytics.",
+    benefits: ["A/B testing", "Performance tracking", "Campaign optimization"],
   },
   {
-    icon: <Community className="w-8 h-8" />,
-    title: "Community Management",
-    description:
-      "Active community engagement and relationship building with your audience.",
-    benefits: ["Comment management", "Customer service", "Community growth"],
+    icon: <Segmentation className="w-8 h-8" />,
+    title: "Audience Segmentation",
+    description: "Target specific customer segments with personalized content.",
+    benefits: [
+      "Behavioral targeting",
+      "Demographic segmentation",
+      "Custom lists",
+    ],
   },
   {
-    icon: <Advertising className="w-8 h-8" />,
-    title: "Paid Advertising",
+    icon: <Personalization className="w-8 h-8" />,
+    title: "Personalization",
     description:
-      "Strategic paid campaigns across social media platforms for maximum reach.",
-    benefits: ["Targeted ads", "Budget optimization", "Performance tracking"],
+      "Dynamic content and personalized messaging for higher engagement.",
+    benefits: [
+      "Dynamic content",
+      "Personalized subject lines",
+      "Custom recommendations",
+    ],
   },
   {
     icon: <Analytics className="w-8 h-8" />,
-    title: "Analytics & Reporting",
+    title: "Advanced Analytics",
     description:
-      "Comprehensive reporting and insights to optimize your social media performance.",
-    benefits: ["Performance metrics", "ROI tracking", "Competitive analysis"],
+      "Comprehensive reporting and insights to optimize your campaigns.",
+    benefits: ["Open rates", "Click-through rates", "Conversion tracking"],
   },
   {
-    icon: <Influencer className="w-8 h-8" />,
-    title: "Influencer Marketing",
+    icon: <Integration className="w-8 h-8" />,
+    title: "CRM Integration",
     description:
-      "Strategic partnerships with influencers to amplify your brand message.",
-    benefits: [
-      "Influencer selection",
-      "Campaign management",
-      "Relationship building",
-    ],
+      "Seamless integration with your existing CRM and marketing tools.",
+    benefits: ["Lead scoring", "Contact sync", "Workflow automation"],
   },
 ];
 
-// Social Platforms
-const SOCIAL_PLATFORMS = [
+// Email Types
+const EMAIL_TYPES = [
   {
-    category: "Professional",
-    title: "LinkedIn Marketing",
+    category: "Lead Nurturing",
+    title: "Welcome Series",
     description:
-      "B2B marketing and professional networking to reach business decision-makers.",
-    icon: <Users className="w-6 h-6" />,
-    benefits: [
-      "Thought leadership",
-      "Lead generation",
-      "Professional networking",
-    ],
+      "Onboarding emails that introduce new subscribers to your brand.",
+    icon: <Mail className="w-6 h-6" />,
+    benefits: ["Brand introduction", "Value proposition", "Next steps"],
   },
   {
-    category: "Visual",
-    title: "Instagram & TikTok",
-    description:
-      "Visual storytelling and short-form video content for brand awareness.",
-    icon: <Eye className="w-6 h-6" />,
-    benefits: ["Visual content", "Story features", "Video marketing"],
+    category: "Sales",
+    title: "Promotional Campaigns",
+    description: "Sales-focused emails that drive conversions and revenue.",
+    icon: <ShoppingCart className="w-6 h-6" />,
+    benefits: ["Product promotions", "Limited offers", "Sales events"],
   },
   {
     category: "Engagement",
-    title: "Facebook & Twitter",
-    description:
-      "Community building and real-time engagement with your audience.",
-    icon: <Share2 className="w-6 h-6" />,
-    benefits: ["Community engagement", "Real-time updates", "Customer support"],
+    title: "Newsletter & Content",
+    description: "Educational content that keeps your audience engaged.",
+    icon: <Newsletter className="w-6 h-6" />,
+    benefits: ["Industry insights", "Educational content", "Company updates"],
   },
   {
-    category: "Video",
-    title: "YouTube Marketing",
-    description:
-      "Long-form video content and educational marketing for deeper engagement.",
-    icon: <Play className="w-6 h-6" />,
-    benefits: ["Video content", "Educational marketing", "SEO benefits"],
+    category: "Retention",
+    title: "Re-engagement",
+    description: "Campaigns to win back inactive subscribers and customers.",
+    icon: <Target className="w-6 h-6" />,
+    benefits: ["Win-back offers", "Feedback requests", "Special incentives"],
   },
 ];
 
@@ -129,38 +130,38 @@ const SOCIAL_PLATFORMS = [
 const PROCESS_STEPS = [
   {
     step: "01",
-    title: "Strategy & Research",
+    title: "Strategy & Planning",
     description:
-      "We analyze your brand, competitors, and audience to create a winning strategy.",
+      "We develop a comprehensive email marketing strategy tailored to your business.",
     icon: <Lightbulb className="w-12 h-12 text-fuchsia-400" />,
-    details: ["Brand analysis", "Competitor research", "Audience insights"],
+    details: ["Audience analysis", "Content strategy", "Campaign planning"],
   },
   {
     step: "02",
-    title: "Content Planning",
+    title: "Design & Content",
     description:
-      "Develop a comprehensive content calendar and creative strategy.",
+      "Create compelling email designs and content that resonates with your audience.",
     icon: <Palette className="w-12 h-12 text-purple-400" />,
-    details: ["Content calendar", "Creative direction", "Brand guidelines"],
+    details: ["Email templates", "Content creation", "Brand consistency"],
   },
   {
     step: "03",
-    title: "Implementation & Management",
+    title: "Implementation & Testing",
     description:
-      "Execute campaigns and actively manage your social media presence.",
+      "Set up automation workflows and thoroughly test all campaigns.",
     icon: <Code className="w-12 h-12 text-pink-400" />,
-    details: ["Content creation", "Community management", "Paid advertising"],
+    details: ["Automation setup", "A/B testing", "Quality assurance"],
   },
   {
     step: "04",
-    title: "Optimization & Growth",
+    title: "Launch & Optimize",
     description:
-      "Continuously optimize based on performance data and scale successful strategies.",
+      "Deploy campaigns and continuously optimize based on performance data.",
     icon: <Rocket className="w-12 h-12 text-fuchsia-400" />,
     details: [
-      "Performance analysis",
-      "Strategy optimization",
-      "Growth scaling",
+      "Campaign launch",
+      "Performance monitoring",
+      "Continuous optimization",
     ],
   },
 ];
@@ -169,20 +170,20 @@ const PROCESS_STEPS = [
 const BENEFITS = [
   {
     icon: <TrendingUp className="w-8 h-8" />,
-    title: "Increased Brand Awareness",
+    title: "Higher ROI",
     description:
-      "Reach millions of potential customers across social platforms",
+      "Email marketing delivers the highest ROI of any marketing channel",
   },
   {
     icon: <Eye className="w-8 h-8" />,
     title: "Better Engagement",
-    description: "Build meaningful relationships with your audience",
+    description: "Personalized content that drives higher open and click rates",
   },
   {
     icon: <Search className="w-8 h-8" />,
     title: "Targeted Reach",
     description:
-      "Reach the right audience with precise targeting and segmentation",
+      "Reach the right audience with precise segmentation and targeting",
   },
   {
     icon: <Shield className="w-8 h-8" />,
@@ -202,22 +203,22 @@ const RELATED_SERVICES = [
     href: "/inside-services/ai-automation",
   },
   {
-    title: "Email Marketing",
-    desc: "Automated campaigns that drive engagement and sales.",
-    icon: <Mail className="w-8 h-8" />,
-    features: ["Automation", "Analytics", "A/B Testing"],
-    href: "/inside-services/email-marketing",
+    title: "Web Development",
+    desc: "Next.js, WordPress & Shopify sites that convert.",
+    icon: <Globe className="w-8 h-8" />,
+    features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
+    href: "/inside-services/web-dev",
   },
   {
-    title: "UI/UX Design",
-    desc: "Beautiful, intuitive interfaces that users love.",
-    icon: <Palette className="w-8 h-8" />,
-    features: ["User Research", "Prototyping", "Design Systems"],
-    href: "/inside-services/ui-design",
+    title: "Social Media Marketing",
+    desc: "Strategic social media campaigns that build brand awareness.",
+    icon: <Users className="w-8 h-8" />,
+    features: ["Content Strategy", "Community Management", "Paid Advertising"],
+    href: "/inside-services/ss-marketing",
   },
 ];
 
-export default function SocialMediaMarketingPage() {
+export default function EmailMarketingPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -255,7 +256,7 @@ export default function SocialMediaMarketingPage() {
     );
   }
 
-  function PlatformCard({ category, title, description, icon, benefits }) {
+  function EmailTypeCard({ category, title, description, icon, benefits }) {
     return (
       <motion.div
         variants={cardVariants}
@@ -373,14 +374,14 @@ export default function SocialMediaMarketingPage() {
               transition={{ duration: 0.8 }}
               className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
             >
-              Social Media Marketing That <br />
+              Email Marketing That <br />
               <TypeAnimation
                 sequence={[
-                  "Engages & Connects",
+                  "Converts & Engages",
                   2000,
-                  "Builds & Grows",
+                  "Nurtures & Sells",
                   2000,
-                  "Converts & Scales",
+                  "Scales & Grows",
                   2000,
                 ]}
                 wrapper="span"
@@ -396,8 +397,8 @@ export default function SocialMediaMarketingPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-base sm:text-lg text-purple-200 mb-8"
             >
-              Strategic social media campaigns that build brand awareness,
-              engage audiences, and drive business growth.
+              Automated email campaigns that nurture leads, drive sales, and
+              build lasting customer relationships.
             </motion.p>
 
             <motion.div
@@ -420,7 +421,7 @@ export default function SocialMediaMarketingPage() {
           </div>
         </section>
 
-        {/* Social Media Marketing Features Section */}
+        {/* Email Marketing Features Section */}
         <section className="relative py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
@@ -435,31 +436,31 @@ export default function SocialMediaMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
-              Social Media Marketing Solutions
+              Email Marketing Solutions
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              Comprehensive social media strategies that build brand awareness,
-              engage audiences, and drive conversions.
+              Comprehensive email marketing solutions that drive engagement,
+              nurture leads, and boost conversions.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {SOCIAL_FEATURES.map((feature, i) => (
+              {EMAIL_FEATURES.map((feature, i) => (
                 <motion.div key={i} variants={itemVariants}>
                   <FeatureCard {...feature} />
                 </motion.div>
@@ -468,7 +469,7 @@ export default function SocialMediaMarketingPage() {
           </div>
         </section>
 
-        {/* Social Platforms Section */}
+        {/* Email Types Section */}
         <section className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[500px] h-[500px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10 animate-pulse"></div>
@@ -483,33 +484,33 @@ export default function SocialMediaMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
             >
-              Social Media Platforms
+              Types of Email Campaigns
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
             >
-              Strategic marketing across all major social media platforms to
-              maximize your reach and engagement.
+              Strategic email campaigns designed for every stage of the customer
+              journey.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
             >
-              {SOCIAL_PLATFORMS.map((platform, i) => (
+              {EMAIL_TYPES.map((emailType, i) => (
                 <motion.div key={i} variants={itemVariants}>
-                  <PlatformCard {...platform} />
+                  <EmailTypeCard {...emailType} />
                 </motion.div>
               ))}
             </motion.div>
@@ -530,28 +531,28 @@ export default function SocialMediaMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
             >
-              Our Social Media Process
+              Our Email Marketing Process
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
             >
-              A proven methodology that ensures your social media presence
-              delivers results and grows your brand.
+              A strategic approach to email marketing that ensures your
+              campaigns deliver results.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {PROCESS_STEPS.map((step, i) => (
@@ -575,16 +576,16 @@ export default function SocialMediaMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl font-bold mb-12 text-purple-300"
             >
-              Why Choose Our Social Media Marketing
+              Why Choose Our Email Marketing
             </motion.h3>
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {BENEFITS.map((benefit, i) => (
@@ -611,7 +612,7 @@ export default function SocialMediaMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               Explore Our Other Services
@@ -621,7 +622,7 @@ export default function SocialMediaMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Discover our comprehensive suite of digital solutions to
@@ -632,7 +633,7 @@ export default function SocialMediaMarketingPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {RELATED_SERVICES.map((service, i) => (
@@ -656,26 +657,26 @@ export default function SocialMediaMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
             >
-              Ready to Grow Your Social Media?
+              Ready to Boost Your Email Marketing?
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg mb-10 text-purple-100"
             >
-              Let&apos;s discuss your social media strategy and create campaigns
-              that build your brand and drive results.
+              Let&apos;s discuss your email marketing strategy and create
+              campaigns that drive results and grow your business.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
             >
               <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
@@ -687,6 +688,7 @@ export default function SocialMediaMarketingPage() {
         </section>
         <Footer />
       </div>
+      <WhatsAppButton />
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}

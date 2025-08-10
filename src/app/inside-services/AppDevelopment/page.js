@@ -3,28 +3,27 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import {
-  Mail,
   Code,
   Globe,
   Palette,
   Zap,
   TrendingUp,
-  Users,
   Shield,
-  Target,
+  Play,
   Rocket,
   Lightbulb,
+  Monitor,
   ShoppingCart,
+  Heart,
   Search,
   Eye,
-  Mail as Newsletter,
-  Mail as Automation,
-  Mail as Campaign,
-  Mail as Analytics,
-  Mail as Segmentation,
-  Mail as Personalization,
-  Mail as Integration,
+  Cloud,
+  Smartphone as CrossPlatform,
+  Smartphone as Native,
+  Smartphone as Progressive,
+  Smartphone as Wearable,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
@@ -36,89 +35,89 @@ import {
   cardVariants,
 } from "@/lib/animations";
 
-// Email Marketing features
-const EMAIL_FEATURES = [
+/** Shared viewport config so sections animate cleanly while scrolling DOWN */
+const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+
+// App Development features
+const APP_FEATURES = [
   {
-    icon: <Automation className="w-8 h-8" />,
-    title: "Email Automation",
-    description:
-      "Automated email sequences that nurture leads and drive conversions.",
-    benefits: ["Drip campaigns", "Trigger-based emails", "Lead nurturing"],
+    icon: <CrossPlatform className="w-8 h-8" />,
+    title: "Cross-Platform Development",
+    description: "Build once, deploy everywhere with Flutter and React Native.",
+    benefits: ["Single codebase", "Native performance", "Faster development"],
   },
   {
-    icon: <Campaign className="w-8 h-8" />,
-    title: "Campaign Management",
+    icon: <Native className="w-8 h-8" />,
+    title: "Native App Development",
     description:
-      "Create, send, and track email campaigns with advanced analytics.",
-    benefits: ["A/B testing", "Performance tracking", "Campaign optimization"],
+      "Platform-specific apps for iOS and Android with optimal performance.",
+    benefits: ["Platform optimization", "Better performance", "Native features"],
   },
   {
-    icon: <Segmentation className="w-8 h-8" />,
-    title: "Audience Segmentation",
-    description: "Target specific customer segments with personalized content.",
-    benefits: [
-      "Behavioral targeting",
-      "Demographic segmentation",
-      "Custom lists",
-    ],
+    icon: <Progressive className="w-8 h-8" />,
+    title: "Progressive Web Apps",
+    description:
+      "Web apps that work like native apps with offline capabilities.",
+    benefits: ["Offline support", "App-like experience", "Easy updates"],
   },
   {
-    icon: <Personalization className="w-8 h-8" />,
-    title: "Personalization",
-    description:
-      "Dynamic content and personalized messaging for higher engagement.",
-    benefits: [
-      "Dynamic content",
-      "Personalized subject lines",
-      "Custom recommendations",
-    ],
+    icon: <Wearable className="w-8 h-8" />,
+    title: "Wearable & IoT Apps",
+    description: "Apps for smartwatches, fitness trackers, and IoT devices.",
+    benefits: ["Health tracking", "Smart notifications", "IoT integration"],
   },
   {
-    icon: <Analytics className="w-8 h-8" />,
-    title: "Advanced Analytics",
+    icon: <Cloud className="w-8 h-8" />,
+    title: "Cloud Integration",
     description:
-      "Comprehensive reporting and insights to optimize your campaigns.",
-    benefits: ["Open rates", "Click-through rates", "Conversion tracking"],
+      "Seamless cloud services integration for data sync and storage.",
+    benefits: ["Real-time sync", "Scalable backend", "Data security"],
   },
   {
-    icon: <Integration className="w-8 h-8" />,
-    title: "CRM Integration",
-    description:
-      "Seamless integration with your existing CRM and marketing tools.",
-    benefits: ["Lead scoring", "Contact sync", "Workflow automation"],
+    icon: <Shield className="w-8 h-8" />,
+    title: "App Store Optimization",
+    description: "Optimize your app for better visibility and downloads.",
+    benefits: ["Higher rankings", "More downloads", "Better reviews"],
   },
 ];
 
-// Email Types
-const EMAIL_TYPES = [
+// App Types
+const APP_TYPES = [
   {
-    category: "Lead Nurturing",
-    title: "Welcome Series",
+    category: "Business",
+    title: "Enterprise Apps",
     description:
-      "Onboarding emails that introduce new subscribers to your brand.",
-    icon: <Mail className="w-6 h-6" />,
-    benefits: ["Brand introduction", "Value proposition", "Next steps"],
+      "Custom business applications for internal operations and customer management.",
+    icon: <Monitor className="w-6 h-6" />,
+    benefits: [
+      "Employee productivity",
+      "Customer management",
+      "Process automation",
+    ],
   },
   {
-    category: "Sales",
-    title: "Promotional Campaigns",
-    description: "Sales-focused emails that drive conversions and revenue.",
+    category: "E-commerce",
+    title: "Shopping Apps",
+    description:
+      "Mobile commerce apps with payment processing and inventory management.",
     icon: <ShoppingCart className="w-6 h-6" />,
-    benefits: ["Product promotions", "Limited offers", "Sales events"],
+    benefits: ["Secure payments", "Inventory tracking", "Customer loyalty"],
   },
   {
-    category: "Engagement",
-    title: "Newsletter & Content",
-    description: "Educational content that keeps your audience engaged.",
-    icon: <Newsletter className="w-6 h-6" />,
-    benefits: ["Industry insights", "Educational content", "Company updates"],
+    category: "Health",
+    title: "Healthcare Apps",
+    description:
+      "Medical and wellness apps for patient care and health monitoring.",
+    icon: <Heart className="w-6 h-6" />,
+    benefits: ["Patient monitoring", "Health tracking", "Medical records"],
   },
   {
-    category: "Retention",
-    title: "Re-engagement",
-    description: "Campaigns to win back inactive subscribers and customers.",
-    icon: <Target className="w-6 h-6" />,
-    benefits: ["Win-back offers", "Feedback requests", "Special incentives"],
+    category: "Entertainment",
+    title: "Media & Gaming",
+    description:
+      "Entertainment apps including streaming, gaming, and social media.",
+    icon: <Play className="w-6 h-6" />,
+    benefits: ["Content streaming", "Social features", "Gaming integration"],
   },
 ];
 
@@ -126,39 +125,38 @@ const EMAIL_TYPES = [
 const PROCESS_STEPS = [
   {
     step: "01",
-    title: "Strategy & Planning",
+    title: "Discovery & Planning",
     description:
-      "We develop a comprehensive email marketing strategy tailored to your business.",
+      "We analyze your requirements and create a comprehensive app development plan.",
     icon: <Lightbulb className="w-12 h-12 text-fuchsia-400" />,
-    details: ["Audience analysis", "Content strategy", "Campaign planning"],
+    details: [
+      "Requirements gathering",
+      "Platform selection",
+      "Architecture planning",
+    ],
   },
   {
     step: "02",
-    title: "Design & Content",
+    title: "Design & Prototyping",
     description:
-      "Create compelling email designs and content that resonates with your audience.",
+      "Create beautiful, intuitive app designs with interactive prototypes.",
     icon: <Palette className="w-12 h-12 text-purple-400" />,
-    details: ["Email templates", "Content creation", "Brand consistency"],
+    details: ["UI/UX design", "Interactive prototypes", "User testing"],
   },
   {
     step: "03",
-    title: "Implementation & Testing",
+    title: "Development & Testing",
     description:
-      "Set up automation workflows and thoroughly test all campaigns.",
+      "Build your app with clean code and rigorous testing procedures.",
     icon: <Code className="w-12 h-12 text-pink-400" />,
-    details: ["Automation setup", "A/B testing", "Quality assurance"],
+    details: ["Clean coding", "Quality assurance", "Performance testing"],
   },
   {
     step: "04",
-    title: "Launch & Optimize",
-    description:
-      "Deploy campaigns and continuously optimize based on performance data.",
+    title: "Launch & Support",
+    description: "Deploy your app to app stores and provide ongoing support.",
     icon: <Rocket className="w-12 h-12 text-fuchsia-400" />,
-    details: [
-      "Campaign launch",
-      "Performance monitoring",
-      "Continuous optimization",
-    ],
+    details: ["App store submission", "Post-launch support", "Updates & maintenance"],
   },
 ];
 
@@ -166,26 +164,23 @@ const PROCESS_STEPS = [
 const BENEFITS = [
   {
     icon: <TrendingUp className="w-8 h-8" />,
-    title: "Higher ROI",
-    description:
-      "Email marketing delivers the highest ROI of any marketing channel",
+    title: "Increased Engagement",
+    description: "Mobile apps drive higher user engagement and retention",
   },
   {
     icon: <Eye className="w-8 h-8" />,
-    title: "Better Engagement",
-    description: "Personalized content that drives higher open and click rates",
+    title: "Better User Experience",
+    description: "Native app performance and intuitive mobile interfaces",
   },
   {
     icon: <Search className="w-8 h-8" />,
-    title: "Targeted Reach",
-    description:
-      "Reach the right audience with precise segmentation and targeting",
+    title: "App Store Visibility",
+    description: "Reach millions of users through app store optimization",
   },
   {
     icon: <Shield className="w-8 h-8" />,
-    title: "Measurable Results",
-    description:
-      "Track every metric and optimize campaigns for better performance",
+    title: "Secure & Reliable",
+    description: "Robust security measures and 99.9% uptime guarantee",
   },
 ];
 
@@ -206,15 +201,15 @@ const RELATED_SERVICES = [
     href: "/inside-services/web-dev",
   },
   {
-    title: "Social Media Marketing",
-    desc: "Strategic social media campaigns that build brand awareness.",
-    icon: <Users className="w-8 h-8" />,
-    features: ["Content Strategy", "Community Management", "Paid Advertising"],
-    href: "/inside-services/ss-marketing",
+    title: "UI/UX Design",
+    desc: "Beautiful, intuitive interfaces that users love.",
+    icon: <Palette className="w-8 h-8" />,
+    features: ["User Research", "Prototyping", "Design Systems"],
+    href: "/inside-services/ui-design",
   },
 ];
 
-export default function EmailMarketingPage() {
+export default function AppDevPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -252,7 +247,7 @@ export default function EmailMarketingPage() {
     );
   }
 
-  function EmailTypeCard({ category, title, description, icon, benefits }) {
+  function AppTypeCard({ category, title, description, icon, benefits }) {
     return (
       <motion.div
         variants={cardVariants}
@@ -370,14 +365,14 @@ export default function EmailMarketingPage() {
               transition={{ duration: 0.8 }}
               className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
             >
-              Email Marketing That <br />
+              Build Mobile Apps That <br />
               <TypeAnimation
                 sequence={[
-                  "Converts & Engages",
+                  "Engage & Convert",
                   2000,
-                  "Nurtures & Sells",
+                  "Scale & Perform",
                   2000,
-                  "Scales & Grows",
+                  "Delight & Retain",
                   2000,
                 ]}
                 wrapper="span"
@@ -393,8 +388,8 @@ export default function EmailMarketingPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-base sm:text-lg text-purple-200 mb-8"
             >
-              Automated email campaigns that nurture leads, drive sales, and
-              build lasting customer relationships.
+              Native and cross-platform mobile applications that deliver
+              exceptional user experiences and drive business growth.
             </motion.p>
 
             <motion.div
@@ -417,7 +412,7 @@ export default function EmailMarketingPage() {
           </div>
         </section>
 
-        {/* Email Marketing Features Section */}
+        {/* App Development Features Section */}
         <section className="relative py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
@@ -432,31 +427,31 @@ export default function EmailMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
-              Email Marketing Solutions
+              Mobile App Development Solutions
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              Comprehensive email marketing solutions that drive engagement,
-              nurture leads, and boost conversions.
+              From native iOS and Android apps to cross-platform solutions, we
+              build mobile applications that users love.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {EMAIL_FEATURES.map((feature, i) => (
+              {APP_FEATURES.map((feature, i) => (
                 <motion.div key={i} variants={itemVariants}>
                   <FeatureCard {...feature} />
                 </motion.div>
@@ -465,7 +460,7 @@ export default function EmailMarketingPage() {
           </div>
         </section>
 
-        {/* Email Types Section */}
+        {/* App Types Section */}
         <section className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[500px] h-[500px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10 animate-pulse"></div>
@@ -480,33 +475,33 @@ export default function EmailMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
             >
-              Types of Email Campaigns
+              Types of Apps We Build
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
             >
-              Strategic email campaigns designed for every stage of the customer
-              journey.
+              Specialized mobile applications for various industries and
+              business needs.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
             >
-              {EMAIL_TYPES.map((emailType, i) => (
+              {APP_TYPES.map((appType, i) => (
                 <motion.div key={i} variants={itemVariants}>
-                  <EmailTypeCard {...emailType} />
+                  <AppTypeCard {...appType} />
                 </motion.div>
               ))}
             </motion.div>
@@ -527,28 +522,28 @@ export default function EmailMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
             >
-              Our Email Marketing Process
+              Our App Development Process
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
             >
-              A strategic approach to email marketing that ensures your
-              campaigns deliver results.
+              A proven methodology that ensures your mobile app is built to the
+              highest standards and delivers results.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {PROCESS_STEPS.map((step, i) => (
@@ -572,16 +567,16 @@ export default function EmailMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl font-bold mb-12 text-purple-300"
             >
-              Why Choose Our Email Marketing
+              Why Choose Our App Development
             </motion.h3>
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {BENEFITS.map((benefit, i) => (
@@ -608,7 +603,7 @@ export default function EmailMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               Explore Our Other Services
@@ -618,7 +613,7 @@ export default function EmailMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Discover our comprehensive suite of digital solutions to
@@ -629,7 +624,7 @@ export default function EmailMarketingPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {RELATED_SERVICES.map((service, i) => (
@@ -653,26 +648,26 @@ export default function EmailMarketingPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
             >
-              Ready to Boost Your Email Marketing?
+              Ready to Build Your App?
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg mb-10 text-purple-100"
             >
-              Let&apos;s discuss your email marketing strategy and create
-              campaigns that drive results and grow your business.
+              Let&apos;s discuss your app idea and create a mobile solution that
+              drives results and grows your business.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
             >
               <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
@@ -684,6 +679,7 @@ export default function EmailMarketingPage() {
         </section>
         <Footer />
       </div>
+      <WhatsAppButton />
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}

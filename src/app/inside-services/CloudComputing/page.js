@@ -3,27 +3,32 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import {
-  Globe,
+  Cloud,
   Code,
-  Smartphone,
+  Globe,
   Palette,
+  MapPin,
   Zap,
   TrendingUp,
   Shield,
   Rocket,
   Lightbulb,
-  Smartphone as Mobile,
   Search,
   Eye,
-  Zap as Lightning,
-  Cloud,
-  Server,
+  Cloud as AWS,
+  Cloud as Azure,
+  Cloud as Google,
+  Cloud as Migration,
+  Cloud as Security,
+  Cloud as DevOps,
+  Cloud as Monitoring,
+  Cloud as Backup,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
-
 import Link from "next/link";
 import {
   containerVariants,
@@ -31,89 +36,82 @@ import {
   cardVariants,
 } from "@/lib/animations";
 
-// Web Development features
-const WEB_FEATURES = [
+/** Shared viewport config so sections animate cleanly while scrolling DOWN */
+const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+
+// Cloud Computing features
+const CLOUD_FEATURES = [
   {
-    icon: <Code className="w-8 h-8" />,
-    title: "Custom Web Applications",
+    icon: <Migration className="w-8 h-8" />,
+    title: "Cloud Migration",
     description:
-      "Tailored web applications built with modern frameworks and best practices.",
-    benefits: [
-      "Scalable architecture",
-      "Performance optimized",
-      "SEO friendly",
-    ],
+      "Seamless migration of applications and data to cloud platforms.",
+    benefits: ["Zero downtime", "Data integrity", "Performance optimization"],
   },
   {
-    icon: <Globe className="w-8 h-8" />,
-    title: "E-commerce Solutions",
-    description:
-      "Complete online stores with payment processing and inventory management.",
-    benefits: ["Secure payments", "Inventory tracking", "Analytics dashboard"],
+    icon: <Security className="w-8 h-8" />,
+    title: "Cloud Security",
+    description: "Comprehensive security solutions for cloud infrastructure.",
+    benefits: ["Identity management", "Data encryption", "Compliance"],
   },
   {
-    icon: <Search className="w-8 h-8" />,
-    title: "SEO Optimization",
-    description:
-      "Search engine optimization to improve visibility and drive organic traffic.",
-    benefits: ["Higher rankings", "Increased traffic", "Better conversions"],
+    icon: <DevOps className="w-8 h-8" />,
+    title: "DevOps & CI/CD",
+    description: "Automated deployment and continuous integration pipelines.",
+    benefits: ["Automated testing", "Deployment automation", "Monitoring"],
   },
   {
-    icon: <Mobile className="w-8 h-8" />,
-    title: "Responsive Design",
-    description:
-      "Websites that work perfectly on all devices and screen sizes.",
-    benefits: ["Mobile-first", "Cross-browser", "Touch optimized"],
+    icon: <Monitoring className="w-8 h-8" />,
+    title: "Cloud Monitoring",
+    description: "Real-time monitoring and alerting for cloud resources.",
+    benefits: ["Performance tracking", "Cost optimization", "Alert management"],
   },
   {
-    icon: <Lightning className="w-8 h-8" />,
-    title: "Performance Optimization",
-    description:
-      "Lightning-fast websites with optimized loading times and user experience.",
-    benefits: ["Fast loading", "Core Web Vitals", "User retention"],
+    icon: <Backup className="w-8 h-8" />,
+    title: "Backup & Recovery",
+    description: "Reliable backup solutions and disaster recovery planning.",
+    benefits: ["Automated backups", "Disaster recovery", "Data protection"],
   },
   {
-    icon: <Shield className="w-8 h-8" />,
-    title: "Security & Maintenance",
-    description:
-      "Robust security measures and ongoing maintenance for your website.",
-    benefits: ["SSL certificates", "Regular updates", "Backup systems"],
+    icon: <AWS className="w-8 h-8" />,
+    title: "Multi-Cloud Strategy",
+    description: "Optimized multi-cloud solutions for maximum flexibility.",
+    benefits: ["Vendor diversity", "Cost optimization", "High availability"],
   },
 ];
 
-// Technologies
-const TECHNOLOGIES = [
+// Cloud Platforms
+const CLOUD_PLATFORMS = [
   {
-    category: "Frontend",
-    title: "React & Next.js",
+    category: "AWS",
+    title: "Amazon Web Services",
     description:
-      "Modern JavaScript frameworks for dynamic, fast web applications.",
-    icon: <Code className="w-6 h-6" />,
-    benefits: ["Component-based", "Server-side rendering", "Fast performance"],
+      "Comprehensive AWS solutions for scalable cloud infrastructure.",
+    icon: <AWS className="w-6 h-6" />,
+    benefits: ["EC2 instances", "S3 storage", "Lambda functions"],
   },
   {
-    category: "CMS",
-    title: "WordPress & Shopify",
-    description:
-      "Popular content management systems for easy website management.",
-    icon: <Globe className="w-6 h-6" />,
-    benefits: ["User-friendly", "Plugin ecosystem", "E-commerce ready"],
+    category: "Azure",
+    title: "Microsoft Azure",
+    description: "Enterprise-grade cloud solutions with Microsoft integration.",
+    icon: <Azure className="w-6 h-6" />,
+    benefits: ["Virtual machines", "Azure SQL", "Functions"],
   },
   {
-    category: "Backend",
-    title: "Node.js & APIs",
+    category: "Google Cloud",
+    title: "Google Cloud Platform",
     description:
-      "Robust backend solutions with RESTful APIs and database integration.",
-    icon: <Server className="w-6 h-6" />,
-    benefits: ["Scalable", "Real-time", "Database integration"],
+      "Advanced cloud services with AI and machine learning capabilities.",
+    icon: <Google className="w-6 h-6" />,
+    benefits: ["Compute Engine", "BigQuery", "AI/ML services"],
   },
   {
-    category: "Cloud",
-    title: "AWS & Vercel",
+    category: "Hybrid",
+    title: "Hybrid Cloud Solutions",
     description:
-      "Cloud hosting and deployment for reliable, scalable web applications.",
+      "Flexible hybrid cloud deployments combining on-premise and cloud.",
     icon: <Cloud className="w-6 h-6" />,
-    benefits: ["Global CDN", "Auto-scaling", "99.9% uptime"],
+    benefits: ["Flexibility", "Cost control", "Security compliance"],
   },
 ];
 
@@ -121,35 +119,39 @@ const TECHNOLOGIES = [
 const PROCESS_STEPS = [
   {
     step: "01",
-    title: "Discovery & Planning",
+    title: "Assessment & Planning",
     description:
-      "We analyze your requirements and create a comprehensive development plan.",
+      "We assess your current infrastructure and plan the cloud migration strategy.",
     icon: <Lightbulb className="w-12 h-12 text-fuchsia-400" />,
-    details: ["Requirements gathering", "Wireframing", "Technology selection"],
+    details: ["Infrastructure audit", "Migration planning", "Cost analysis"],
   },
   {
     step: "02",
-    title: "Design & Prototyping",
+    title: "Architecture Design",
     description:
-      "Create beautiful, user-friendly designs with interactive prototypes.",
+      "Design scalable and secure cloud architecture for your applications.",
     icon: <Palette className="w-12 h-12 text-purple-400" />,
-    details: ["UI/UX design", "Interactive prototypes", "User testing"],
+    details: ["Cloud architecture", "Security design", "Scalability planning"],
   },
   {
     step: "03",
-    title: "Development & Testing",
+    title: "Migration & Deployment",
     description:
-      "Build your website with clean code and rigorous testing procedures.",
+      "Execute the migration with minimal downtime and maximum efficiency.",
     icon: <Code className="w-12 h-12 text-pink-400" />,
-    details: ["Clean coding", "Quality assurance", "Performance testing"],
+    details: ["Application migration", "Data migration", "Testing"],
   },
   {
     step: "04",
-    title: "Launch & Support",
+    title: "Optimization & Support",
     description:
-      "Deploy your website and provide ongoing support and maintenance.",
+      "Optimize performance and provide ongoing cloud management support.",
     icon: <Rocket className="w-12 h-12 text-fuchsia-400" />,
-    details: ["Production deployment", "SEO optimization", "Ongoing support"],
+    details: [
+      "Performance optimization",
+      "Cost optimization",
+      "Ongoing support",
+    ],
   },
 ];
 
@@ -157,23 +159,23 @@ const PROCESS_STEPS = [
 const BENEFITS = [
   {
     icon: <TrendingUp className="w-8 h-8" />,
-    title: "Increased Conversions",
-    description: "Optimized websites that convert visitors into customers",
+    title: "Scalability",
+    description: "Scale resources up or down based on demand",
   },
   {
     icon: <Eye className="w-8 h-8" />,
-    title: "Better User Experience",
-    description: "Intuitive designs that keep users engaged and satisfied",
+    title: "Cost Efficiency",
+    description: "Pay only for the resources you use",
   },
   {
     icon: <Search className="w-8 h-8" />,
-    title: "SEO Visibility",
-    description: "Higher search rankings and increased organic traffic",
+    title: "High Availability",
+    description: "99.9% uptime with redundant infrastructure",
   },
   {
     icon: <Shield className="w-8 h-8" />,
-    title: "Secure & Reliable",
-    description: "Robust security measures and 99.9% uptime guarantee",
+    title: "Enhanced Security",
+    description: "Enterprise-grade security and compliance",
   },
 ];
 
@@ -187,22 +189,22 @@ const RELATED_SERVICES = [
     href: "/inside-services/ai-automation",
   },
   {
-    title: "App Development",
-    desc: "Flutter & React Native for iOS & Android.",
-    icon: <Smartphone className="w-8 h-8" />,
-    features: ["Cross-platform", "Native Performance", "App Store Ready"],
-    href: "/inside-services/app-dev",
+    title: "Web Development",
+    desc: "Next.js, WordPress & Shopify sites that convert.",
+    icon: <Globe className="w-8 h-8" />,
+    features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
+    href: "/inside-services/web-dev",
   },
   {
-    title: "UI/UX Design",
-    desc: "Beautiful, intuitive interfaces that users love.",
-    icon: <Palette className="w-8 h-8" />,
-    features: ["User Research", "Prototyping", "Design Systems"],
-    href: "/inside-services/ui-design",
+    title: "GIS Services",
+    desc: "Advanced mapping and spatial analysis solutions.",
+    icon: <MapPin className="w-8 h-8" />,
+    features: ["Digital Mapping", "Spatial Analysis", "Data Visualization"],
+    href: "/inside-services/gis",
   },
 ];
 
-export default function WebDevPage() {
+export default function CloudComputingPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -240,7 +242,7 @@ export default function WebDevPage() {
     );
   }
 
-  function TechnologyCard({ category, title, description, icon, benefits }) {
+  function PlatformCard({ category, title, description, icon, benefits }) {
     return (
       <motion.div
         variants={cardVariants}
@@ -358,14 +360,14 @@ export default function WebDevPage() {
               transition={{ duration: 0.8 }}
               className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
             >
-              Build Websites That <br />
+              Cloud Computing That <br />
               <TypeAnimation
                 sequence={[
-                  "Convert & Scale",
+                  "Scales & Performs",
                   2000,
-                  "Rank & Perform",
+                  "Secures & Optimizes",
                   2000,
-                  "Engage & Delight",
+                  "Transforms & Grows",
                   2000,
                 ]}
                 wrapper="span"
@@ -381,8 +383,8 @@ export default function WebDevPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-base sm:text-lg text-purple-200 mb-8"
             >
-              Modern, responsive websites built with cutting-edge technologies
-              that drive results and grow your business.
+              Scalable cloud infrastructure solutions that drive performance,
+              security, and business growth.
             </motion.p>
 
             <motion.div
@@ -405,7 +407,7 @@ export default function WebDevPage() {
           </div>
         </section>
 
-        {/* Web Development Features Section */}
+        {/* Cloud Computing Features Section */}
         <section className="relative py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
@@ -420,31 +422,31 @@ export default function WebDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
-              Web Development Solutions
+              Cloud Computing Solutions
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              From simple websites to complex web applications, we build digital
-              solutions that drive business growth.
+              Comprehensive cloud solutions that optimize performance, reduce
+              costs, and enhance security.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {WEB_FEATURES.map((feature, i) => (
+              {CLOUD_FEATURES.map((feature, i) => (
                 <motion.div key={i} variants={itemVariants}>
                   <FeatureCard {...feature} />
                 </motion.div>
@@ -453,7 +455,7 @@ export default function WebDevPage() {
           </div>
         </section>
 
-        {/* Technologies Section */}
+        {/* Cloud Platforms Section */}
         <section className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[500px] h-[500px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10 animate-pulse"></div>
@@ -468,33 +470,33 @@ export default function WebDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
             >
-              Technologies We Use
+              Cloud Platforms
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
             >
-              Cutting-edge technologies and frameworks to build fast, scalable,
-              and maintainable web solutions.
+              Expert solutions across all major cloud platforms for maximum
+              flexibility and optimization.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
             >
-              {TECHNOLOGIES.map((tech, i) => (
+              {CLOUD_PLATFORMS.map((platform, i) => (
                 <motion.div key={i} variants={itemVariants}>
-                  <TechnologyCard {...tech} />
+                  <PlatformCard {...platform} />
                 </motion.div>
               ))}
             </motion.div>
@@ -515,28 +517,28 @@ export default function WebDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
             >
-              Our Development Process
+              Our Cloud Migration Process
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
             >
-              A proven methodology that ensures your website is built to the
-              highest standards and delivers results.
+              A proven methodology that ensures smooth cloud migration with
+              minimal disruption and maximum benefits.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {PROCESS_STEPS.map((step, i) => (
@@ -560,16 +562,16 @@ export default function WebDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl font-bold mb-12 text-purple-300"
             >
-              Why Choose Our Web Development
+              Why Choose Our Cloud Computing
             </motion.h3>
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {BENEFITS.map((benefit, i) => (
@@ -596,7 +598,7 @@ export default function WebDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               Explore Our Other Services
@@ -606,7 +608,7 @@ export default function WebDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Discover our comprehensive suite of digital solutions to
@@ -617,7 +619,7 @@ export default function WebDevPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {RELATED_SERVICES.map((service, i) => (
@@ -641,26 +643,26 @@ export default function WebDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
             >
-              Ready to Build Your Website?
+              Ready to Scale in the Cloud?
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg mb-10 text-purple-100"
             >
-              Let&apos;s discuss your project and create a website that drives
-              results and grows your business.
+              Let&apos;s discuss your cloud strategy and create scalable
+              infrastructure that drives business growth.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
             >
               <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
@@ -672,6 +674,7 @@ export default function WebDevPage() {
         </section>
         <Footer />
       </div>
+      <WhatsAppButton />
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}

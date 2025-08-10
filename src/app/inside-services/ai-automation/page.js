@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import {
   Brain,
   Bot,
@@ -34,6 +35,9 @@ import {
   cardVariants,
 } from "@/lib/animations";
 
+/** Reusable viewport settings for all scroll-triggered animations */
+const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+
 // AI Automation features
 const AI_FEATURES = [
   {
@@ -41,66 +45,42 @@ const AI_FEATURES = [
     title: "Intelligent Process Automation",
     description:
       "Automate complex business processes with AI-powered decision making and learning capabilities.",
-    benefits: [
-      "Reduces manual errors",
-      "Increases efficiency",
-      "24/7 operation",
-    ],
+    benefits: ["Reduces manual errors", "Increases efficiency", "24/7 operation"],
   },
   {
     icon: <Bot className="w-8 h-8" />,
     title: "AI Chatbots & Virtual Assistants",
     description:
       "Smart conversational AI that handles customer inquiries and provides instant support.",
-    benefits: [
-      "Instant responses",
-      "Multi-language support",
-      "Scalable customer service",
-    ],
+    benefits: ["Instant responses", "Multi-language support", "Scalable customer service"],
   },
   {
     icon: <Database className="w-8 h-8" />,
     title: "Data Processing & Analytics",
     description:
       "Automated data extraction, processing, and analysis for actionable business insights.",
-    benefits: [
-      "Real-time insights",
-      "Predictive analytics",
-      "Automated reporting",
-    ],
+    benefits: ["Real-time insights", "Predictive analytics", "Automated reporting"],
   },
   {
     icon: <Workflow className="w-8 h-8" />,
     title: "Workflow Automation",
     description:
       "Streamline business workflows with intelligent routing and automated approvals.",
-    benefits: [
-      "Faster approvals",
-      "Reduced bottlenecks",
-      "Process transparency",
-    ],
+    benefits: ["Faster approvals", "Reduced bottlenecks", "Process transparency"],
   },
   {
     icon: <Cpu className="w-8 h-8" />,
     title: "Machine Learning Models",
     description:
       "Custom ML models for predictive analytics, pattern recognition, and decision support.",
-    benefits: [
-      "Predictive insights",
-      "Pattern recognition",
-      "Continuous learning",
-    ],
+    benefits: ["Predictive insights", "Pattern recognition", "Continuous learning"],
   },
   {
     icon: <BarChart3 className="w-8 h-8" />,
     title: "Business Intelligence",
     description:
       "AI-powered dashboards and reports that provide real-time business intelligence.",
-    benefits: [
-      "Real-time monitoring",
-      "Custom dashboards",
-      "Actionable insights",
-    ],
+    benefits: ["Real-time monitoring", "Custom dashboards", "Actionable insights"],
   },
 ];
 
@@ -136,11 +116,7 @@ const USE_CASES = [
     description:
       "AI-driven equipment monitoring and predictive maintenance scheduling.",
     icon: <Settings className="w-6 h-6" />,
-    benefits: [
-      "Reduced downtime",
-      "Cost optimization",
-      "Extended equipment life",
-    ],
+    benefits: ["Reduced downtime", "Cost optimization", "Extended equipment life"],
   },
 ];
 
@@ -160,11 +136,7 @@ const PROCESS_STEPS = [
     description:
       "Design intelligent automation solutions tailored to your business needs.",
     icon: <Target className="w-12 h-12 text-purple-400" />,
-    details: [
-      "Solution architecture",
-      "AI model selection",
-      "Integration planning",
-    ],
+    details: ["Solution architecture", "AI model selection", "Integration planning"],
   },
   {
     step: "03",
@@ -180,11 +152,7 @@ const PROCESS_STEPS = [
     description:
       "Deploy with precision and continuously optimize for maximum performance.",
     icon: <Rocket className="w-12 h-12 text-fuchsia-400" />,
-    details: [
-      "Phased deployment",
-      "Performance monitoring",
-      "Continuous improvement",
-    ],
+    details: ["Phased deployment", "Performance monitoring", "Continuous improvement"],
   },
 ];
 
@@ -193,14 +161,12 @@ const BENEFITS = [
   {
     icon: <TrendingUp className="w-8 h-8" />,
     title: "Increased Efficiency",
-    description:
-      "Automate repetitive tasks and boost productivity by up to 80%",
+    description: "Automate repetitive tasks and boost productivity by up to 80%",
   },
   {
     icon: <Shield className="w-8 h-8" />,
     title: "Enhanced Accuracy",
-    description:
-      "Reduce human errors and improve data quality with AI precision",
+    description: "Reduce human errors and improve data quality with AI precision",
   },
   {
     icon: <Clock className="w-8 h-8" />,
@@ -243,10 +209,7 @@ export default function AIAutomationPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-    };
-
+    const handleScroll = () => setShowBackToTop(window.scrollY > 400);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -456,9 +419,8 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               AI Automation Solutions
@@ -467,9 +429,8 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Leverage the power of artificial intelligence to automate complex
@@ -480,7 +441,7 @@ export default function AIAutomationPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {AI_FEATURES.map((feature, i) => (
@@ -506,9 +467,8 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
             >
               Industry Applications
@@ -517,9 +477,8 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
             >
               Discover how AI automation transforms different industries and
@@ -530,7 +489,7 @@ export default function AIAutomationPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
             >
               {USE_CASES.map((useCase, i) => (
@@ -555,9 +514,8 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
             >
               Our AI Implementation Process
@@ -566,9 +524,8 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
             >
               A systematic approach to implementing AI automation that ensures
@@ -579,7 +536,7 @@ export default function AIAutomationPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {PROCESS_STEPS.map((step, i) => (
@@ -602,9 +559,8 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl font-bold mb-12 text-purple-300"
             >
               Why Choose AI Automation
@@ -613,7 +569,7 @@ export default function AIAutomationPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {BENEFITS.map((benefit, i) => (
@@ -639,9 +595,8 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               Explore Our Other Services
@@ -650,9 +605,8 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Discover our comprehensive suite of digital solutions to
@@ -663,7 +617,7 @@ export default function AIAutomationPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {RELATED_SERVICES.map((service, i) => (
@@ -686,9 +640,8 @@ export default function AIAutomationPage() {
             <motion.h3
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
             >
               Ready to Automate Your Business?
@@ -696,9 +649,8 @@ export default function AIAutomationPage() {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg mb-10 text-purple-100"
             >
               Let&apos;s discuss how AI automation can transform your operations
@@ -707,9 +659,8 @@ export default function AIAutomationPage() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
             >
               <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
@@ -721,6 +672,9 @@ export default function AIAutomationPage() {
         </section>
         <Footer />
       </div>
+
+      {/* Floating actions */}
+      <WhatsAppButton />
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
