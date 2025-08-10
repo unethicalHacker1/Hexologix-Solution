@@ -1,32 +1,23 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
-import {
-  Code,
-  Users,
-  Shield,
-  Clock,
-  ExternalLink,
-  Github,
-  Eye,
-} from "lucide-react";
-import { useState, useEffect } from "react";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { Code, Users, Shield, Clock, ExternalLink, Github, Eye } from "lucide-react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
 import Image from "next/image";
 import Link from "next/link";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { containerVariants, itemVariants, cardVariants } from "@/lib/animations";
 
-import {
-  containerVariants,
-  itemVariants,
-  cardVariants,
-} from "@/lib/animations";
+/** Keep in-view reveal only for non-grid sections */
+const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
 
-// Portfolio data with enhanced details
+// --------- Data ---------
 const PORTFOLIO_PROJECTS = [
   {
     id: 1,
@@ -36,13 +27,7 @@ const PORTFOLIO_PROJECTS = [
     description: "Smart product filters, AI chatbot, integrated analytics.",
     longDescription:
       "A comprehensive e-commerce platform with AI-powered product recommendations, intelligent search, and automated customer support. Features include real-time inventory management, personalized user experiences, and advanced analytics dashboard.",
-    technologies: [
-      "Next.js",
-      "AI Integration",
-      "E-commerce",
-      "Stripe",
-      "MongoDB",
-    ],
+    technologies: ["Next.js", "AI Integration", "E-commerce", "Stripe", "MongoDB"],
     features: [
       "AI-powered product recommendations",
       "Intelligent search and filtering",
@@ -88,13 +73,7 @@ const PORTFOLIO_PROJECTS = [
     description: "Flutter-based app with real-time features and offline sync.",
     longDescription:
       "A feature-rich mobile application built with Flutter for both iOS and Android platforms. Includes real-time messaging, offline data synchronization, and push notifications.",
-    technologies: [
-      "Flutter",
-      "Firebase",
-      "Real-time",
-      "Push Notifications",
-      "Offline Sync",
-    ],
+    technologies: ["Flutter", "Firebase", "Real-time", "Push Notifications", "Offline Sync"],
     features: [
       "Cross-platform compatibility",
       "Real-time messaging",
@@ -117,13 +96,7 @@ const PORTFOLIO_PROJECTS = [
     description: "Comprehensive design system with interactive prototypes.",
     longDescription:
       "A complete design system and interactive dashboard for a financial services company. Includes user research, wireframing, prototyping, and design implementation.",
-    technologies: [
-      "Figma",
-      "Prototyping",
-      "Design System",
-      "User Research",
-      "React",
-    ],
+    technologies: ["Figma", "Prototyping", "Design System", "User Research", "React"],
     features: [
       "Comprehensive design system",
       "Interactive prototypes",
@@ -186,49 +159,25 @@ const PORTFOLIO_PROJECTS = [
   },
 ];
 
-// Categories for filtering
-const CATEGORIES = [
-  "All",
-  "Web Development",
-  "AI Automation",
-  "App Development",
-  "UI/UX Design",
-];
+const CATEGORIES = ["All", "Web Development", "AI Automation", "App Development", "UI/UX Design"];
 
-// Stats data
 const STATS = [
-  {
-    number: "50+",
-    label: "Projects Completed",
-    icon: <Code className="w-8 h-8" />,
-  },
-  {
-    number: "30+",
-    label: "Happy Clients",
-    icon: <Users className="w-8 h-8" />,
-  },
-  {
-    number: "95%",
-    label: "Client Satisfaction",
-    icon: <Shield className="w-8 h-8" />,
-  },
-  {
-    number: "24/7",
-    label: "Support Available",
-    icon: <Clock className="w-8 h-8" />,
-  },
+  { number: "50+", label: "Projects Completed", icon: <Code className="w-8 h-8" /> },
+  { number: "30+", label: "Happy Clients", icon: <Users className="w-8 h-8" /> },
+  { number: "95%", label: "Client Satisfaction", icon: <Shield className="w-8 h-8" /> },
+  { number: "24/7", label: "Support Available", icon: <Clock className="w-8 h-8" /> },
 ];
 
+// --------- Page ---------
 export default function PortfolioPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-    };
+  const gridTopRef = useRef(null);
 
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 400);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -236,9 +185,13 @@ export default function PortfolioPage() {
   const filteredProjects =
     selectedCategory === "All"
       ? PORTFOLIO_PROJECTS
-      : PORTFOLIO_PROJECTS.filter(
-          (project) => project.category === selectedCategory
-        );
+      : PORTFOLIO_PROJECTS.filter((project) => project.category === selectedCategory);
+
+  const onCategoryClick = (category) => {
+    setSelectedCategory(category);
+    // jump to results
+    gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   function PortfolioCard({ project }) {
     return (
@@ -267,7 +220,7 @@ export default function PortfolioPage() {
               <button
                 onClick={() => setSelectedProject(project)}
                 className="bg-fuchsia-600 hover:bg-fuchsia-700 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
-                aria-label="View project details"
+                aria-label={`View details for ${project.title}`}
               >
                 <Eye className="w-5 h-5" />
               </button>
@@ -277,7 +230,7 @@ export default function PortfolioPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
-                  aria-label="View live project"
+                  aria-label={`Open live site for ${project.title}`}
                 >
                   <ExternalLink className="w-5 h-5" />
                 </a>
@@ -288,7 +241,7 @@ export default function PortfolioPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gray-800 hover:bg-gray-900 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
-                  aria-label="View source code"
+                  aria-label={`Open source code for ${project.title}`}
                 >
                   <Github className="w-5 h-5" />
                 </a>
@@ -311,16 +264,11 @@ export default function PortfolioPage() {
         <h4 className="text-xl font-semibold mb-2 text-purple-200 group-hover:text-white group-focus-within:text-white transition-colors">
           {project.title}
         </h4>
-        <p className="text-sm text-purple-300 mb-3 leading-relaxed">
-          {project.description}
-        </p>
+        <p className="text-sm text-purple-300 mb-3 leading-relaxed">{project.description}</p>
 
         <div className="flex flex-wrap gap-1 mb-4">
           {project.technologies.slice(0, 3).map((tech, idx) => (
-            <span
-              key={idx}
-              className="text-xs bg-purple-900/30 text-purple-200 px-2 py-1 rounded"
-            >
+            <span key={idx} className="text-xs bg-purple-900/30 text-purple-200 px-2 py-1 rounded">
               {tech}
             </span>
           ))}
@@ -349,6 +297,9 @@ export default function PortfolioPage() {
         exit={{ opacity: 0 }}
         className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         onClick={onClose}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${project.title} details`}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
@@ -360,9 +311,7 @@ export default function PortfolioPage() {
           <div className="p-8">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h2 className="text-3xl font-bold text-white mb-2">
-                  {project.title}
-                </h2>
+                <h2 className="text-3xl font-bold text-white mb-2">{project.title}</h2>
                 <p className="text-purple-300">{project.client}</p>
               </div>
               <button
@@ -370,53 +319,28 @@ export default function PortfolioPage() {
                 className="text-purple-400 hover:text-white transition-colors"
                 aria-label="Close modal"
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div>
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  width={600}
-                  height={400}
-                  className="w-full h-auto rounded-lg"
-                />
+                <Image src={project.image} alt={project.title} width={600} height={400} className="w-full h-auto rounded-lg" />
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    Project Overview
-                  </h3>
-                  <p className="text-purple-200 leading-relaxed">
-                    {project.longDescription}
-                  </p>
+                  <h3 className="text-xl font-semibold text-white mb-3">Project Overview</h3>
+                  <p className="text-purple-200 leading-relaxed">{project.longDescription}</p>
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    Key Features
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">Key Features</h3>
                   <ul className="space-y-2">
                     {project.features.map((feature, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-center gap-2 text-purple-200"
-                      >
+                      <li key={idx} className="flex items-center gap-2 text-purple-200">
                         <span className="text-fuchsia-400">✓</span>
                         {feature}
                       </li>
@@ -425,15 +349,10 @@ export default function PortfolioPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-3">
-                    Technologies Used
-                  </h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">Technologies Used</h3>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-purple-900/30 text-purple-200 px-3 py-1 rounded-full text-sm"
-                      >
+                      <span key={idx} className="bg-purple-900/30 text-purple-200 px-3 py-1 rounded-full text-sm">
                         {tech}
                       </span>
                     ))}
@@ -474,10 +393,7 @@ export default function PortfolioPage() {
 
   function StatCard({ number, label, icon }) {
     return (
-      <motion.div
-        variants={itemVariants}
-        className="text-center p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/40 backdrop-blur-md"
-      >
+      <motion.div variants={itemVariants} className="text-center p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/40 backdrop-blur-md">
         <div className="flex justify-center mb-4 text-fuchsia-400">{icon}</div>
         <div className="text-3xl font-bold text-white mb-2">{number}</div>
         <div className="text-sm text-purple-300">{label}</div>
@@ -489,68 +405,30 @@ export default function PortfolioPage() {
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
         <div className="absolute inset-0 pointer-events-none">
           <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
-          <div
-            className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse"
-            style={{ animationDelay: "1s" }}
-          ></div>
+          <div className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse" style={{ animationDelay: "1s" }}></div>
         </div>
         <div className="max-w-4xl mx-auto z-10 relative">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
-          >
+          <motion.h2 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">
             Our Portfolio <br />
-            <TypeAnimation
-              sequence={[
-                "Featured Projects",
-                2000,
-                "Success Stories",
-                2000,
-                "Innovation Showcase",
-                2000,
-              ]}
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
-              className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
-            />
+            <TypeAnimation sequence={["Featured Projects", 2000, "Success Stories", 2000, "Innovation Showcase", 2000]} wrapper="span" speed={50} repeat={Infinity} className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block" />
           </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-base sm:text-lg text-purple-200 mb-8"
-          >
-            Discover how we&apos;ve transformed businesses with our innovative
-            solutions and cutting-edge technology.
+          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-base sm:text-lg text-purple-200 mb-8">
+            Discover how we&apos;ve transformed businesses with our innovative solutions and cutting-edge technology.
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
-          >
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
             <Link href="/contact#form">
-              <Button
-                className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all"
-                aria-label="Get Started with Hexologix"
-              >
+              <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Start your project">
                 Start Your Project
               </Button>
             </Link>
             <Link href="/Portfolio">
-              <Button
-                className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105"
-                aria-label="Get Started with Hexologix"
-              >
+              <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="View all services">
                 View All Services
               </Button>
             </Link>
@@ -558,50 +436,42 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats */}
       <SectionWrapper backgroundType="secondary">
-        <SectionHeader
-          title="Our Impact"
-          subtitle="Numbers that tell our story of success and growth"
-        />
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible" // ✅ no scroll detection needed
-          className="grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
+        <SectionHeader title="Our Impact" subtitle="Numbers that tell our story of success and growth" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {STATS.map((stat, i) => (
-            <motion.div key={i} variants={itemVariants}>
-              <StatCard {...stat} />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={inView}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
+              className="text-center p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/40 backdrop-blur-md"
+            >
+              <div className="flex justify-center mb-4 text-fuchsia-400">{stat.icon}</div>
+              <div className="text-3xl font-bold text-white mb-2">{stat.number}</div>
+              <div className="text-sm text-purple-300">{stat.label}</div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </SectionWrapper>
 
-      {/* Portfolio Section */}
+      {/* Portfolio */}
       <SectionWrapper backgroundType="tertiary">
-        <SectionHeader
-          title="Featured Projects"
-          subtitle="Explore our latest work and success stories"
-        />
+        <SectionHeader title="Featured Projects" subtitle="Explore our latest work and success stories" />
 
-        {/* Category Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: false, amount: 0.3 }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
-        >
+        {/* anchor for scrollIntoView */}
+        <div ref={gridTopRef} />
+
+        {/* Filter */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={inView} className="flex flex-wrap justify-center gap-4 mb-12">
           {CATEGORIES.map((category) => (
             <button
               key={category}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => onCategoryClick(category)}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                selectedCategory === category
-                  ? "bg-fuchsia-600 text-white"
-                  : "bg-white/10 text-purple-300 hover:bg-white/20 hover:text-white"
+                selectedCategory === category ? "bg-fuchsia-600 text-white" : "bg-white/10 text-purple-300 hover:bg-white/20 hover:text-white"
               }`}
             >
               {category}
@@ -609,15 +479,15 @@ export default function PortfolioPage() {
           ))}
         </motion.div>
 
-        {/* Projects Grid */}
+        {/* Grid — always animates, never waits for viewport */}
         <motion.div
+          key={selectedCategory}
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {filteredProjects.map((project, i) => (
+          {filteredProjects.map((project) => (
             <motion.div key={project.id} variants={itemVariants}>
               <PortfolioCard project={project} />
             </motion.div>
@@ -625,45 +495,23 @@ export default function PortfolioPage() {
         </motion.div>
 
         {filteredProjects.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <p className="text-purple-300 text-lg">
-              No projects found in this category.
-            </p>
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={inView} className="text-center py-12">
+            <p className="text-purple-300 text-lg">No projects found in this category.</p>
           </motion.div>
         )}
       </SectionWrapper>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <SectionWrapper backgroundType="cta">
         <div className="text-center">
-          <motion.h3
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: false, amount: 0.3 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
-          >
+          <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={inView} className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white">
             Ready to Start Your Project?
           </motion.h3>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: false, amount: 0.3 }}
-            className="text-lg mb-10 text-purple-100"
-          >
-            Let&apos;s discuss how we can help bring your vision to life with
-            our innovative solutions.
+          <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={inView} className="text-lg mb-10 text-purple-100">
+            Let&apos;s discuss how we can help bring your vision to life with our innovative solutions.
           </motion.p>
           <Link href="/contact#form">
-            <Button
-              className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all"
-              aria-label="Get Started with Hexologix"
-            >
+            <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Start your project">
               Start Your Project
             </Button>
           </Link>
@@ -672,14 +520,10 @@ export default function PortfolioPage() {
 
       <Footer />
 
-      {/* Project Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
+      {/* Modal */}
+      {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
 
+      <WhatsAppButton />
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
@@ -689,22 +533,11 @@ export default function PortfolioPage() {
           className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm"
           aria-label="Back to top"
           style={{
-            boxShadow:
-              "0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)",
+            boxShadow: "0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)",
           }}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            strokeWidth="2.5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 10l7-7m0 0l7 7m-7-7v18"
-            />
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
           </svg>
         </motion.button>
       )}

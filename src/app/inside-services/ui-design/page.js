@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
-
+import WhatsAppButton from "@/components/WhatsAppButton";
 import {
   Palette,
   Code,
@@ -34,6 +34,9 @@ import {
   itemVariants,
   cardVariants,
 } from "@/lib/animations";
+
+/** Shared viewport config for consistent on-scroll reveals */
+const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
 
 // UI/UX Design features
 const DESIGN_FEATURES = [
@@ -431,7 +434,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               UI/UX Design Solutions
@@ -441,7 +444,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Comprehensive design solutions that create beautiful, functional,
@@ -452,7 +455,7 @@ export default function UIDesignPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {DESIGN_FEATURES.map((feature, i) => (
@@ -479,7 +482,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
             >
               Design Services
@@ -489,7 +492,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
             >
               Specialized design services for every digital platform and
@@ -500,7 +503,7 @@ export default function UIDesignPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
             >
               {DESIGN_SERVICES.map((service, i) => (
@@ -526,7 +529,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
             >
               Our Design Process
@@ -536,7 +539,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
             >
               A user-centered design process that ensures your products are
@@ -547,7 +550,7 @@ export default function UIDesignPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {PROCESS_STEPS.map((step, i) => (
@@ -571,7 +574,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl font-bold mb-12 text-purple-300"
             >
               Why Choose Our UI/UX Design
@@ -580,7 +583,7 @@ export default function UIDesignPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {BENEFITS.map((benefit, i) => (
@@ -607,7 +610,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               Explore Our Other Services
@@ -617,7 +620,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Discover our comprehensive suite of digital solutions to
@@ -628,7 +631,7 @@ export default function UIDesignPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {RELATED_SERVICES.map((service, i) => (
@@ -652,7 +655,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
             >
               Ready to Design Something Amazing?
@@ -661,7 +664,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg mb-10 text-purple-100"
             >
               Let&apos;s discuss your design project and create beautiful,
@@ -671,7 +674,7 @@ export default function UIDesignPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
             >
               <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
@@ -683,6 +686,7 @@ export default function UIDesignPage() {
         </section>
         <Footer />
       </div>
+      <WhatsAppButton />
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}

@@ -3,30 +3,32 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import {
+  Users,
   Code,
-  Globe,
   Palette,
+  Mail,
   Zap,
   TrendingUp,
   Shield,
   Play,
   Rocket,
   Lightbulb,
-  Monitor,
-  ShoppingCart,
-  Heart,
   Search,
   Eye,
-  Cloud,
-  Smartphone as CrossPlatform,
-  Smartphone as Native,
-  Smartphone as Progressive,
-  Smartphone as Wearable,
+  Share2,
+  Users as Community,
+  Users as Influencer,
+  Users as Content,
+  Users as Analytics,
+  Users as Advertising,
+  Users as Strategy,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
+
 import Link from "next/link";
 import {
   containerVariants,
@@ -34,90 +36,96 @@ import {
   cardVariants,
 } from "@/lib/animations";
 
-// App Development features
-const APP_FEATURES = [
+/** Shared viewport config for on-scroll animations */
+const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+
+// Social Media Marketing features
+const SOCIAL_FEATURES = [
   {
-    icon: <CrossPlatform className="w-8 h-8" />,
-    title: "Cross-Platform Development",
-    description: "Build once, deploy everywhere with Flutter and React Native.",
-    benefits: ["Single codebase", "Native performance", "Faster development"],
+    icon: <Strategy className="w-8 h-8" />,
+    title: "Social Media Strategy",
+    description:
+      "Comprehensive social media strategies tailored to your brand and audience.",
+    benefits: ["Platform selection", "Content planning", "Audience targeting"],
   },
   {
-    icon: <Native className="w-8 h-8" />,
-    title: "Native App Development",
+    icon: <Content className="w-8 h-8" />,
+    title: "Content Creation",
     description:
-      "Platform-specific apps for iOS and Android with optimal performance.",
+      "Engaging, high-quality content that resonates with your target audience.",
+    benefits: ["Visual design", "Copywriting", "Video production"],
+  },
+  {
+    icon: <Community className="w-8 h-8" />,
+    title: "Community Management",
+    description:
+      "Active community engagement and relationship building with your audience.",
+    benefits: ["Comment management", "Customer service", "Community growth"],
+  },
+  {
+    icon: <Advertising className="w-8 h-8" />,
+    title: "Paid Advertising",
+    description:
+      "Strategic paid campaigns across social media platforms for maximum reach.",
+    benefits: ["Targeted ads", "Budget optimization", "Performance tracking"],
+  },
+  {
+    icon: <Analytics className="w-8 h-8" />,
+    title: "Analytics & Reporting",
+    description:
+      "Comprehensive reporting and insights to optimize your social media performance.",
+    benefits: ["Performance metrics", "ROI tracking", "Competitive analysis"],
+  },
+  {
+    icon: <Influencer className="w-8 h-8" />,
+    title: "Influencer Marketing",
+    description:
+      "Strategic partnerships with influencers to amplify your brand message.",
     benefits: [
-      "Platform optimization",
-      "Better performance",
-      "Native features",
+      "Influencer selection",
+      "Campaign management",
+      "Relationship building",
     ],
-  },
-  {
-    icon: <Progressive className="w-8 h-8" />,
-    title: "Progressive Web Apps",
-    description:
-      "Web apps that work like native apps with offline capabilities.",
-    benefits: ["Offline support", "App-like experience", "Easy updates"],
-  },
-  {
-    icon: <Wearable className="w-8 h-8" />,
-    title: "Wearable & IoT Apps",
-    description: "Apps for smartwatches, fitness trackers, and IoT devices.",
-    benefits: ["Health tracking", "Smart notifications", "IoT integration"],
-  },
-  {
-    icon: <Cloud className="w-8 h-8" />,
-    title: "Cloud Integration",
-    description:
-      "Seamless cloud services integration for data sync and storage.",
-    benefits: ["Real-time sync", "Scalable backend", "Data security"],
-  },
-  {
-    icon: <Shield className="w-8 h-8" />,
-    title: "App Store Optimization",
-    description: "Optimize your app for better visibility and downloads.",
-    benefits: ["Higher rankings", "More downloads", "Better reviews"],
   },
 ];
 
-// App Types
-const APP_TYPES = [
+// Social Platforms
+const SOCIAL_PLATFORMS = [
   {
-    category: "Business",
-    title: "Enterprise Apps",
+    category: "Professional",
+    title: "LinkedIn Marketing",
     description:
-      "Custom business applications for internal operations and customer management.",
-    icon: <Monitor className="w-6 h-6" />,
+      "B2B marketing and professional networking to reach business decision-makers.",
+    icon: <Users className="w-6 h-6" />,
     benefits: [
-      "Employee productivity",
-      "Customer management",
-      "Process automation",
+      "Thought leadership",
+      "Lead generation",
+      "Professional networking",
     ],
   },
   {
-    category: "E-commerce",
-    title: "Shopping Apps",
+    category: "Visual",
+    title: "Instagram & TikTok",
     description:
-      "Mobile commerce apps with payment processing and inventory management.",
-    icon: <ShoppingCart className="w-6 h-6" />,
-    benefits: ["Secure payments", "Inventory tracking", "Customer loyalty"],
+      "Visual storytelling and short-form video content for brand awareness.",
+    icon: <Eye className="w-6 h-6" />,
+    benefits: ["Visual content", "Story features", "Video marketing"],
   },
   {
-    category: "Health",
-    title: "Healthcare Apps",
+    category: "Engagement",
+    title: "Facebook & Twitter",
     description:
-      "Medical and wellness apps for patient care and health monitoring.",
-    icon: <Heart className="w-6 h-6" />,
-    benefits: ["Patient monitoring", "Health tracking", "Medical records"],
+      "Community building and real-time engagement with your audience.",
+    icon: <Share2 className="w-6 h-6" />,
+    benefits: ["Community engagement", "Real-time updates", "Customer support"],
   },
   {
-    category: "Entertainment",
-    title: "Media & Gaming",
+    category: "Video",
+    title: "YouTube Marketing",
     description:
-      "Entertainment apps including streaming, gaming, and social media.",
+      "Long-form video content and educational marketing for deeper engagement.",
     icon: <Play className="w-6 h-6" />,
-    benefits: ["Content streaming", "Social features", "Gaming integration"],
+    benefits: ["Video content", "Educational marketing", "SEO benefits"],
   },
 ];
 
@@ -125,41 +133,38 @@ const APP_TYPES = [
 const PROCESS_STEPS = [
   {
     step: "01",
-    title: "Discovery & Planning",
+    title: "Strategy & Research",
     description:
-      "We analyze your requirements and create a comprehensive app development plan.",
+      "We analyze your brand, competitors, and audience to create a winning strategy.",
     icon: <Lightbulb className="w-12 h-12 text-fuchsia-400" />,
-    details: [
-      "Requirements gathering",
-      "Platform selection",
-      "Architecture planning",
-    ],
+    details: ["Brand analysis", "Competitor research", "Audience insights"],
   },
   {
     step: "02",
-    title: "Design & Prototyping",
+    title: "Content Planning",
     description:
-      "Create beautiful, intuitive app designs with interactive prototypes.",
+      "Develop a comprehensive content calendar and creative strategy.",
     icon: <Palette className="w-12 h-12 text-purple-400" />,
-    details: ["UI/UX design", "Interactive prototypes", "User testing"],
+    details: ["Content calendar", "Creative direction", "Brand guidelines"],
   },
   {
     step: "03",
-    title: "Development & Testing",
+    title: "Implementation & Management",
     description:
-      "Build your app with clean code and rigorous testing procedures.",
+      "Execute campaigns and actively manage your social media presence.",
     icon: <Code className="w-12 h-12 text-pink-400" />,
-    details: ["Clean coding", "Quality assurance", "Performance testing"],
+    details: ["Content creation", "Community management", "Paid advertising"],
   },
   {
     step: "04",
-    title: "Launch & Support",
-    description: "Deploy your app to app stores and provide ongoing support.",
+    title: "Optimization & Growth",
+    description:
+      "Continuously optimize based on performance data and scale successful strategies.",
     icon: <Rocket className="w-12 h-12 text-fuchsia-400" />,
     details: [
-      "App store submission",
-      "Post-launch support",
-      "Updates & maintenance",
+      "Performance analysis",
+      "Strategy optimization",
+      "Growth scaling",
     ],
   },
 ];
@@ -168,23 +173,26 @@ const PROCESS_STEPS = [
 const BENEFITS = [
   {
     icon: <TrendingUp className="w-8 h-8" />,
-    title: "Increased Engagement",
-    description: "Mobile apps drive higher user engagement and retention",
+    title: "Increased Brand Awareness",
+    description:
+      "Reach millions of potential customers across social platforms",
   },
   {
     icon: <Eye className="w-8 h-8" />,
-    title: "Better User Experience",
-    description: "Native app performance and intuitive mobile interfaces",
+    title: "Better Engagement",
+    description: "Build meaningful relationships with your audience",
   },
   {
     icon: <Search className="w-8 h-8" />,
-    title: "App Store Visibility",
-    description: "Reach millions of users through app store optimization",
+    title: "Targeted Reach",
+    description:
+      "Reach the right audience with precise targeting and segmentation",
   },
   {
     icon: <Shield className="w-8 h-8" />,
-    title: "Secure & Reliable",
-    description: "Robust security measures and 99.9% uptime guarantee",
+    title: "Measurable Results",
+    description:
+      "Track every metric and optimize campaigns for better performance",
   },
 ];
 
@@ -198,11 +206,11 @@ const RELATED_SERVICES = [
     href: "/inside-services/ai-automation",
   },
   {
-    title: "Web Development",
-    desc: "Next.js, WordPress & Shopify sites that convert.",
-    icon: <Globe className="w-8 h-8" />,
-    features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
-    href: "/inside-services/web-dev",
+    title: "Email Marketing",
+    desc: "Automated campaigns that drive engagement and sales.",
+    icon: <Mail className="w-8 h-8" />,
+    features: ["Automation", "Analytics", "A/B Testing"],
+    href: "/inside-services/email-marketing",
   },
   {
     title: "UI/UX Design",
@@ -213,7 +221,7 @@ const RELATED_SERVICES = [
   },
 ];
 
-export default function AppDevPage() {
+export default function SocialMediaMarketingPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -251,7 +259,7 @@ export default function AppDevPage() {
     );
   }
 
-  function AppTypeCard({ category, title, description, icon, benefits }) {
+  function PlatformCard({ category, title, description, icon, benefits }) {
     return (
       <motion.div
         variants={cardVariants}
@@ -369,14 +377,14 @@ export default function AppDevPage() {
               transition={{ duration: 0.8 }}
               className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
             >
-              Build Mobile Apps That <br />
+              Social Media Marketing That <br />
               <TypeAnimation
                 sequence={[
-                  "Engage & Convert",
+                  "Engages & Connects",
                   2000,
-                  "Scale & Perform",
+                  "Builds & Grows",
                   2000,
-                  "Delight & Retain",
+                  "Converts & Scales",
                   2000,
                 ]}
                 wrapper="span"
@@ -392,8 +400,8 @@ export default function AppDevPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-base sm:text-lg text-purple-200 mb-8"
             >
-              Native and cross-platform mobile applications that deliver
-              exceptional user experiences and drive business growth.
+              Strategic social media campaigns that build brand awareness,
+              engage audiences, and drive business growth.
             </motion.p>
 
             <motion.div
@@ -416,7 +424,7 @@ export default function AppDevPage() {
           </div>
         </section>
 
-        {/* App Development Features Section */}
+        {/* Social Media Marketing Features Section */}
         <section className="relative py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
@@ -431,31 +439,31 @@ export default function AppDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
-              Mobile App Development Solutions
+              Social Media Marketing Solutions
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              From native iOS and Android apps to cross-platform solutions, we
-              build mobile applications that users love.
+              Comprehensive social media strategies that build brand awareness,
+              engage audiences, and drive conversions.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {APP_FEATURES.map((feature, i) => (
+              {SOCIAL_FEATURES.map((feature, i) => (
                 <motion.div key={i} variants={itemVariants}>
                   <FeatureCard {...feature} />
                 </motion.div>
@@ -464,7 +472,7 @@ export default function AppDevPage() {
           </div>
         </section>
 
-        {/* App Types Section */}
+        {/* Social Platforms Section */}
         <section className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white">
           <div className="absolute inset-0 pointer-events-none">
             <div className="w-[500px] h-[500px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10 animate-pulse"></div>
@@ -479,33 +487,33 @@ export default function AppDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center"
             >
-              Types of Apps We Build
+              Social Media Platforms
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
             >
-              Specialized mobile applications for various industries and
-              business needs.
+              Strategic marketing across all major social media platforms to
+              maximize your reach and engagement.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
             >
-              {APP_TYPES.map((appType, i) => (
+              {SOCIAL_PLATFORMS.map((platform, i) => (
                 <motion.div key={i} variants={itemVariants}>
-                  <AppTypeCard {...appType} />
+                  <PlatformCard {...platform} />
                 </motion.div>
               ))}
             </motion.div>
@@ -526,28 +534,28 @@ export default function AppDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold text-purple-300 mb-6"
             >
-              Our App Development Process
+              Our Social Media Process
             </motion.h3>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-200 mb-16 max-w-2xl mx-auto"
             >
-              A proven methodology that ensures your mobile app is built to the
-              highest standards and delivers results.
+              A proven methodology that ensures your social media presence
+              delivers results and grows your brand.
             </motion.p>
 
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {PROCESS_STEPS.map((step, i) => (
@@ -571,16 +579,16 @@ export default function AppDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl font-bold mb-12 text-purple-300"
             >
-              Why Choose Our App Development
+              Why Choose Our Social Media Marketing
             </motion.h3>
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               {BENEFITS.map((benefit, i) => (
@@ -607,7 +615,7 @@ export default function AppDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight"
             >
               Explore Our Other Services
@@ -617,7 +625,7 @@ export default function AppDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
               Discover our comprehensive suite of digital solutions to
@@ -628,7 +636,7 @@ export default function AppDevPage() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {RELATED_SERVICES.map((service, i) => (
@@ -652,26 +660,26 @@ export default function AppDevPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
             >
-              Ready to Build Your App?
+              Ready to Grow Your Social Media?
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
               className="text-lg mb-10 text-purple-100"
             >
-              Let&apos;s discuss your app idea and create a mobile solution that
-              drives results and grows your business.
+              Let&apos;s discuss your social media strategy and create campaigns
+              that build your brand and drive results.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={inView}
             >
               <Link href="/contact#form">
                 <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
@@ -683,6 +691,7 @@ export default function AppDevPage() {
         </section>
         <Footer />
       </div>
+      <WhatsAppButton />
       {showBackToTop && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
