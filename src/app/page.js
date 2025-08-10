@@ -216,44 +216,52 @@ export default function HomePage() {
     );
   }
 
+  /** ---------- Featured Work Card (fixed aspect, equal height) ---------- */
   function PortfolioCard({ src, alt, title, desc, category, tech }) {
     return (
-      <motion.div
-        variants={cardVariants}
-        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 focus-within:ring-offset-black"
-        tabIndex={0}
-        role="article"
-        aria-label={`Project: ${title}`}
-      >
-        <div className="relative overflow-hidden rounded-lg mb-4">
-          <Image
-            src={src}
-            alt={alt}
-            width={600}
-            height={400}
-            className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110 group-focus-within:scale-110"
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300" />
-        </div>
-        <div className="mb-3">
-          <span className="inline-block bg-fuchsia-600/20 text-fuchsia-300 text-xs px-2 py-1 rounded-full mb-2">
-            {category}
-          </span>
-        </div>
-        <h4 className="text-xl font-semibold mb-2 text-purple-200 group-hover:text-white group-focus-within:text-white transition-colors">
-          {title}
-        </h4>
-        <p className="text-sm text-purple-300 mb-3 leading-relaxed">{desc}</p>
-        <div className="flex flex-wrap gap-1">
-          {tech.map((item, idx) => (
-            <span key={idx} className="text-xs bg-purple-900/30 text-purple-200 px-2 py-1 rounded">
-              {item}
+      <article className="h-full">
+        <motion.div
+          variants={cardVariants}
+          className="h-full flex flex-col group bg-white/5 hover:bg-white/10 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 focus-within:ring-offset-black"
+          tabIndex={0}
+          role="article"
+          aria-label={`Project: ${title}`}
+        >
+          {/* Fixed-aspect image area (16:10). Use pt-[56.25%] for 16:9 etc. */}
+          <div className="relative w-full overflow-hidden rounded-t-2xl pt-[62.5%]">
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-110 group-focus-within:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
+              loading="lazy"
+              priority={false}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300" />
+          </div>
+
+          <div className="flex-1 flex flex-col p-6">
+            <span className="inline-block bg-fuchsia-600/20 text-fuchsia-300 text-xs px-2 py-1 rounded-full mb-2 w-max">
+              {category}
             </span>
-          ))}
-        </div>
-      </motion.div>
+
+            <h4 className="text-xl font-semibold mb-2 text-purple-200 group-hover:text-white group-focus-within:text-white transition-colors">
+              {title}
+            </h4>
+
+            <p className="text-sm text-purple-300 leading-relaxed">{desc}</p>
+
+            <div className="mt-auto pt-4 flex flex-wrap gap-1">
+              {tech.map((item, idx) => (
+                <span key={idx} className="text-xs bg-purple-900/30 text-purple-200 px-2 py-1 rounded">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </article>
     );
   }
 
@@ -361,7 +369,7 @@ export default function HomePage() {
               Accelerate your business with our modern, AI-powered solutions and creative development expertise.
             </motion.p>
 
-            {/* ✅ Equal-height grid */}
+            {/* Equal-height grid */}
             <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 items-stretch">
               {SERVICES.map((service, i) => (
                 <motion.div key={i} variants={itemVariants} className="h-full">
@@ -396,9 +404,15 @@ export default function HomePage() {
               Discover how we&apos;ve transformed businesses with our innovative solutions and cutting-edge technology.
             </motion.p>
 
-            <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0 }} className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch"
+            >
               {PORTFOLIO.map((project, i) => (
-                <motion.div key={i} variants={itemVariants}>
+                <motion.div key={i} variants={itemVariants} className="h-full">
                   <PortfolioCard {...project} />
                 </motion.div>
               ))}
