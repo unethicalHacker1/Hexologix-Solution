@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function WhatsAppButton({
-  phoneNumber = "923001234567",
+  phoneNumber = "447842575876",
   presetMessage = "Hello, I would like to know more about your services!",
 }) {
   const [isVisible, setIsVisible] = useState(false);

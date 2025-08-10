@@ -25,8 +25,7 @@ const PORTFOLIO_PROJECTS = [
     category: "App Development",
     image: "/project1.jpg",
     description: "Smart product filters, AI chatbot, integrated analytics.",
-    longDescription:
-      "Real Time Chat app to communicate with each other.",
+    longDescription: "Real Time Chat app to communicate with each other.",
     technologies: ["Laravel, PHP , MySQL, Vue.js, WebSockets"],
     features: [
       "AI-powered product recommendations",
@@ -52,14 +51,14 @@ const PORTFOLIO_PROJECTS = [
       "Developed a comprehensive Human Resource Management System (HRMS) with role-based access, employee management, payroll, attendance tracking, and real-time notifications.",
     technologies: ["Laravel", "PHP", "MySQL", "Vue.js", "Bootstrap"],
     features: [
-     "Role-based access control",
-"Employee profile management",
-"Attendance and leave tracking",
-"Payroll and salary management",
-"Performance review system",
-"Real-time notifications",
-"Document and file management",
-"Custom reporting dashboard"
+      "Role-based access control",
+      "Employee profile management",
+      "Attendance and leave tracking",
+      "Payroll and salary management",
+      "Performance review system",
+      "Real-time notifications",
+      "Document and file management",
+      "Custom reporting dashboard",
     ],
     client: "SalesForce Solutions",
     duration: "4 months",
@@ -73,23 +72,23 @@ const PORTFOLIO_PROJECTS = [
     title: "Hospital Management System",
     category: "Web Debelopment",
     image: "/hospital.png",
-    description: "Designed and developed a Hospital Management System (HMS) integrating patient care, appointment scheduling, inventory control, billing, and real-time notifications.",
+    description:
+      "Designed and developed a Hospital Management System (HMS) integrating patient care, appointment scheduling, inventory control, billing, and real-time notifications.",
     longDescription:
       "A feature-rich mobile application built with Flutter for both iOS and Android platforms. Includes real-time messaging, offline data synchronization, and push notifications.",
     technologies: ["Laravel", "PHP", "MySQL", "Flutter", "Pushers"],
     features: [
       "Patient and doctor profile management",
-"Specialisation-based doctor scheduling",
-"Appointment booking with approval workflow",
-"Double-booking prevention logic",
-"Medicine stock and expiry tracking",
-"Low stock and expiry alerts",
-"Billing for consultations, lab tests, and medicines",
-"Prescription generation linked to appointments",
-"Excel export for inventory, invoices, and prescriptions",
-"Real-time notifications for appointments and stock issues",
-"Email reminders for patients and staff"
-
+      "Specialisation-based doctor scheduling",
+      "Appointment booking with approval workflow",
+      "Double-booking prevention logic",
+      "Medicine stock and expiry tracking",
+      "Low stock and expiry alerts",
+      "Billing for consultations, lab tests, and medicines",
+      "Prescription generation linked to appointments",
+      "Excel export for inventory, invoices, and prescriptions",
+      "Real-time notifications for appointments and stock issues",
+      "Email reminders for patients and staff",
     ],
     client: "ConnectApp",
     duration: "5 months",
@@ -108,16 +107,16 @@ const PORTFOLIO_PROJECTS = [
       "An Event Management App that streamlines event creation, participant registration, ticketing, scheduling, and real-time updates. Features include a management dashboard, customisable agendas, secure ticket generation with QR codes, payment processing, attendee check-in, sponsor management, notifications, and post-event reporting.",
     technologies: ["Figma", "Prototyping", "Design System", "User Research", "React"],
     features: [
-    "Event creation and management dashboard",
-    "Customisable event schedules and agendas",
-    "Online participant registration and ticket booking",
-"Secure digital ticket generation with QR codes",
-"Automated payment processing and invoicing",
-"Attendee check-in and verification system",
-"Speaker and sponsor profile management",
-"Real-time updates and announcements",
-"Email and push notification reminders",
-"Post-event feedback and reporting tools"
+      "Event creation and management dashboard",
+      "Customisable event schedules and agendas",
+      "Online participant registration and ticket booking",
+      "Secure digital ticket generation with QR codes",
+      "Automated payment processing and invoicing",
+      "Attendee check-in and verification system",
+      "Speaker and sponsor profile management",
+      "Real-time updates and announcements",
+      "Email and push notification reminders",
+      "Post-event feedback and reporting tools",
     ],
     client: "FinanceHub",
     duration: "2 months",
@@ -132,24 +131,24 @@ const PORTFOLIO_PROJECTS = [
     category: "AI-powered smart energy consumption recommendation system",
     image: "/smartapp.png",
     description: "AI-powered smart energy consumption recommendation system.",
-    longDescription:
-      "",
+    longDescription: "",
     technologies: ["Python", "TensorFlow", "React", "PostgreSQL", "Docker"],
     features: [
-  "Smart home energy data preprocessing",
-  "Fine-tuning LLMs for energy recommendations",
-  "FAISS-based semantic search indexing",
-  "Retrieval-Augmented Generation (RAG) for contextual advice",
-  "Integration with GPT-2 for optimized query handling",
-  "Personalized consumption recommendations",
-  "Efficient vector search for large datasets",
-  "Support for real-time and batch queries"
+      "Smart home energy data preprocessing",
+      "Fine-tuning LLMs for energy recommendations",
+      "FAISS-based semantic search indexing",
+      "Retrieval-Augmented Generation (RAG) for contextual advice",
+      "Integration with GPT-2 for optimized query handling",
+      "Personalized consumption recommendations",
+      "Efficient vector search for large datasets",
+      "Support for real-time and batch queries",
     ],
     client: "DataInsights Corp",
     duration: "6 months",
     team: "6 developers",
     liveUrl: "#",
-    githubUrl: "https://github.com/KhubaibShabbir4/SmartEnergyConsumptionRecommendation.git",
+    githubUrl:
+      "https://github.com/KhubaibShabbir4/SmartEnergyConsumptionRecommendation.git",
     featured: false,
   },
   {
@@ -157,31 +156,38 @@ const PORTFOLIO_PROJECTS = [
     title: "AI Powered Mental Health System",
     category: "Web Development",
     image: "/Mental.png",
-    description: "AI-powered mental health support and recommendation platform.",
+    description:
+      "AI-powered mental health support and recommendation platform.",
     longDescription:
-    "An AI-Powered Mental Health System that leverages machine learning and natural language processing to provide mental well-being assessments, personalized coping strategies, and emotional support. Features include sentiment analysis, mood tracking, chatbot-based interaction, and AI-driven recommendations for therapy or self-care resources. Designed to offer timely, accessible, and confidential mental health assistance.",
-
+      "An AI-Powered Mental Health System that leverages machine learning and natural language processing to provide mental well-being assessments, personalized coping strategies, and emotional support. Features include sentiment analysis, mood tracking, chatbot-based interaction, and AI-driven recommendations for therapy or self-care resources. Designed to offer timely, accessible, and confidential mental health assistance.",
     technologies: ["Next.js", "Node.js", "MongoDB", "Social APIs", "Analytics"],
-   features: [
-  "AI-driven sentiment and emotion analysis",
-  "Daily mood tracking and visualization",
-  "Personalized mental health recommendations",
-  "Chatbot for real-time emotional support",
-  "Resource suggestions for therapy, meditation, and exercises",
-  "Secure and confidential user data handling",
-  "Progress monitoring and goal tracking",
-  "Integration with wearable health devices"
-],
+    features: [
+      "AI-driven sentiment and emotion analysis",
+      "Daily mood tracking and visualization",
+      "Personalized mental health recommendations",
+      "Chatbot for real-time emotional support",
+      "Resource suggestions for therapy, meditation, and exercises",
+      "Secure and confidential user data handling",
+      "Progress monitoring and goal tracking",
+      "Integration with wearable health devices",
+    ],
     client: "SocialPro",
     duration: "4 months",
     team: "4 developers",
     liveUrl: "#",
-    githubUrl: "https://github.com/KhubaibShabbir4/AI_Powered_MentalHealthSystem.git",
+    githubUrl:
+      "https://github.com/KhubaibShabbir4/AI_Powered_MentalHealthSystem.git",
     featured: false,
   },
 ];
 
-const CATEGORIES = ["All", "Web Development", "AI Automation", "App Development", "UI/UX Design"];
+const CATEGORIES = [
+  "All",
+  "Web Development",
+  "AI Automation",
+  "App Development",
+  "UI/UX Design",
+];
 
 const STATS = [
   { number: "50+", label: "Projects Completed", icon: <Code className="w-8 h-8" /> },
@@ -211,7 +217,6 @@ export default function PortfolioPage() {
 
   const onCategoryClick = (category) => {
     setSelectedCategory(category);
-    // jump to results
     gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -219,23 +224,22 @@ export default function PortfolioPage() {
     return (
       <motion.div
         variants={cardVariants}
-        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 focus-within:ring-offset-black"
+        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 focus-within:ring-offset-black h-full flex flex-col"
         tabIndex={0}
         role="article"
         aria-label={`Project: ${project.title}`}
       >
-        <div className="relative overflow-hidden rounded-lg mb-4">
+        {/* Fixed-height image (uniform across cards) */}
+        <div className="relative overflow-hidden rounded-lg mb-4 aspect-[16/10]">
           <Image
             src={project.image}
             alt={project.title}
-            width={600}
-            height={400}
-            className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110 group-focus-within:scale-110"
-            loading="lazy"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110 group-focus-within:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            priority={false}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300" />
-
           {/* Project links overlay */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300">
             <div className="flex space-x-4">
@@ -286,7 +290,11 @@ export default function PortfolioPage() {
         <h4 className="text-xl font-semibold mb-2 text-purple-200 group-hover:text-white group-focus-within:text-white transition-colors">
           {project.title}
         </h4>
-        <p className="text-sm text-purple-300 mb-3 leading-relaxed">{project.description}</p>
+
+        {/* Fixed-height description block for consistent card heights */}
+        <p className="text-sm text-purple-300 mb-3 leading-relaxed min-h-[48px] max-h-[48px] overflow-hidden">
+          {project.description}
+        </p>
 
         <div className="flex flex-wrap gap-1 mb-4">
           {project.technologies.slice(0, 3).map((tech, idx) => (
@@ -301,7 +309,8 @@ export default function PortfolioPage() {
           )}
         </div>
 
-        <div className="flex justify-between items-center text-xs text-purple-400">
+        {/* Push footer to bottom so all cards align */}
+        <div className="mt-auto flex justify-between items-center text-xs text-purple-400 pt-2">
           <span>{project.duration}</span>
           <span>{project.team}</span>
         </div>
@@ -349,7 +358,13 @@ export default function PortfolioPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div>
-                <Image src={project.image} alt={project.title} width={600} height={400} className="w-full h-auto rounded-lg" />
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  width={600}
+                  height={400}
+                  className="w-full h-auto rounded-lg"
+                />
               </div>
 
               <div className="space-y-6">
@@ -374,7 +389,10 @@ export default function PortfolioPage() {
                   <h3 className="text-xl font-semibold text-white mb-3">Technologies Used</h3>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, idx) => (
-                      <span key={idx} className="bg-purple-900/30 text-purple-200 px-3 py-1 rounded-full text-sm">
+                      <span
+                        key={idx}
+                        className="bg-purple-900/30 text-purple-200 px-3 py-1 rounded-full text-sm"
+                      >
                         {tech}
                       </span>
                     ))}
@@ -415,7 +433,10 @@ export default function PortfolioPage() {
 
   function StatCard({ number, label, icon }) {
     return (
-      <motion.div variants={itemVariants} className="text-center p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/40 backdrop-blur-md">
+      <motion.div
+        variants={itemVariants}
+        className="text-center p-6 rounded-2xl border border-purple-800 bg-[#1a001f]/40 backdrop-blur-md"
+      >
         <div className="flex justify-center mb-4 text-fuchsia-400">{icon}</div>
         <div className="text-3xl font-bold text-white mb-2">{number}</div>
         <div className="text-sm text-purple-300">{label}</div>
@@ -431,26 +452,56 @@ export default function PortfolioPage() {
       <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
         <div className="absolute inset-0 pointer-events-none">
           <div className="w-[800px] h-[800px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/2 -translate-x-1/2 animate-pulse"></div>
-          <div className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse" style={{ animationDelay: "1s" }}></div>
+          <div
+            className="w-[600px] h-[600px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
         <div className="max-w-4xl mx-auto z-10 relative">
-          <motion.h2 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white"
+          >
             Our Portfolio <br />
-            <TypeAnimation sequence={["Featured Projects", 2000, "Success Stories", 2000, "Innovation Showcase", 2000]} wrapper="span" speed={50} repeat={Infinity} className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block" />
+            <TypeAnimation
+              sequence={["Featured Projects", 2000, "Success Stories", 2000, "Innovation Showcase", 2000]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+            />
           </motion.h2>
 
-          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-base sm:text-lg text-purple-200 mb-8">
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-base sm:text-lg text-purple-200 mb-8"
+          >
             Discover how we&apos;ve transformed businesses with our innovative solutions and cutting-edge technology.
           </motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-col sm:flex-row justify-center gap-3 mt-6"
+          >
             <Link href="/contact#form">
-              <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Start your project">
+              <Button
+                className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all"
+                aria-label="Start your project"
+              >
                 Start Your Project
               </Button>
             </Link>
             <Link href="/Portfolio">
-              <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105" aria-label="View all services">
+              <Button
+                className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105"
+                aria-label="View all services"
+              >
                 View All Services
               </Button>
             </Link>
@@ -487,13 +538,21 @@ export default function PortfolioPage() {
         <div ref={gridTopRef} />
 
         {/* Filter */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={inView} className="flex flex-wrap justify-center gap-4 mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={inView}
+          className="flex flex-wrap justify-center gap-4 mb-12"
+        >
           {CATEGORIES.map((category) => (
             <button
               key={category}
               onClick={() => onCategoryClick(category)}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                selectedCategory === category ? "bg-fuchsia-600 text-white" : "bg-white/10 text-purple-300 hover:bg-white/20 hover:text-white"
+                selectedCategory === category
+                  ? "bg-fuchsia-600 text-white"
+                  : "bg-white/10 text-purple-300 hover:bg-white/20 hover:text-white"
               }`}
             >
               {category}
@@ -501,7 +560,7 @@ export default function PortfolioPage() {
           ))}
         </motion.div>
 
-        {/* Grid — always animates, never waits for viewport */}
+        {/* Grid */}
         <motion.div
           key={selectedCategory}
           variants={containerVariants}
@@ -510,7 +569,7 @@ export default function PortfolioPage() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {filteredProjects.map((project) => (
-            <motion.div key={project.id} variants={itemVariants}>
+            <motion.div key={project.id} variants={itemVariants} className="h-full">
               <PortfolioCard project={project} />
             </motion.div>
           ))}
@@ -526,14 +585,29 @@ export default function PortfolioPage() {
       {/* CTA */}
       <SectionWrapper backgroundType="cta">
         <div className="text-center">
-          <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={inView} className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={inView}
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white"
+          >
             Ready to Start Your Project?
           </motion.h3>
-          <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} viewport={inView} className="text-lg mb-10 text-purple-100">
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={inView}
+            className="text-lg mb-10 text-purple-100"
+          >
             Let&apos;s discuss how we can help bring your vision to life with our innovative solutions.
           </motion.p>
           <Link href="/contact#form">
-            <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all" aria-label="Start your project">
+            <Button
+              className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all"
+              aria-label="Start your project"
+            >
               Start Your Project
             </Button>
           </Link>
@@ -555,7 +629,8 @@ export default function PortfolioPage() {
           className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm"
           aria-label="Back to top"
           style={{
-            boxShadow: "0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)",
+            boxShadow:
+              "0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)",
           }}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">

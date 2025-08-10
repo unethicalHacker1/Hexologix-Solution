@@ -24,40 +24,49 @@ const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
 // Team data
 const TEAM = [
   {
-    name: "Sarah Johnson",
+    name: "Ateeb Chaudary",
     role: "CEO & Founder",
-    image: "/team1.jpg",
-    bio: "Visionary leader with 10+ years in tech innovation",
-    expertise: ["AI Strategy", "Business Development", "Product Vision"],
-    linkedin: "#",
-    twitter: "#",
+    image: "/ateeb.png",
+    bio: "Visionary leader with a decade of experience driving innovation in AI, automation, and business transformation.",
+    expertise: ["AI Strategy", "Business Leadership", "Automation", "Digital Transformation"],
+    linkedin: "https://www.linkedin.com/in/ateeb-chaudary-a6a0a0263/",
+    github: "https://github.com/Ateeb-333",
   },
   {
-    name: "Michael Chen",
-    role: "CTO & Lead Developer",
-    image: "/team2.jpg",
-    bio: "Full-stack expert specializing in scalable architectures",
-    expertise: ["System Architecture", "AI Integration", "Cloud Solutions"],
-    linkedin: "#",
-    twitter: "#",
+    name: "Khubaib Shabbir",
+    role: "Co-Founder & Senior Web Developer",
+    image: "/khubaib.png",
+    bio: "Full-stack web developer with a passion for building scalable, high-performance applications.",
+    expertise: ["Full-Stack Development", "Cloud Solutions", "API Integration", "Scalable Architecture"],
+    linkedin: "https://www.linkedin.com/in/khubaib-shabbir/",
+    github: "https://github.com/KhubaibShabbir4",
   },
   {
-    name: "Emily Rodriguez",
-    role: "Head of Design",
-    image: "/team3.jpg",
-    bio: "Creative director focused on user-centered design",
-    expertise: ["UX Research", "Design Systems", "Brand Strategy"],
-    linkedin: "#",
-    twitter: "#",
+    name: "Muhammad Soban",
+    role: "Senior Web Developer",
+    image: "/Soban.png",
+    bio: "Detail-oriented developer delivering modern, user-friendly, and responsive web solutions.",
+    expertise: ["Front-End Development", "Back-End Development", "UI/UX Implementation", "Responsive Design"],
+    linkedin: "https://www.linkedin.com/in/muhammad-soban-2979a231a/",
+    github: "https://github.com/unethicalHacker1",
   },
   {
-    name: "David Kim",
-    role: "AI Solutions Architect",
-    image: "/team4.jpg",
-    bio: "Machine learning specialist with deep automation expertise",
-    expertise: ["ML Models", "Automation", "Data Science"],
-    linkedin: "#",
-    twitter: "#",
+    name: "Asad Meeran",
+    role: "Senior App Developer",
+    image: "/asad.png",
+    bio: "Specialist in mobile application development with expertise in performance optimization and cross-platform solutions.",
+    expertise: ["Mobile App Development", "Flutter", "React Native", "App Performance Optimization"],
+    linkedin: "https://www.linkedin.com/in/asad-meeran-b4662b29a/",
+    github: "https://github.com/ajasad25",
+  },
+  {
+    name: "Zain Imran",
+    role: "Marketing Manager",
+    image: "/zain.png",
+    bio: "Creative marketing strategist focused on brand growth, digital campaigns, and audience engagement.",
+    expertise: ["Digital Marketing", "Brand Strategy", "Social Media Management", "Content Marketing"],
+    linkedin: "https://www.linkedin.com/in/zain-imran-347a24251/",
+    github: "https://github.com/Zainimran699",
   },
 ];
 
@@ -110,22 +119,26 @@ export default function AboutPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  function TeamCard({ name, role, image, bio, expertise, linkedin, twitter }) {
+  function TeamCard({ name, role, image, bio, expertise, linkedin, github }) {
     return (
       <motion.div
         variants={cardVariants}
-        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 text-center"
+        className="group bg-white/5 hover:bg-white/10 p-6 rounded-2xl border border-purple-900 backdrop-blur-xl shadow-md hover:shadow-purple-700/30 transition-all duration-500 hover:scale-105 text-center h-full flex flex-col"
       >
         <div className="relative mb-6">
           <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-purple-700/30 group-hover:border-fuchsia-400/50 transition-colors">
             <Image src={image} alt={name} width={96} height={96} className="w-full h-full object-cover" />
           </div>
         </div>
+
         <h4 className="text-xl font-semibold mb-2 text-purple-200 group-hover:text-white transition-colors">
           {name}
         </h4>
         <p className="text-fuchsia-400 text-sm mb-3 font-medium">{role}</p>
-        <p className="text-sm text-purple-300 mb-4 leading-relaxed">{bio}</p>
+
+        {/* flex-grow keeps heights equal */}
+        <p className="text-sm text-purple-300 mb-4 leading-relaxed flex-grow">{bio}</p>
+
         <div className="flex flex-wrap gap-2 justify-center mb-4">
           {expertise.map((skill, idx) => (
             <span key={idx} className="text-xs bg-purple-900/30 text-purple-200 px-2 py-1 rounded">
@@ -133,15 +146,20 @@ export default function AboutPage() {
             </span>
           ))}
         </div>
-        <div className="flex justify-center space-x-3">
-          <a href={linkedin} className="text-purple-400 hover:text-white transition-colors">
+
+        <div className="mt-auto" />
+
+        <div className="flex justify-center space-x-3 pt-2">
+          <a href={linkedin} className="text-purple-400 hover:text-white transition-colors" aria-label={`${name} on LinkedIn`}>
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
             </svg>
           </a>
-          <a href={twitter} className="text-purple-400 hover:text-white transition-colors">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+
+          {/* GitHub icon (replaces Twitter) */}
+          <a href={github} className="text-purple-400 hover:text-white transition-colors" aria-label={`${name} on GitHub`}>
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.206 11.387.6.113.82-.262.82-.58 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.388-1.333-1.758-1.333-1.758-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.42-1.305.763-1.605-2.665-.304-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23 1.02-.284 2.11-.427 3.2-.404 1.09-.023 2.18.12 3.2.404 2.29-1.552 3.298-1.23 3.298-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.624-5.48 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.902-.015 3.297 0 .32.216.698.825.58C20.565 21.796 24 17.297 24 12 24 5.37 18.63 0 12 0Z" />
             </svg>
           </a>
         </div>
@@ -150,29 +168,28 @@ export default function AboutPage() {
   }
 
   function ValueCard({ icon, title, desc, details }) {
-  return (
-    <motion.div
-      variants={cardVariants}
-      className="group p-8 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-105 text-center h-full flex flex-col"
-    >
-      <div className="flex justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-        {icon}
-      </div>
-      <h4 className="text-xl font-semibold text-purple-200 mb-3 group-hover:text-white transition-colors">
-        {title}
-      </h4>
-      <p className="text-sm text-purple-400 mb-4 flex-grow">{desc}</p>
-      <ul className="text-xs text-purple-300 space-y-1 mt-auto">
-        {details.map((detail, idx) => (
-          <li key={idx} className="flex items-center justify-center gap-2">
-            <span className="text-fuchsia-400">✓</span> {detail}
-          </li>
-        ))}
-      </ul>
-    </motion.div>
-  );
-}
-
+    return (
+      <motion.div
+        variants={cardVariants}
+        className="group p-8 rounded-2xl border border-purple-800 bg-[#1a001f]/60 backdrop-blur-md shadow-lg hover:shadow-purple-500/30 transition-all duration-500 hover:scale-105 text-center h-full flex flex-col"
+      >
+        <div className="flex justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <h4 className="text-xl font-semibold text-purple-200 mb-3 group-hover:text-white transition-colors">
+          {title}
+        </h4>
+        <p className="text-sm text-purple-400 mb-4 flex-grow">{desc}</p>
+        <ul className="text-xs text-purple-300 space-y-1 mt-auto">
+          {details.map((detail, idx) => (
+            <li key={idx} className="flex items-center justify-center gap-2">
+              <span className="text-fuchsia-400">✓</span> {detail}
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    );
+  }
 
   function StatCard({ number, label, icon }) {
     return (
@@ -334,10 +351,10 @@ export default function AboutPage() {
           initial="hidden"
           whileInView="visible"
           viewport={inView}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch"
         >
           {VALUES.map((value, i) => (
-            <motion.div key={i} variants={itemVariants}>
+            <motion.div key={i} variants={itemVariants} className="h-full">
               <ValueCard {...value} />
             </motion.div>
           ))}
@@ -356,13 +373,20 @@ export default function AboutPage() {
           initial="hidden"
           whileInView="visible"
           viewport={inView}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch"
         >
-          {TEAM.map((member, i) => (
-            <motion.div key={i} variants={itemVariants}>
-              <TeamCard {...member} />
-            </motion.div>
-          ))}
+          {TEAM.map((member, i) => {
+            const isZain = member.name === "Zain Imran";
+            return (
+              <motion.div
+                key={i}
+                variants={itemVariants}
+                className={`h-full ${isZain ? "lg:col-span-2 lg:col-start-2" : ""}`}
+              >
+                <TeamCard {...member} />
+              </motion.div>
+            );
+          })}
         </motion.div>
       </SectionWrapper>
 

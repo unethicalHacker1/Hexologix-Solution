@@ -26,7 +26,7 @@ export default function Footer() {
     {
       name: "LinkedIn",
       icon: Linkedin,
-      href: "https://linkedin.com/company/hexologix",
+      href: "https://www.linkedin.com/company/hexologix-solutions/",
       gradient: "from-purple-800/50 to-fuchsia-800/50",
       hover: "hover:bg-purple-700/50",
       color: "text-purple-300",
@@ -42,7 +42,7 @@ export default function Footer() {
     {
       name: "Instagram",
       icon: Instagram,
-      href: "https://instagram.com/hexologix",
+      href: "https://www.instagram.com/hexologix_solutions?igsh=MTZmMDFwbDR1anBy",
       gradient: "from-purple-800/50 to-fuchsia-800/50",
       hover: "hover:bg-purple-700/50",
       color: "text-purple-300",
@@ -137,6 +137,7 @@ export default function Footer() {
                 { name: "Portfolio", href: "/Portfolio" },
                 { name: "About Us", href: "/about" },
                 { name: "Contact Us", href: "/contact#form" },
+                { name: "Privacy Policy", href: "/PrivacyPolicy" },
               ].map((link) => (
                 <li key={link.name}>
                   <a
@@ -210,7 +211,7 @@ export default function Footer() {
               <div>
                 <p className="text-sm text-purple-400 font-medium">Email</p>
                 <p className="text-white hover:text-purple-300 transition-colors">
-                  hexologixsolutions@gmail.com
+                  info@hexologixsolutions.com
                 </p>
               </div>
             </div>
@@ -222,7 +223,7 @@ export default function Footer() {
               <div>
                 <p className="text-sm text-purple-400 font-medium">Phone</p>
                 <p className="text-white hover:text-purple-300 transition-colors">
-                  +1 (555) 123-4567
+                  +44 7842 575876
                 </p>
               </div>
             </div>
@@ -234,7 +235,7 @@ export default function Footer() {
               <div>
                 <p className="text-sm text-purple-400 font-medium">Location</p>
                 <p className="text-white hover:text-purple-300 transition-colors">
-                  San Francisco, CA
+                  23 chancellor court NN2 7AP Northampton Northamptonshire
                 </p>
               </div>
             </div>
@@ -249,7 +250,7 @@ export default function Footer() {
           </div>
           <div className="flex space-x-6 text-sm">
             <a
-              href="/privacy-policy"
+              href="/PrivacyPolicy"
               className="text-purple-400 hover:text-white transition-colors"
             >
               Privacy Policy
