@@ -220,25 +220,25 @@ export default function Header() {
                 <Link href="/inside-services/ai-automation" className="hover:text-white">
                   AI Automation
                 </Link>
-                <Link href="/inside-services/web-dev" className="hover:text-white">
+                <Link href="/inside-services/WebDevelopment" className="hover:text-white">
                   Web Development
                 </Link>
-                <Link href="/inside-services/app-dev" className="hover:text-white">
+                <Link href="/inside-services/AppDevelopment" className="hover:text-white">
                   App Development
                 </Link>
-                <Link href="/inside-services/email-marketing" className="hover:text-white">
+                <Link href="/inside-services/Email-Marketing" className="hover:text-white">
                   Email Marketing
                 </Link>
-                <Link href="/inside-services/ss-marketing" className="hover:text-white">
+                <Link href="/inside-services/SocialMediaMarketing" className="hover:text-white">
                   Social Media Marketing
                 </Link>
-                <Link href="/inside-services/ui-design" className="hover:text-white">
+                <Link href="/inside-services/UI-Design" className="hover:text-white">
                   UI/UX Design
                 </Link>
-                <Link href="/inside-services/gis" className="hover:text-white">
+                <Link href="/inside-services/GIS" className="hover:text-white">
                   GIS Services
                 </Link>
-                <Link href="/inside-services/cloud-computing" className="hover:text-white">
+                <Link href="/inside-services/CloudComputing" className="hover:text-white">
                   Cloud Computing
                 </Link>
               </div>
