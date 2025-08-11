@@ -15,7 +15,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { containerVariants, itemVariants, cardVariants } from "@/lib/animations";
 
 /** Keep in-view reveal only for non-grid sections */
-const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+const inView = { once: false, amount: 0, margin: "-10% 0px -10% 0px" };
 
 // --------- Data ---------
 const PORTFOLIO_PROJECTS = [

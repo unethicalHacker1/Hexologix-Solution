@@ -27,7 +27,7 @@ import {
 } from "@/lib/animations";
 
 /** Shared viewport config so sections animate cleanly while scrolling DOWN */
-const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+const inView = { once: false, amount: 0, margin: "-10% 0px -10% 0px" };
 
 // ────────────────────────────────────────────────────────────────
 //  Static data
