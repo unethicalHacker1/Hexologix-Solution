@@ -39,7 +39,7 @@ import {
 } from "@/lib/animations";
 
 /** Shared viewport config for on-scroll animations */
-const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+const inView = { once: false, amount: 0, margin: "-10% 0px -10% 0px" };
 
 /** Avoid hydration mismatch with TypeAnimation (client-only) */
 const TypeAnimation = dynamic(
@@ -203,21 +203,21 @@ const RELATED_SERVICES = [
     desc: "Custom workflows for CRM, leads, and business ops.",
     icon: <Zap className="w-8 h-8" />,
     features: ["CRM Integration", "Lead Automation", "Workflow Optimization"],
-    href: "/inside-services/ai-automation",
+    href: "/inside-services/AI-Automation",
   },
   {
     title: "Web Development",
     desc: "Next.js, WordPress & Shopify sites that convert.",
     icon: <Globe className="w-8 h-8" />,
     features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
-    href: "/inside-services/web-dev",
+    href: "/inside-services/WebDevelopment",
   },
   {
     title: "Cloud Computing",
     desc: "Scalable cloud infrastructure and deployment solutions.",
     icon: <Cloud className="w-8 h-8" />,
     features: ["AWS/Azure", "Scalability", "Security"],
-    href: "/inside-services/cloud-computing",
+    href: "/inside-services/CloudComputing",
   },
 ];
 

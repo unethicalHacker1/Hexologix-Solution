@@ -40,7 +40,7 @@ import {
 } from "@/lib/animations";
 
 /** Reusable viewport settings for all scroll-triggered animations */
-const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+const inView = { once: false, amount: 0, margin: "-10% 0px -10% 0px" };
 
 /** Avoid hydration mismatch with TypeAnimation (client-only) */
 const TypeAnimation = dynamic(
@@ -236,21 +236,21 @@ const RELATED_SERVICES = [
     desc: "Next.js, WordPress & Shopify sites that convert.",
     icon: <Globe className="w-8 h-8" aria-hidden="true" />,
     features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
-    href: "/inside-services/web-dev",
+    href: "/inside-services/WebDevelopment",
   },
   {
     title: "App Development",
     desc: "Flutter & React Native for iOS & Android.",
     icon: <Smartphone className="w-8 h-8" aria-hidden="true" />,
     features: ["Cross-platform", "Native Performance", "App Store Ready"],
-    href: "/inside-services/app-dev",
+    href: "/inside-services/AppDevelopment",
   },
   {
     title: "Email Marketing",
     desc: "Automated campaigns that drive engagement and sales.",
     icon: <Mail className="w-8 h-8" aria-hidden="true" />,
     features: ["Automation", "Analytics", "A/B Testing"],
-    href: "/inside-services/email-marketing",
+    href: "/inside-services/EmailMarketing",
   },
 ];
 

@@ -38,7 +38,7 @@ import {
 } from "@/lib/animations";
 
 /** Shared viewport config for consistent on-scroll reveals */
-const inView = { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" };
+const inView = { once: false, amount: 0, margin: "-10% 0px -10% 0px" };
 
 /** Avoid hydration mismatch with TypeAnimation (client-only) */
 const TypeAnimation = dynamic(
@@ -203,21 +203,21 @@ const RELATED_SERVICES = [
     desc: "Next.js, WordPress & Shopify sites that convert.",
     icon: <Globe className="w-8 h-8" />,
     features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
-    href: "/inside-services/web-dev",
+    href: "/inside-services/WebDevelopment",
   },
   {
     title: "App Development",
     desc: "Flutter & React Native for iOS & Android.",
     icon: <Mobile className="w-8 h-8" />,
     features: ["Cross-platform", "Native Performance", "App Store Ready"],
-    href: "/inside-services/app-dev",
+    href: "/inside-services/AppDevelopment",
   },
   {
     title: "AI Automation",
     desc: "Custom workflows for CRM, leads, and business ops.",
     icon: <Zap className="w-8 h-8" />,
     features: ["CRM Integration", "Lead Automation", "Workflow Optimization"],
-    href: "/inside-services/ai-automation",
+    href: "/inside-services/AI-Automation",
   },
 ];
 
