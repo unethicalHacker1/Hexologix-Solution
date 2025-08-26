@@ -5,33 +5,16 @@ import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  Send,
-  CheckCircle,
-  ChevronDown,
-} from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
 import SectionWrapper from "@/components/ui/SectionWrapper";
 import SectionHeader from "@/components/ui/SectionHeader";
-// import CTAButton from "@/components/ui/CTAButton"; // not needed for anchors now
-import {
-  containerVariants,
-  itemVariants,
-  cardVariants,
-} from "@/lib/animations";
+import { containerVariants, itemVariants, cardVariants } from "@/lib/animations";
 
-/** Shared viewport config so sections animate cleanly while scrolling DOWN */
+/** Shared viewport config */
 const inView = { once: false, amount: 0, margin: "-10% 0px -10% 0px" };
-
-// ────────────────────────────────────────────────────────────────
-//  Static data
-// ────────────────────────────────────────────────────────────────
 
 const CONTACT_METHODS = [
   {
@@ -113,10 +96,6 @@ const FAQ = [
   },
 ];
 
-// ────────────────────────────────────────────────────────────────
-//  Component
-// ────────────────────────────────────────────────────────────────
-
 export default function ContactPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [formData, setFormData] = useState({
@@ -130,13 +109,12 @@ export default function ContactPage() {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
 
-  // Smooth-scroll helper (prevents double hashes like #form#form)
+  // Smooth-scroll helper (prevents #form#form)
   const goToForm = (e) => {
     if (e) e.preventDefault();
     const el = document.getElementById("form");
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
-      // normalize URL to a single #form hash
       if (window.location.hash !== "#form") {
         history.replaceState(null, "", "#form");
       }
@@ -149,10 +127,9 @@ export default function ContactPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // If page opens with #form, scroll down to it (e.g., direct link /contact#form)
+  // Scroll to #form on direct hash visit
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hash === "#form") {
-      // let layout settle first
       setTimeout(() => {
         const el = document.getElementById("form");
         el?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -160,8 +137,7 @@ export default function ContactPage() {
     }
   }, []);
 
-  const handleInputChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -174,24 +150,23 @@ export default function ContactPage() {
     setIsSubmitting(false);
     if (res.ok) {
       setSubmitStatus("success");
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        service: "",
-        message: "",
-      });
+      setFormData({ name: "", email: "", company: "", service: "", message: "" });
       setTimeout(() => setSubmitStatus(null), 5000);
     } else {
-      const { error } = await res.json();
+      let error = null;
+      try {
+        const j = await res.json();
+        error = j.error;
+      } catch {}
       alert(error || "Something went wrong. Please try again.");
     }
   };
 
+  // iOS-safe inputs: 16px font-size + disable backdrop on iOS
   const InputStyles =
-    "w-full px-4 py-3 bg-white/10 border border-purple-700 rounded-lg text-white " +
+    "w-full px-4 py-3 text-[16px] bg-white/10 border border-purple-700 rounded-lg text-white " +
     "placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 " +
-    "focus:border-transparent backdrop-blur-sm";
+    "focus:border-transparent backdrop-blur-sm ios:backdrop-none";
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
@@ -201,10 +176,7 @@ export default function ContactPage() {
       <section className="relative flex items-center px-6 py-20 md:py-32 text-center min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 left-1/2 w-[800px] h-[800px] -translate-x-1/2 rounded-full bg-fuchsia-700/10 blur-3xl animate-pulse" />
-          <div
-            className="absolute bottom-0 right-1/3 w-[600px] h-[600px] rounded-full bg-purple-800/10 blur-2xl animate-pulse"
-            style={{ animationDelay: "1s" }}
-          />
+          <div className="absolute bottom-0 right-1/3 w-[600px] h-[600px] rounded-full bg-purple-800/10 blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl">
@@ -216,14 +188,7 @@ export default function ContactPage() {
           >
             Get In Touch <br />
             <TypeAnimation
-              sequence={[
-                "Let's Build Together",
-                2000,
-                "Start Your Project",
-                2000,
-                "Transform Your Business",
-                2000,
-              ]}
+              sequence={["Let's Build Together", 2000, "Start Your Project", 2000, "Transform Your Business", 2000]}
               wrapper="span"
               speed={50}
               repeat={Infinity}
@@ -237,8 +202,7 @@ export default function ContactPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-8 text-base text-purple-200 sm:text-lg"
           >
-            Ready to start your next project? Let&apos;s discuss how we can help
-            bring your vision to life with our innovative solutions.
+            Ready to start your next project? Let&apos;s discuss how we can help bring your vision to life with our innovative solutions.
           </motion.p>
 
           <motion.div
@@ -247,11 +211,7 @@ export default function ContactPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            {/* Use buttons that call goToForm to avoid #form#form */}
-            <Button
-              onClick={goToForm}
-              className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all"
-            >
+            <Button onClick={goToForm} className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
               Start Your Project
             </Button>
             <Button
@@ -267,37 +227,21 @@ export default function ContactPage() {
 
       {/* Contact methods */}
       <SectionWrapper backgroundType="secondary">
-        <SectionHeader
-          title="Get In Touch"
-          subtitle="Multiple ways to reach us and start your project"
-        />
+        <SectionHeader title="Get In Touch" subtitle="Multiple ways to reach us and start your project" />
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={inView}
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
-        >
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={inView} className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {CONTACT_METHODS.map((method, i) => (
             <motion.div key={i} variants={itemVariants}>
               <motion.div
                 variants={cardVariants}
                 className="group rounded-2xl border border-white/20 bg-white/10 p-6 text-white shadow-xl backdrop-blur-lg transition-all duration-300 hover:border-fuchsia-400 hover:shadow-fuchsia-700/30"
               >
-                <div
-                  className={`mb-4 flex justify-center text-3xl transition-transform duration-300 group-hover:scale-110 drop-shadow-lg ${method.color}`}
-                >
+                <div className={`mb-4 flex justify-center text-3xl transition-transform duration-300 group-hover:scale-110 drop-shadow-lg ${method.color}`}>
                   {method.icon}
                 </div>
-                <h4 className="mb-2 text-lg font-bold tracking-tight text-white/90">
-                  {method.title}
-                </h4>
+                <h4 className="mb-2 text-lg font-bold tracking-tight text-white/90">{method.title}</h4>
                 <p className="mb-3 text-sm text-purple-100">{method.desc}</p>
-                <a
-                  href={method.href}
-                  className="font-medium text-fuchsia-400 transition-colors hover:text-fuchsia-300"
-                >
+                <a href={method.href} className="font-medium text-fuchsia-400 transition-colors hover:text-fuchsia-300">
                   {method.value}
                 </a>
               </motion.div>
@@ -308,36 +252,22 @@ export default function ContactPage() {
 
       {/* Contact form */}
       <SectionWrapper backgroundType="tertiary">
-        <SectionHeader
-          title="Start Your Project"
-          subtitle="Tell us about your project and we'll get back to you within 24 hours"
-        />
+        <SectionHeader title="Start Your Project" subtitle="Tell us about your project and we'll get back to you within 24 hours" />
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={inView}
-          className="grid gap-12 lg:grid-cols-2"
-        >
-          {/* form */}
-          <motion.div variants={itemVariants}>
-            <Card className="border border-white/20 bg-white/10 shadow-xl backdrop-blur-lg">
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={inView} className="grid gap-12 lg:grid-cols-2">
+          {/* FORM: opacity-only (no transforms) + iOS-safe classes */}
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.3 }}>
+            <Card className="ios:no-transform ios:backdrop-none border border-white/20 bg-white/10 shadow-xl backdrop-blur-lg">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-white">
-                  Project Details
-                </CardTitle>
+                <CardTitle className="text-2xl font-bold text-white">Project Details</CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Anchor target */}
                 <div id="form">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* name + email */}
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-purple-200">
-                          Name *
-                        </label>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Name *</label>
                         <input
                           type="text"
                           name="name"
@@ -346,12 +276,12 @@ export default function ContactPage() {
                           value={formData.name}
                           onChange={handleInputChange}
                           className={InputStyles}
+                          autoComplete="name"
+                          inputMode="text"
                         />
                       </div>
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-purple-200">
-                          Email *
-                        </label>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Email *</label>
                         <input
                           type="email"
                           name="email"
@@ -360,6 +290,8 @@ export default function ContactPage() {
                           value={formData.email}
                           onChange={handleInputChange}
                           className={InputStyles}
+                          autoComplete="email"
+                          inputMode="email"
                         />
                       </div>
                     </div>
@@ -367,9 +299,7 @@ export default function ContactPage() {
                     {/* company + service */}
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-purple-200">
-                          Company
-                        </label>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Company</label>
                         <input
                           type="text"
                           name="company"
@@ -377,30 +307,26 @@ export default function ContactPage() {
                           value={formData.company}
                           onChange={handleInputChange}
                           className={InputStyles}
+                          autoComplete="organization"
+                          inputMode="text"
                         />
                       </div>
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-purple-200">
-                          Service Needed *
-                        </label>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Service Needed *</label>
                         <div className="relative">
                           <select
                             name="service"
                             required
                             value={formData.service}
                             onChange={handleInputChange}
-                            className="w-full appearance-none rounded-lg border border-purple-700 bg-gradient-to-br from-black via-[#2c003e] to-black/80 px-4 py-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-400 backdrop-blur-md"
+                            className="w-full appearance-none rounded-lg border border-purple-700 bg-gradient-to-br from-black via-[#2c003e] to-black/80 px-4 py-3 pr-10 text-[16px] text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-400 backdrop-blur-md ios:backdrop-none"
                           >
                             <option disabled value="">
                               Select a service
                             </option>
-                            {SERVICES.map((service) => (
-                              <option
-                                key={service}
-                                value={service}
-                                className="bg-[#2c003e] text-white"
-                              >
-                                {service}
+                            {SERVICES.map((s) => (
+                              <option key={s} value={s} className="bg-[#2c003e] text-white">
+                                {s}
                               </option>
                             ))}
                           </select>
@@ -411,9 +337,7 @@ export default function ContactPage() {
 
                     {/* message */}
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-purple-200">
-                        Project Details *
-                      </label>
+                      <label className="mb-2 block text-sm font-medium text-purple-200">Project Details *</label>
                       <textarea
                         name="message"
                         rows={6}
@@ -425,11 +349,9 @@ export default function ContactPage() {
                       />
                     </div>
 
-                    {/* success note */}
                     {submitStatus === "success" && (
                       <div className="flex items-center gap-2 text-sm text-green-400">
-                        <CheckCircle className="h-4 w-4" /> Thank you! We&apos;ll
-                        get back to you within 24 hours.
+                        <CheckCircle className="h-4 w-4" /> Thank you! We&apos;ll get back to you within 24 hours.
                       </div>
                     )}
 
@@ -439,14 +361,14 @@ export default function ContactPage() {
                       className="w-full rounded-lg bg-gradient-to-r from-fuchsia-600 to-purple-600 py-3 text-white transition-all hover:scale-105 disabled:opacity-50"
                     >
                       {isSubmitting ? (
-                        <div className="flex items-center gap-2">
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        <span className="flex items-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                           Sending...
-                        </div>
+                        </span>
                       ) : (
-                        <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-2">
                           <Send className="h-4 w-4" /> Send Message
-                        </div>
+                        </span>
                       )}
                     </Button>
                   </form>
@@ -458,9 +380,7 @@ export default function ContactPage() {
           {/* benefits */}
           <motion.div variants={itemVariants} className="space-y-6">
             <div className="rounded-2xl border border-fuchsia-400/30 bg-gradient-to-br from-fuchsia-600/20 to-purple-600/20 p-8">
-              <h4 className="mb-6 text-2xl font-semibold text-white">
-                Why Choose Us?
-              </h4>
+              <h4 className="mb-6 text-2xl font-semibold text-white">Why Choose Us?</h4>
               <ul className="space-y-4">
                 {[
                   "Free consultation and project assessment",
@@ -470,10 +390,7 @@ export default function ContactPage() {
                   "Post-launch support and maintenance",
                   "Scalable solutions that grow with your business",
                 ].map((benefit) => (
-                  <li
-                    key={benefit}
-                    className="flex items-center gap-3 text-purple-200"
-                  >
+                  <li key={benefit} className="flex items-center gap-3 text-purple-200">
                     <CheckCircle className="h-5 w-5 flex-shrink-0 text-fuchsia-400" />
                     {benefit}
                   </li>
@@ -482,42 +399,24 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20">
-              <h4 className="text-xl font-semibold mb-4 text-white">
-                What Happens Next?
-              </h4>
+              <h4 className="text-xl font-semibold mb-4 text-white">What Happens Next?</h4>
               <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-fuchsia-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    1
+                {[
+                  "We'll review your project details",
+                  "Schedule a consultation call",
+                  "Receive a detailed proposal",
+                  "Start your project journey",
+                ].map((step, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                      style={{ background: ["#C026D3", "#7C3AED", "#DB2777", "#2563EB"][idx] }}
+                    >
+                      {idx + 1}
+                    </div>
+                    <span className="text-purple-200">{step}</span>
                   </div>
-                  <span className="text-purple-200">
-                    We&apos;ll review your project details
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    2
-                  </div>
-                  <span className="text-purple-200">
-                    Schedule a consultation call
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    3
-                  </div>
-                  <span className="text-purple-200">
-                    Receive a detailed proposal
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    4
-                  </div>
-                  <span className="text-purple-200">
-                    Start your project journey
-                  </span>
-                </div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -526,17 +425,8 @@ export default function ContactPage() {
 
       {/* FAQ */}
       <SectionWrapper backgroundType="secondary">
-        <SectionHeader
-          title="Frequently Asked Questions"
-          subtitle="Common questions about working with us"
-        />
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={inView}
-          className="grid gap-6 lg:grid-cols-2"
-        >
+        <SectionHeader title="Frequently Asked Questions" subtitle="Common questions about working with us" />
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={inView} className="grid gap-6 lg:grid-cols-2">
           {FAQ.map((item, i) => {
             const isOpen = openFaqIndex === i;
             return (
@@ -547,36 +437,23 @@ export default function ContactPage() {
                 >
                   <button
                     className="flex w-full items-center justify-between text-left"
-                    onClick={() =>
-                      setOpenFaqIndex((prev) => (prev === i ? null : i))
-                    }
+                    onClick={() => setOpenFaqIndex((prev) => (prev === i ? null : i))}
                     aria-expanded={isOpen}
                     aria-controls={`faq-panel-${i}`}
                   >
-                    <h4 className="text-lg font-semibold text-purple-200 transition-colors hover:text-white">
-                      {item.question}
-                    </h4>
-                    <ChevronDown
-                      className={`h-5 w-5 transition-transform ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
-                    />
+                    <h4 className="text-lg font-semibold text-purple-200 transition-colors hover:text-white">{item.question}</h4>
+                    <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
                   </button>
 
                   <motion.div
                     id={`faq-panel-${i}`}
                     initial={false}
                     animate={isOpen ? "open" : "collapsed"}
-                    variants={{
-                      open: { height: "auto", opacity: 1, marginTop: 16 },
-                      collapsed: { height: 0, opacity: 0, marginTop: 0 },
-                    }}
+                    variants={{ open: { height: "auto", opacity: 1, marginTop: 16 }, collapsed: { height: 0, opacity: 0, marginTop: 0 } }}
                     transition={{ duration: 0.25, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <p className="text-sm leading-relaxed text-purple-300">
-                      {item.answer}
-                    </p>
+                    <p className="text-sm leading-relaxed text-purple-300">{item.answer}</p>
                   </motion.div>
                 </motion.div>
               </motion.div>
@@ -604,15 +481,9 @@ export default function ContactPage() {
             viewport={inView}
             className="mb-10 text-lg text-purple-100"
           >
-            Let&apos;s discuss your project and bring your vision to life with
-            our innovative solutions.
+            Let&apos;s discuss your project and bring your vision to life with our innovative solutions.
           </motion.p>
-
-          {/* Use Button -> goToForm to avoid duplicate hashes */}
-          <Button
-            onClick={goToForm}
-            className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all"
-          >
+          <Button onClick={goToForm} className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
             Start Your Project
           </Button>
         </div>
@@ -629,23 +500,10 @@ export default function ContactPage() {
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Back to top"
           className="fixed bottom-8 right-8 rounded-full border border-purple-400/20 bg-gradient-to-r from-purple-600 to-fuchsia-600 p-4 text-white shadow-2xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:from-purple-700 hover:to-fuchsia-700 hover:shadow-purple-500/50 z-50"
-          style={{
-            boxShadow:
-              "0 10px 25px -5px rgba(147 51 234 / 0.3), 0 4px 6px -2px rgba(147 51 234 / 0.1)",
-          }}
+          style={{ boxShadow: "0 10px 25px -5px rgba(147 51 234 / 0.3), 0 4px 6px -2px rgba(147 51 234 / 0.1)" }}
         >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 10l7-7m0 0l7 7m-7-7v18"
-            />
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
           </svg>
         </motion.button>
       )}

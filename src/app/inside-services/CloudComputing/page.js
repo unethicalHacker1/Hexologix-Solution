@@ -208,7 +208,7 @@ const RELATED_SERVICES = [
     desc: "Advanced mapping and spatial analysis solutions.",
     icon: <MapPin className="w-8 h-8" aria-hidden="true" />,
     features: ["Digital Mapping", "Spatial Analysis", "Data Visualization"],
-    href: "/inside-services/GIS",
+    href: "/inside-services/Salesforce",
   },
 ];
 

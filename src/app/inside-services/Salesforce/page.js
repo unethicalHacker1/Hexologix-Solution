@@ -23,13 +23,11 @@ import {
   Search,
   Eye,
   Cloud,
-  Truck,
-  MapPin as Mapping,
-  MapPin as Spatial,
-  MapPin as Visualization,
-  MapPin as Integration,
-  MapPin as Data,
-  MapPin as Location,
+  Briefcase,
+  Users,
+  ShoppingCart,
+  Headphones,
+  Link as LinkIcon,
 } from "lucide-react";
 
 import {
@@ -48,175 +46,174 @@ const TypeAnimation = dynamic(
 );
 
 /* ---------------------------------- DATA ---------------------------------- */
+/** Primary Salesforce offering buckets pulled from your service list:
+ * - Salesforce Core
+ * - Sales Cloud
+ * - Service Cloud
+ * - Experience Cloud
+ * - Multi-Cloud Integration with Salesforce Core
+ * - B2C CRM Sync
+ * - Order Management Connector
+ */
 
-const GIS_FEATURES = [
+const SF_FEATURES = [
   {
-    icon: <Mapping className="w-8 h-8" />,
-    title: "Digital Mapping",
+    icon: <Briefcase className="w-8 h-8" />,
+    title: "Salesforce Core",
     description:
-      "High-quality digital maps and spatial data visualization solutions.",
-    benefits: ["Interactive maps", "Custom styling", "Multi-layer support"],
+      "Org setup, security model, profiles/roles, custom objects, and scalable data architecture.",
+    benefits: ["Org & security setup", "Custom objects & fields", "Automation basics"],
   },
   {
-    icon: <Spatial className="w-8 h-8" />,
-    title: "Spatial Analysis",
-    description: "Advanced spatial analysis and geographic data processing.",
-    benefits: [
-      "Buffer analysis",
-      "Overlay operations",
-      "Distance calculations",
-    ],
-  },
-  {
-    icon: <Data className="w-8 h-8" />,
-    title: "Data Management",
+    icon: <BarChart3 className="w-8 h-8" />,
+    title: "Sales Cloud",
     description:
-      "Comprehensive spatial data management and database solutions.",
-    benefits: ["Data collection", "Quality assurance", "Storage optimization"],
+      "Lead-to-opportunity pipelines, forecasting, and product/pricebook configuration that accelerates revenue.",
+    benefits: ["Leads & opportunities", "Forecasting", "Products/quotes"],
   },
   {
-    icon: <Visualization className="w-8 h-8" />,
-    title: "Data Visualization",
-    description: "Interactive maps and charts for spatial data presentation.",
-    benefits: ["3D visualization", "Real-time updates", "Custom dashboards"],
-  },
-  {
-    icon: <Integration className="w-8 h-8" />,
-    title: "System Integration",
+    icon: <Headphones className="w-8 h-8" />,
+    title: "Service Cloud",
     description:
-      "Seamless integration with existing business systems and workflows.",
-    benefits: [
-      "API development",
-      "Database integration",
-      "Workflow automation",
-    ],
+      "Omni-channel case management with SLAs, knowledge base, and field service for faster resolution.",
+    benefits: ["Case management", "Knowledge & macros", "Field service"],
   },
   {
-    icon: <Location className="w-8 h-8" />,
-    title: "Location Intelligence",
-    description: "Location-based insights and business intelligence solutions.",
-    benefits: ["Market analysis", "Site selection", "Route optimization"],
+    icon: <Globe className="w-8 h-8" />,
+    title: "Experience Cloud",
+    description:
+      "Branded portals for customers and partners with secure access, self-service, and CMS content.",
+    benefits: ["Customer/partner portals", "SSO & permissions", "Self-service"],
+  },
+  {
+    icon: <LinkIcon className="w-8 h-8" />,
+    title: "Multi-Cloud Integration",
+    description:
+      "Connect Salesforce Core with ERP, marketing tools, and data warehouses to unify your stack.",
+    benefits: ["API & middleware", "Real-time sync", "Event-driven flows"],
+  },
+  {
+    icon: <ShoppingCart className="w-8 h-8" />,
+    title: "B2C CRM Sync & Order Connector",
+    description:
+      "Two-way sync between storefronts and Salesforce for orders, customers, and service workflows.",
+    benefits: ["Customer 360", "Order lifecycle", "Returns & service"],
   },
 ];
 
-const GIS_APPLICATIONS = [
+const SF_SOLUTIONS = [
   {
-    category: "Business",
-    title: "Business Intelligence",
+    category: "Revenue",
+    title: "Pipeline & Forecasting",
     description:
-      "Location-based analytics for business decision making and market analysis.",
-    icon: <BarChart3 className="w-6 h-6" />,
-    benefits: ["Market analysis", "Customer segmentation", "Site selection"],
+      "Sales Cloud configuration for predictable pipelines, territory planning, and forecast accuracy.",
+    icon: <TrendingUp className="w-6 h-6" />,
+    benefits: ["Stages & SLAs", "Territories & quotes", "Forecast dashboards"],
   },
   {
-    category: "Government",
-    title: "Public Services",
+    category: "Support",
+    title: "Omni-Channel Service",
     description:
-      "GIS solutions for government agencies and public service organizations.",
-    icon: <Shield className="w-6 h-6" />,
-    benefits: [
-      "Emergency response",
-      "Urban planning",
-      "Infrastructure management",
-    ],
+      "Route cases across email, chat, phone, and social, with automation and knowledge at agents’ fingertips.",
+    icon: <Headphones className="w-6 h-6" />,
+    benefits: ["Case routing", "Macros & KB", "CSAT tracking"],
   },
   {
-    category: "Environmental",
-    title: "Environmental Monitoring",
+    category: "Experience",
+    title: "Customer/Partner Portals",
     description:
-      "Environmental data collection, analysis, and monitoring systems.",
+      "Experience Cloud portals for self-service, partner deal registration, and secure document sharing.",
     icon: <Globe className="w-6 h-6" />,
-    benefits: [
-      "Climate monitoring",
-      "Resource management",
-      "Conservation planning",
-    ],
+    benefits: ["Auth & roles", "Self-service", "Partner workflows"],
   },
   {
-    category: "Transportation",
-    title: "Transportation & Logistics",
-    description: "Route optimization and transportation network analysis.",
-    icon: <Truck className="w-6 h-6" />,
-    benefits: ["Route planning", "Fleet management", "Traffic analysis"],
+    category: "Commerce",
+    title: "Order Management",
+    description:
+      "Order capture to fulfillment with status sync, cancellations/returns, and post-purchase support.",
+    icon: <ShoppingCart className="w-6 h-6" />,
+    benefits: ["Order sync", "RMA flows", "Service handoffs"],
   },
 ];
 
 const PROCESS_STEPS = [
   {
     step: "01",
-    title: "Requirements Analysis",
+    title: "Discovery & Solution Design",
     description:
-      "We analyze your spatial data needs and business requirements.",
+      "We map business goals to Salesforce capabilities and define your target architecture.",
     icon: <Lightbulb className="w-12 h-12 text-fuchsia-400" />,
-    details: ["Data assessment", "Business analysis", "Technical requirements"],
+    details: ["Workshops", "User stories", "Solution blueprint"],
   },
   {
     step: "02",
-    title: "Data Collection & Processing",
-    description: "Collect, clean, and process spatial data for analysis.",
+    title: "Data & Security Model",
+    description:
+      "Design scalable objects, sharing, profiles/roles, and clean data migration plans.",
     icon: <Database className="w-12 h-12 text-purple-400" />,
-    details: ["Data collection", "Quality assurance", "Data processing"],
+    details: ["Object model", "Profiles & roles", "Data migration"],
   },
   {
     step: "03",
-    title: "Analysis & Development",
-    description: "Perform spatial analysis and develop custom GIS solutions.",
+    title: "Automation & Integrations",
+    description:
+      "Build flows, validation rules, and connect external systems via APIs or middleware.",
     icon: <Code className="w-12 h-12 text-pink-400" />,
-    details: ["Spatial analysis", "Application development", "Testing"],
+    details: ["Flows & rules", "APIs & events", "Testing"],
   },
   {
     step: "04",
-    title: "Deployment & Support",
+    title: "UAT, Go-Live & Enablement",
     description:
-      "Deploy solutions and provide ongoing support and maintenance.",
+      "User acceptance testing, deployment, training, and hypercare for a smooth launch.",
     icon: <Rocket className="w-12 h-12 text-fuchsia-400" />,
-    details: ["System deployment", "User training", "Ongoing support"],
+    details: ["UAT & cutover", "Training", "Post-go-live support"],
   },
 ];
 
 const BENEFITS = [
   {
     icon: <TrendingUp className="w-8 h-8" />,
-    title: "Better Decision Making",
-    description: "Location-based insights for informed business decisions",
+    title: "Faster Time-to-Value",
+    description: "Proven blueprints and accelerators shorten your launch.",
   },
   {
     icon: <Eye className="w-8 h-8" />,
-    title: "Improved Efficiency",
-    description: "Optimized workflows and resource allocation",
+    title: "Single Customer View",
+    description: "Unified data across marketing, sales, service, and orders.",
   },
   {
-    icon: <Search className="w-8 h-8" />,
-    title: "Enhanced Analysis",
-    description: "Advanced spatial analysis capabilities",
+    icon: <Zap className="w-8 h-8" />,
+    title: "Scalable Automation",
+    description: "Low-code flows and best-practice guardrails.",
   },
   {
     icon: <Shield className="w-8 h-8" />,
-    title: "Data Security",
-    description: "Secure handling of sensitive spatial data",
+    title: "Security & Compliance",
+    description: "Robust sharing, data retention, and auditability.",
   },
 ];
 
 const RELATED_SERVICES = [
   {
-    title: "AI Automation",
-    desc: "Custom workflows for CRM, leads, and business ops.",
+    title: "AI Automation (Einstein + Ops)",
+    desc: "Boost productivity with AI prompts, copilots, and workflow bots.",
     icon: <Zap className="w-8 h-8" />,
-    features: ["CRM Integration", "Lead Automation", "Workflow Optimization"],
+    features: ["Einstein prompts", "Lead scoring", "Flow bots"],
     href: "/inside-services/AI-Automation",
   },
   {
     title: "Web Development",
-    desc: "Next.js, WordPress & Shopify sites that convert.",
+    desc: "Next.js storefronts, portals, and custom apps integrated with Salesforce.",
     icon: <Globe className="w-8 h-8" />,
-    features: ["Responsive Design", "SEO Optimization", "Performance Focused"],
+    features: ["Headless commerce", "Auth & SSO", "DX-friendly"],
     href: "/inside-services/WebDevelopment",
   },
   {
-    title: "Cloud Computing",
-    desc: "Scalable cloud infrastructure and deployment solutions.",
+    title: "Cloud & DevOps",
+    desc: "CI/CD, backups, and environments for reliable Salesforce releases.",
     icon: <Cloud className="w-8 h-8" />,
-    features: ["AWS/Azure", "Scalability", "Security"],
+    features: ["Pipelines", "Backups", "Monitoring"],
     href: "/inside-services/CloudComputing",
   },
 ];
@@ -249,7 +246,7 @@ function FeatureCard({ icon, title, description, benefits }) {
   );
 }
 
-function ApplicationCard({ category, title, description, icon, benefits }) {
+function SolutionCard({ category, title, description, icon, benefits }) {
   return (
     <motion.div
       variants={cardVariants}
@@ -348,7 +345,7 @@ function ServiceCard({ title, desc, icon, href, features }) {
 
 /* --------------------------------- PAGE ---------------------------------- */
 
-export default function GISPage() {
+export default function SalesforcePage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -377,15 +374,15 @@ export default function GISPage() {
             transition={{ duration: 0.8 }}
             className="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-white break-words"
           >
-            GIS Services That <br />
+            Salesforce Services That <br />
             <span className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block">
               <TypeAnimation
                 sequence={[
-                  "Map & Analyze",
+                  "Close Deals Faster",
                   2000,
-                  "Visualize & Optimize",
+                  "Delight Every Customer",
                   2000,
-                  "Transform & Scale",
+                  "Unify Your Stack",
                   2000,
                 ]}
                 speed={50}
@@ -400,8 +397,8 @@ export default function GISPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-base sm:text-lg text-purple-200 mb-8"
           >
-            Advanced Geographic Information Systems that transform spatial data
-            into actionable business intelligence.
+            Implement, integrate, and scale Salesforce to power sales, service,
+            experiences, and order operations with confidence.
           </motion.p>
 
           <motion.div
@@ -424,7 +421,7 @@ export default function GISPage() {
         </div>
       </section>
 
-      {/* GIS Features */}
+      {/* Salesforce Feature Stack */}
       <section className="relative overflow-hidden py-20 px-4 sm:px-6 bg-gradient-to-br from-[#1a002f] via-[#2c003e] to-black text-white">
         <div className="max-w-7xl mx-auto text-center relative z-10 min-w-0 break-words">
           <motion.h3
@@ -434,7 +431,7 @@ export default function GISPage() {
             viewport={inView}
             className="text-3xl sm:text-5xl font-bold mb-6 text-white/90 tracking-tight break-words"
           >
-            GIS Services Solutions
+            Salesforce Services & Solutions
           </motion.h3>
 
           <motion.p
@@ -444,8 +441,8 @@ export default function GISPage() {
             viewport={inView}
             className="text-base sm:text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            Comprehensive Geographic Information Systems that turn spatial data
-            into powerful business insights.
+            From core setup to multi-cloud integrations and order orchestration,
+            we tailor Salesforce to your business.
           </motion.p>
 
           <motion.div
@@ -455,7 +452,7 @@ export default function GISPage() {
             viewport={inView}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
           >
-            {GIS_FEATURES.map((feature, i) => (
+            {SF_FEATURES.map((feature, i) => (
               <motion.div key={i} variants={itemVariants} className="h-full">
                 <FeatureCard {...feature} />
               </motion.div>
@@ -464,7 +461,7 @@ export default function GISPage() {
         </div>
       </section>
 
-      {/* GIS Applications */}
+      {/* Solutions by Outcome */}
       <section className="py-20 px-4 sm:px-6 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative overflow-hidden text-white">
         <div className="max-w-7xl mx-auto relative z-10 min-w-0 break-words">
           <motion.h3
@@ -474,7 +471,7 @@ export default function GISPage() {
             viewport={inView}
             className="text-3xl sm:text-5xl font-bold mb-6 text-purple-300 tracking-tight text-center break-words"
           >
-            GIS Applications
+            What We Deliver with Salesforce
           </motion.h3>
 
           <motion.p
@@ -484,8 +481,8 @@ export default function GISPage() {
             viewport={inView}
             className="text-base sm:text-lg text-purple-200 mb-12 text-center max-w-2xl mx-auto leading-relaxed"
           >
-            Specialized GIS solutions for various industries and business
-            applications.
+            Practical, outcome-driven implementations for revenue, service,
+            experiences, and commerce ops.
           </motion.p>
 
           <motion.div
@@ -495,9 +492,9 @@ export default function GISPage() {
             viewport={inView}
             className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 auto-rows-fr"
           >
-            {GIS_APPLICATIONS.map((application, i) => (
+            {SF_SOLUTIONS.map((solution, i) => (
               <motion.div key={i} variants={itemVariants} className="h-full">
-                <ApplicationCard {...application} />
+                <SolutionCard {...solution} />
               </motion.div>
             ))}
           </motion.div>
@@ -514,7 +511,7 @@ export default function GISPage() {
             viewport={inView}
             className="text-3xl sm:text-5xl font-bold text-purple-300 mb-6 break-words"
           >
-            Our GIS Process
+            Our Salesforce Delivery Process
           </motion.h3>
 
           <motion.p
@@ -524,8 +521,8 @@ export default function GISPage() {
             viewport={inView}
             className="text-base sm:text-lg text-purple-200 mb-12 sm:mb-16 max-w-2xl mx-auto"
           >
-            A systematic approach to GIS development that ensures accurate,
-            reliable, and scalable solutions.
+            Clear phases, measurable outcomes, and enablement baked in from day
+            one.
           </motion.p>
 
           <motion.div
@@ -559,7 +556,7 @@ export default function GISPage() {
             viewport={inView}
             className="text-3xl sm:text-5xl font-bold mb-12 text-purple-300 break-words"
           >
-            Why Choose Our GIS Services
+            Why Choose Our Salesforce Team
           </motion.h3>
           <motion.div
             variants={containerVariants}
@@ -597,8 +594,8 @@ export default function GISPage() {
             viewport={inView}
             className="text-base sm:text-lg text-purple-100 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            Discover our comprehensive suite of digital solutions to accelerate
-            your business growth.
+            Extend Salesforce with AI, modern web experiences, and reliable
+            cloud/devops.
           </motion.p>
 
           <motion.div
@@ -627,7 +624,7 @@ export default function GISPage() {
             viewport={inView}
             className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white break-words"
           >
-            Ready to Map Your Success?
+            Ready to Scale with Salesforce?
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -636,8 +633,8 @@ export default function GISPage() {
             viewport={inView}
             className="text-base sm:text-lg mb-10 text-purple-100"
           >
-            Let&apos;s discuss your GIS needs and create spatial solutions that
-            drive business growth and efficiency.
+            Let’s design your roadmap and go live with a secure, scalable
+            implementation that your team loves.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
