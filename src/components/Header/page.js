@@ -155,10 +155,10 @@ export default function Header() {
               </li>
               <li>
                 <Link
-                  href="/inside-services/GIS"
+                  href="/inside-services/Salesforce"
                   className="block px-3 py-1.5 rounded-md hover:bg-purple-800/40 hover:text-white"
                 >
-                  GIS Services
+                  Salesforce Services
                 </Link>
               </li>
               <li>
@@ -235,8 +235,8 @@ export default function Header() {
                 <Link href="/inside-services/UI-Design" className="hover:text-white">
                   UI/UX Design
                 </Link>
-                <Link href="/inside-services/GIS" className="hover:text-white">
-                  GIS Services
+                <Link href="/inside-services/Salesforce" className="hover:text-white">
+                  Salesforce Services
                 </Link>
                 <Link href="/inside-services/CloudComputing" className="hover:text-white">
                   Cloud Computing

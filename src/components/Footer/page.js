@@ -153,7 +153,7 @@ export default function Footer() {
                 { name: "Email Marketing", href: "/inside-services/EmailMarketing" },
                 { name: "Social Media Marketing", href: "/inside-services/SocialMediaMarketing" },
                 { name: "UI/UX Design", href: "/inside-services/UI-Design" },
-                { name: "GIS Services", href: "/inside-services/GIS" },
+                { name: "Salesforce Services", href: "/inside-services/Salesforce" },
                 { name: "Cloud Computing", href: "/inside-services/CloudComputing" },
               ].map((service) => (
                 <li key={service.name}>
