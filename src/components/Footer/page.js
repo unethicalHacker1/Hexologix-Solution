@@ -1,11 +1,62 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Code, Mail, Users, Globe } from "lucide-react";
+import {
+  Mail,
+  Users,
+  Globe,
+  Twitter,
+  Linkedin,
+  Github,
+  Instagram,
+} from "lucide-react";
+import { SiWhatsapp } from "react-icons/si"; // ✅ Official WhatsApp logo
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
+  const socials = [
+    // {
+    //   name: "Twitter",
+    //   icon: Twitter,
+    //   href: "https://twitter.com/hexologix",
+    //   gradient: "from-purple-800/50 to-fuchsia-800/50",
+    //   hover: "hover:bg-purple-700/50",
+    //   color: "text-purple-300",
+    // },
+    {
+      name: "LinkedIn",
+      icon: Linkedin,
+      href: "https://www.linkedin.com/company/hexologix-solutions/",
+      gradient: "from-purple-800/50 to-fuchsia-800/50",
+      hover: "hover:bg-purple-700/50",
+      color: "text-purple-300",
+    },
+    // {
+    //   name: "GitHub",
+    //   icon: Github,
+    //   href: "https://github.com/hexologix",
+    //   gradient: "from-purple-800/50 to-fuchsia-800/50",
+    //   hover: "hover:bg-purple-700/50",
+    //   color: "text-purple-300",
+    // },
+    {
+      name: "Instagram",
+      icon: Instagram,
+      href: "https://www.instagram.com/hexologix_solutions?igsh=MTZmMDFwbDR1anBy",
+      gradient: "from-purple-800/50 to-fuchsia-800/50",
+      hover: "hover:bg-purple-700/50",
+      color: "text-purple-300",
+    },
+    {
+      name: "WhatsApp",
+      icon: SiWhatsapp, // ✅ Real WhatsApp logo
+      href: "https://wa.me/447842575876",
+      gradient: "from-purple-800/50 to-fuchsia-800/50",
+      hover: "hover:bg-purple-700/50",
+      color: "text-purple-300", // ✅ Matches other icons
+    },
+  ];
+
   return (
     <footer className="bg-black text-purple-200 py-20 px-6 relative overflow-hidden">
       {/* Background Effects */}
@@ -20,7 +71,10 @@ export default function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
-              <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+              <Link
+                href="/"
+                className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+              >
                 <Image
                   src="/transparent logo.png"
                   alt="Hexologix Logo"
@@ -35,26 +89,24 @@ export default function Footer() {
             </div>
             <p className="text-purple-300 mb-6 leading-relaxed max-w-md">
               Innovative AI solutions and beautiful code for modern businesses.
-              We transform ideas into powerful digital experiences that drive growth and success.
+              We transform ideas into powerful digital experiences that drive
+              growth and success.
             </p>
 
             {/* Social Media Links */}
             <div className="flex space-x-4">
-              {[
-                { name: "Twitter", icon: "𝕏", href: "https://twitter.com/hexologix" },
-                { name: "LinkedIn", icon: "💼", href: "https://linkedin.com/company/hexologix" },
-                { name: "GitHub", icon: "🐙", href: "https://github.com/hexologix" },
-                { name: "Instagram", icon: "📸", href: "https://instagram.com/hexologix" },
-              ].map((social) => (
+              {socials.map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
-                  className="w-10 h-10 bg-gradient-to-br from-purple-800/50 to-fuchsia-800/50 border border-purple-700 rounded-lg flex items-center justify-center text-lg hover:scale-110 hover:bg-purple-700/50 transition-all duration-300 group"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-10 h-10 bg-gradient-to-br ${social.gradient} border border-white/10 rounded-lg flex items-center justify-center text-lg ${social.hover} hover:scale-110 transition-all duration-300 group`}
                   aria-label={social.name}
                 >
-                  <span className="group-hover:scale-110 transition-transform duration-300">
-                    {social.icon}
-                  </span>
+                  <social.icon
+                    className={`w-5 h-5 ${social.color} group-hover:scale-110 transition-transform duration-300`}
+                  />
                 </a>
               ))}
             </div>
@@ -71,7 +123,8 @@ export default function Footer() {
                 { name: "Home", href: "/" },
                 { name: "Portfolio", href: "/Portfolio" },
                 { name: "About Us", href: "/about" },
-                { name: "Contact Us", href: "/contact" },
+                { name: "Contact Us", href: "/contact#form" },
+                { name: "Privacy Policy", href: "/PrivacyPolicy" },
               ].map((link) => (
                 <li key={link.name}>
                   <a
@@ -94,14 +147,14 @@ export default function Footer() {
             </h5>
             <ul className="space-y-3">
               {[
-                { name: "AI Automation", href: "/inside-services/ai-automation" },
-                { name: "Web Development", href: "/inside-services/web-dev" },
-                { name: "App Development", href: "/inside-services/app-dev" },
-                { name: "Email Marketing", href: "/inside-services/email-marketing" },
-                { name: "Social Media Marketing", href: "/inside-services/ss-marketing" },
-                { name: "UI/UX Design", href: "/inside-services/ui-design" },
-                { name: "GIS Services", href: "/inside-services/gis" },
-                { name: "Cloud Computing", href: "/inside-services/cloud-computing" }
+                { name: "AI Automation", href: "/inside-services/AI-Automation" },
+                { name: "Web Development", href: "/inside-services/WebDevelopment" },
+                { name: "App Development", href: "/inside-services/AppDevelopment" },
+                { name: "Email Marketing", href: "/inside-services/EmailMarketing" },
+                { name: "Social Media Marketing", href: "/inside-services/SocialMediaMarketing" },
+                { name: "UI/UX Design", href: "/inside-services/UI-Design" },
+                { name: "Salesforce Services", href: "/inside-services/Salesforce" },
+                { name: "Cloud Computing", href: "/inside-services/CloudComputing" },
               ].map((service) => (
                 <li key={service.name}>
                   <a
@@ -127,7 +180,7 @@ export default function Footer() {
               <div>
                 <p className="text-sm text-purple-400 font-medium">Email</p>
                 <p className="text-white hover:text-purple-300 transition-colors">
-                  hello@hexologix.com
+                  info@hexologixsolutions.com
                 </p>
               </div>
             </div>
@@ -139,7 +192,7 @@ export default function Footer() {
               <div>
                 <p className="text-sm text-purple-400 font-medium">Phone</p>
                 <p className="text-white hover:text-purple-300 transition-colors">
-                  +1 (555) 123-4567
+                  +44 7842 575876
                 </p>
               </div>
             </div>
@@ -151,18 +204,20 @@ export default function Footer() {
               <div>
                 <p className="text-sm text-purple-400 font-medium">Location</p>
                 <p className="text-white hover:text-purple-300 transition-colors">
-                  San Francisco, CA
+                  23 Chancellor Court NN2 7AP Northampton Northamptonshire
                 </p>
               </div>
             </div>
           </div>
-        </div>        {/* Bottom Bar */}
+        </div>
+
+        {/* Bottom Bar */}
         <div className="border-t border-purple-800/50 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-sm text-purple-400">
             © {new Date().getFullYear()} Hexologix Solutions. All rights reserved.
           </div>
           <div className="flex space-x-6 text-sm">
-            <a href="/privacy-policy" className="text-purple-400 hover:text-white transition-colors">
+            <a href="/PrivacyPolicy" className="text-purple-400 hover:text-white transition-colors">
               Privacy Policy
             </a>
             <a href="/terms-of-service" className="text-purple-400 hover:text-white transition-colors">

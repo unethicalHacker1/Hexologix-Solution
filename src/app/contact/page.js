@@ -1,498 +1,511 @@
 "use client";
 
-import { TypeAnimation } from "react-type-animation";
-import Link from "next/link";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { TypeAnimation } from "react-type-animation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  Send,
-  Users,
-  Globe,
-  Zap,
-  CheckCircle,
-  Star
-} from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
-import { 
-  containerVariants, 
-  itemVariants, 
-  cardVariants, 
-  fadeInUp, 
-  fadeInLeft, 
-  fadeInRight,
-  commonAnimationProps 
-} from "@/lib/animations";
+import SectionWrapper from "@/components/ui/SectionWrapper";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { containerVariants, itemVariants, cardVariants } from "@/lib/animations";
+
+/** Shared viewport config */
+const inView = { once: false, amount: 0, margin: "-10% 0px -10% 0px" };
+
+const CONTACT_METHODS = [
+  {
+    icon: <Mail className="w-8 h-8" />,
+    title: "Email Us",
+    desc: "Send us a message anytime",
+    value: "hexologixsolutions@gmail.com",
+    href: "mailto:hexologixsolutions@gmail.com",
+    color: "text-fuchsia-400",
+  },
+  {
+    icon: <Phone className="w-8 h-8" />,
+    title: "Call Us",
+    desc: "Speak with our team",
+    value: "+1 (555) 123-4567",
+    href: "tel:+15551234567",
+    color: "text-purple-400",
+  },
+  {
+    icon: <MapPin className="w-8 h-8" />,
+    title: "Visit Us",
+    desc: "Our office location",
+    value: "San Francisco, CA",
+    href: "#",
+    color: "text-pink-400",
+  },
+  {
+    icon: <Clock className="w-8 h-8" />,
+    title: "Business Hours",
+    desc: "When we're available",
+    value: "Mon-Fri  9 AM-6 PM PST",
+    href: "#",
+    color: "text-blue-400",
+  },
+];
+
+const SERVICES = [
+  "AI Automation",
+  "Web Development",
+  "App Development",
+  "UI/UX Design",
+  "Email Marketing",
+  "Social Media Marketing",
+  "GIS Solutions",
+  "Cloud Computing",
+  "Other",
+];
+
+const FAQ = [
+  {
+    question: "What is your typical project timeline?",
+    answer:
+      "Project timelines vary based on complexity. Simple websites take 2-4 weeks, while complex applications can take 2-6 months. We'll provide a detailed timeline during our initial consultation.",
+  },
+  {
+    question: "Do you provide ongoing support after launch?",
+    answer:
+      "Yes, we offer comprehensive post-launch support including maintenance, updates, and technical assistance. We also provide training and documentation for your team.",
+  },
+  {
+    question: "What technologies do you specialize in?",
+    answer:
+      "We work with modern technologies including React, Next.js, Python, AI/ML frameworks, Flutter, and cloud platforms like AWS and Azure.",
+  },
+  {
+    question: "How do you handle project communication?",
+    answer:
+      "We maintain regular communication through scheduled calls, progress reports, and project management tools. You'll have a dedicated project manager as your main point of contact.",
+  },
+  {
+    question: "What is your pricing structure?",
+    answer:
+      "We offer flexible pricing models including fixed-price projects, hourly rates, and retainer agreements. Pricing depends on project scope, complexity, and timeline.",
+  },
+  {
+    question: "Do you work with international clients?",
+    answer:
+      "Absolutely! We serve clients globally and have experience working across different time zones and cultures. We use modern collaboration tools to ensure seamless communication.",
+  },
+];
 
 export default function ContactPage() {
-  const [scrollY, setScrollY] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     company: "",
-    projectType: "",
-    budget: "",
-    message: ""
+    service: "",
+    message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
+
+  // Smooth-scroll helper (prevents #form#form)
+  const goToForm = (e) => {
+    if (e) e.preventDefault();
+    const el = document.getElementById("form");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (window.location.hash !== "#form") {
+        history.replaceState(null, "", "#form");
+      }
+    }
+  };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-      setIsVisible(window.scrollY > 100);
-    };
-
+    const handleScroll = () => setShowBackToTop(window.scrollY > 400);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  // Scroll to #form on direct hash visit
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#form") {
+      setTimeout(() => {
+        const el = document.getElementById("form");
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 0);
+    }
+  }, []);
 
-  const handleSubmit = (e) => {
+  const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    setIsSubmitting(false);
+    if (res.ok) {
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", company: "", service: "", message: "" });
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } else {
+      let error = null;
+      try {
+        const j = await res.json();
+        error = j.error;
+      } catch {}
+      alert(error || "Something went wrong. Please try again.");
+    }
   };
 
-  const contactInfo = [
-    {
-      icon: <Mail className="w-6 h-6" />,
-      title: "Email Us",
-      details: "hello@techflow.com",
-      description: "Get in touch for project inquiries"
-    },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: "Call Us",
-      details: "+1 (555) 123-4567",
-      description: "Available Mon-Fri, 9AM-6PM EST"
-    },
-    {
-      icon: <MapPin className="w-6 h-6" />,
-      title: "Visit Us",
-      details: "New York, NY",
-      description: "Remote-first, global reach"
-    },
-    {
-      icon: <Clock className="w-6 h-6" />,
-      title: "Response Time",
-      details: "< 24 hours",
-      description: "We'll get back to you quickly"
-    }
-  ];
-
-  const services = [
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: "AI Automation",
-      description: "Custom workflows and intelligent systems"
-    },
-    {
-      icon: <Globe className="w-6 h-6" />,
-      title: "Web Development",
-      description: "Modern, scalable web applications"
-    },
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "App Development",
-      description: "Cross-platform mobile solutions"
-    }
-  ];
-
-  const testimonials = [
-    {
-      quote: "TechFlow delivered our project on time and exceeded expectations. Their AI integration saved us hours every day.",
-      author: "Sarah Johnson",
-      role: "CEO, NextGen Corp",
-      rating: 5
-    },
-    {
-      quote: "Exceptional team with deep technical expertise. They transformed our business with smart automation solutions.",
-      author: "Michael Chen",
-      role: "CTO, FinLogic",
-      rating: 5
-    },
-    {
-      quote: "Professional, responsive, and results-driven. Our conversion rates increased by 40% after their redesign.",
-      author: "Emily Rodriguez",
-      role: "Marketing Director, GrowthCo",
-      rating: 5
-    }
-  ];
+  // iOS-safe inputs: 16px font-size + disable backdrop on iOS
+  const InputStyles =
+    "w-full px-4 py-3 text-[16px] bg-white/10 border border-purple-700 rounded-lg text-white " +
+    "placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 " +
+    "focus:border-transparent backdrop-blur-sm ios:backdrop-none";
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black text-white font-sans overflow-x-hidden">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative text-center px-6 py-20 md:py-32 bg-gradient-to-br from-black via-[#2c003e] to-black text-white min-h-screen flex items-center">
+      {/* Hero */}
+      <section className="relative flex items-center px-6 py-20 md:py-32 text-center min-h-screen bg-gradient-to-br from-black via-[#2c003e] to-black">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="w-[600px] h-[600px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10"></div>
-          <div className="w-[500px] h-[500px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10"></div>
+          <div className="absolute -top-20 left-1/2 w-[800px] h-[800px] -translate-x-1/2 rounded-full bg-fuchsia-700/10 blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 right-1/3 w-[600px] h-[600px] rounded-full bg-purple-800/10 blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
         </div>
 
-        <div className="max-w-4xl mx-auto z-10 relative">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
-            Let's Build Something <br />
+        <div className="relative z-10 mx-auto max-w-4xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-6 text-2xl font-bold leading-tight text-white sm:text-4xl md:text-5xl"
+          >
+            Get In Touch <br />
             <TypeAnimation
-              sequence={[
-                "Amazing Together", // first text
-                2000, // wait 2s
-                "Innovative Solutions",
-                2000,
-                "Future-Ready Apps",
-                2000,
-              ]}
+              sequence={["Let's Build Together", 2000, "Start Your Project", 2000, "Transform Your Business", 2000]}
               wrapper="span"
               speed={50}
               repeat={Infinity}
-              className="bg-gradient-to-r from-fuchsia-500 to-purple-400 text-transparent bg-clip-text inline-block"
+              className="inline-block bg-gradient-to-r from-fuchsia-500 to-purple-400 bg-clip-text text-transparent"
             />
-          </h1>
-          <p className="text-xl text-purple-200 mb-8">
-            Ready to transform your business with cutting-edge technology? 
-            Let's discuss your project and bring your vision to life.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-8 py-4 text-lg rounded-full hover:scale-105 transition-all">
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-8 text-base text-purple-200 sm:text-lg"
+          >
+            Ready to start your next project? Let&apos;s discuss how we can help bring your vision to life with our innovative solutions.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          >
+            <Button onClick={goToForm} className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
               Start Your Project
             </Button>
-            <Button className="bg-transparent border-2 border-purple-500 text-purple-300 px-8 py-4 text-lg rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105">
+            <Button
+              onClick={goToForm}
+              variant="outline"
+              className="bg-transparent border-2 border-purple-500 text-purple-300 px-6 py-3 text-sm rounded-full hover:bg-purple-600 hover:text-white transition-all hover:scale-105"
+            >
               Schedule a Call
             </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Contact Information */}
-      <section className="px-6 py-24 bg-black text-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className={`text-4xl font-bold text-center mb-16 text-purple-300 transition-all duration-1000 ${
-            isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-          }`}>
-            Get in Touch
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {contactInfo.map((info, index) => (
-              <Card
-                key={index}
-                className={`bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur p-6 border border-purple-800 text-white hover:scale-105 transition-all duration-500 ${
-                  isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-                }`}
-                style={{ animationDelay: `${index * 200}ms` }}
+      {/* Contact methods */}
+      <SectionWrapper backgroundType="secondary">
+        <SectionHeader title="Get In Touch" subtitle="Multiple ways to reach us and start your project" />
+
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={inView} className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {CONTACT_METHODS.map((method, i) => (
+            <motion.div key={i} variants={itemVariants}>
+              <motion.div
+                variants={cardVariants}
+                className="group rounded-2xl border border-white/20 bg-white/10 p-6 text-white shadow-xl backdrop-blur-lg transition-all duration-300 hover:border-fuchsia-400 hover:shadow-fuchsia-700/30"
               >
-                <CardHeader className="text-center">
-                  <div className="mb-4 text-purple-300">{info.icon}</div>
-                  <CardTitle className="text-xl">{info.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-lg font-semibold text-purple-200 mb-2">{info.details}</p>
-                  <p className="text-sm text-purple-400">{info.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+                <div className={`mb-4 flex justify-center text-3xl transition-transform duration-300 group-hover:scale-110 drop-shadow-lg ${method.color}`}>
+                  {method.icon}
+                </div>
+                <h4 className="mb-2 text-lg font-bold tracking-tight text-white/90">{method.title}</h4>
+                <p className="mb-3 text-sm text-purple-100">{method.desc}</p>
+                <a href={method.href} className="font-medium text-fuchsia-400 transition-colors hover:text-fuchsia-300">
+                  {method.value}
+                </a>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </SectionWrapper>
 
-      {/* Contact Form & Services */}
-      <section className="px-6 py-24 bg-gradient-to-bl from-[#0d001b] via-[#1b0035] to-black relative text-white">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="w-[600px] h-[600px] bg-fuchsia-700/10 blur-3xl rounded-full absolute -top-20 left-1/4 -z-10"></div>
-          <div className="w-[500px] h-[500px] bg-purple-800/10 blur-2xl rounded-full absolute bottom-0 right-1/3 -z-10"></div>
-        </div>
+      {/* Contact form */}
+      <SectionWrapper backgroundType="tertiary">
+        <SectionHeader title="Start Your Project" subtitle="Tell us about your project and we'll get back to you within 24 hours" />
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <div className={`transition-all duration-1000 ${
-              isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-            }`}>
-              <h3 className="text-3xl font-bold mb-8 text-purple-300">Start Your Project</h3>
-              <Card className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur border border-purple-800">
-                <CardContent className="p-8">
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={inView} className="grid gap-12 lg:grid-cols-2">
+          {/* FORM: opacity-only (no transforms) + iOS-safe classes */}
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.3 }}>
+            <Card className="ios:no-transform ios:backdrop-none border border-white/20 bg-white/10 shadow-xl backdrop-blur-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-white">Project Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div id="form">
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
+                    {/* name + email */}
+                    <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <label className="block text-purple-200 mb-2">Name *</label>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Name *</label>
                         <input
                           type="text"
                           name="name"
+                          required
+                          placeholder="Your full name"
                           value={formData.name}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors"
-                          placeholder="Your name"
-                          required
+                          className={InputStyles}
+                          autoComplete="name"
+                          inputMode="text"
                         />
                       </div>
                       <div>
-                        <label className="block text-purple-200 mb-2">Email *</label>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Email *</label>
                         <input
                           type="email"
                           name="email"
+                          required
+                          placeholder="your@email.com"
                           value={formData.email}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors"
-                          placeholder="your@email.com"
-                          required
+                          className={InputStyles}
+                          autoComplete="email"
+                          inputMode="email"
                         />
                       </div>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-6">
+
+                    {/* company + service */}
+                    <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <label className="block text-purple-200 mb-2">Company</label>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Company</label>
                         <input
                           type="text"
                           name="company"
+                          placeholder="Your company name"
                           value={formData.company}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors"
-                          placeholder="Your company"
+                          className={InputStyles}
+                          autoComplete="organization"
+                          inputMode="text"
                         />
                       </div>
-                                             <div>
-                         <label className="block text-purple-200 mb-2">Project Type</label>
-                         <select
-                           name="projectType"
-                           value={formData.projectType}
-                           onChange={handleInputChange}
-                           className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors appearance-none cursor-pointer"
-                           style={{
-                             backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a855f7' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                             backgroundPosition: 'right 0.5rem center',
-                             backgroundRepeat: 'no-repeat',
-                             backgroundSize: '1.5em 1.5em',
-                             paddingRight: '2.5rem'
-                           }}
-                         >
-                           <option value="" className="text-purple-400">Select project type</option>
-                           <option value="web" className="text-white bg-purple-900 hover:bg-purple-800">Web Development</option>
-                           <option value="mobile" className="text-white bg-purple-900 hover:bg-purple-800">Mobile App</option>
-                           <option value="ai" className="text-white bg-purple-900 hover:bg-purple-800">AI Automation</option>
-                           <option value="design" className="text-white bg-purple-900 hover:bg-purple-800">UI/UX Design</option>
-                           <option value="other" className="text-white bg-purple-900 hover:bg-purple-800">Other</option>
-                         </select>
-                       </div>
+                      <div>
+                        <label className="mb-2 block text-sm font-medium text-purple-200">Service Needed *</label>
+                        <div className="relative">
+                          <select
+                            name="service"
+                            required
+                            value={formData.service}
+                            onChange={handleInputChange}
+                            className="w-full appearance-none rounded-lg border border-purple-700 bg-gradient-to-br from-black via-[#2c003e] to-black/80 px-4 py-3 pr-10 text-[16px] text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-400 backdrop-blur-md ios:backdrop-none"
+                          >
+                            <option disabled value="">
+                              Select a service
+                            </option>
+                            {SERVICES.map((s) => (
+                              <option key={s} value={s} className="bg-[#2c003e] text-white">
+                                {s}
+                              </option>
+                            ))}
+                          </select>
+                          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-purple-300" />
+                        </div>
+                      </div>
                     </div>
-                                         <div>
-                       <label className="block text-purple-200 mb-2">Budget Range</label>
-                       <select
-                         name="budget"
-                         value={formData.budget}
-                         onChange={handleInputChange}
-                         className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors appearance-none cursor-pointer"
-                         style={{
-                           backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a855f7' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                           backgroundPosition: 'right 0.5rem center',
-                           backgroundRepeat: 'no-repeat',
-                           backgroundSize: '1.5em 1.5em',
-                           paddingRight: '2.5rem'
-                         }}
-                       >
-                         <option value="" className="text-purple-400">Select budget range</option>
-                         <option value="5k-10k" className="text-white bg-purple-900 hover:bg-purple-800">$5K - $10K</option>
-                         <option value="10k-25k" className="text-white bg-purple-900 hover:bg-purple-800">$10K - $25K</option>
-                         <option value="25k-50k" className="text-white bg-purple-900 hover:bg-purple-800">$25K - $50K</option>
-                         <option value="50k+" className="text-white bg-purple-900 hover:bg-purple-800">$50K+</option>
-                       </select>
-                     </div>
+
+                    {/* message */}
                     <div>
-                      <label className="block text-purple-200 mb-2">Project Details *</label>
+                      <label className="mb-2 block text-sm font-medium text-purple-200">Project Details *</label>
                       <textarea
                         name="message"
+                        rows={6}
+                        required
+                        placeholder="Tell us about your project, goals, and requirements..."
                         value={formData.message}
                         onChange={handleInputChange}
-                        rows={6}
-                        className="w-full px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-lg text-white placeholder-purple-400 focus:outline-none focus:border-purple-500 transition-colors resize-none"
-                        placeholder="Tell us about your project, goals, and requirements..."
-                        required
-                      ></textarea>
+                        className={`${InputStyles} resize-none`}
+                      />
                     </div>
-                    <Button 
+
+                    {submitStatus === "success" && (
+                      <div className="flex items-center gap-2 text-sm text-green-400">
+                        <CheckCircle className="h-4 w-4" /> Thank you! We&apos;ll get back to you within 24 hours.
+                      </div>
+                    )}
+
+                    <Button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white py-4 text-lg rounded-lg hover:scale-105 transition-all flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="w-full rounded-lg bg-gradient-to-r from-fuchsia-600 to-purple-600 py-3 text-white transition-all hover:scale-105 disabled:opacity-50"
                     >
-                      <Send className="w-5 h-5" />
-                      Send Message
+                      {isSubmitting ? (
+                        <span className="flex items-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                          Sending...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Send className="h-4 w-4" /> Send Message
+                        </span>
+                      )}
                     </Button>
                   </form>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* benefits */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <div className="rounded-2xl border border-fuchsia-400/30 bg-gradient-to-br from-fuchsia-600/20 to-purple-600/20 p-8">
+              <h4 className="mb-6 text-2xl font-semibold text-white">Why Choose Us?</h4>
+              <ul className="space-y-4">
+                {[
+                  "Free consultation and project assessment",
+                  "Transparent pricing with no hidden fees",
+                  "Dedicated project manager throughout",
+                  "Regular progress updates and communication",
+                  "Post-launch support and maintenance",
+                  "Scalable solutions that grow with your business",
+                ].map((benefit) => (
+                  <li key={benefit} className="flex items-center gap-3 text-purple-200">
+                    <CheckCircle className="h-5 w-5 flex-shrink-0 text-fuchsia-400" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Services & Info */}
-            <div className={`space-y-8 transition-all duration-1000 ${
-              isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-            }`} style={{ animationDelay: "400ms" }}>
-              <div>
-                <h3 className="text-3xl font-bold mb-6 text-purple-300">Our Services</h3>
-                <div className="space-y-4">
-                  {services.map((service, index) => (
-                    <Card
-                      key={index}
-                      className="bg-gradient-to-br from-purple-900/20 to-purple-800/10 backdrop-blur border border-purple-800 hover:scale-105 transition-all duration-300"
+            <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20">
+              <h4 className="text-xl font-semibold mb-4 text-white">What Happens Next?</h4>
+              <div className="space-y-3">
+                {[
+                  "We'll review your project details",
+                  "Schedule a consultation call",
+                  "Receive a detailed proposal",
+                  "Start your project journey",
+                ].map((step, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                      style={{ background: ["#C026D3", "#7C3AED", "#DB2777", "#2563EB"][idx] }}
                     >
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <div className="text-purple-300 mt-1">{service.icon}</div>
-                          <div>
-                            <h4 className="text-lg font-semibold text-purple-200 mb-2">{service.title}</h4>
-                            <p className="text-purple-400 text-sm">{service.description}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-3xl font-bold mb-6 text-purple-300">Why Choose Us</h3>
-                <div className="space-y-4">
-                  {[
-                    "Fast response time (< 24 hours)",
-                    "Transparent pricing & timelines",
-                    "Ongoing support & maintenance",
-                    "Modern tech stack & best practices",
-                    "Scalable & future-proof solutions"
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                      <span className="text-purple-200">{benefit}</span>
+                      {idx + 1}
                     </div>
-                  ))}
-                </div>
+                    <span className="text-purple-200">{step}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </motion.div>
+        </motion.div>
+      </SectionWrapper>
 
-      {/* Testimonials */}
-      <section className="px-6 py-24 bg-black text-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className={`text-4xl font-bold text-center mb-16 text-purple-300 transition-all duration-1000 ${
-            isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-          }`}>
-            What Our Clients Say
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card
-                key={index}
-                className={`bg-gradient-to-br from-purple-900/30 to-purple-800/20 backdrop-blur border border-purple-800 text-white hover:scale-105 transition-all duration-500 ${
-                  isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-                }`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <blockquote className="text-lg italic text-purple-200 mb-6 leading-relaxed">
-                    "{testimonial.quote}"
-                  </blockquote>
-                  <div>
-                    <p className="font-semibold text-purple-300">{testimonial.author}</p>
-                    <p className="text-sm text-purple-400">{testimonial.role}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* FAQ */}
+      <SectionWrapper backgroundType="secondary">
+        <SectionHeader title="Frequently Asked Questions" subtitle="Common questions about working with us" />
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={inView} className="grid gap-6 lg:grid-cols-2">
+          {FAQ.map((item, i) => {
+            const isOpen = openFaqIndex === i;
+            return (
+              <motion.div key={i} variants={itemVariants}>
+                <motion.div
+                  variants={cardVariants}
+                  className="rounded-2xl border border-purple-900 bg-white/5 p-6 shadow-md backdrop-blur-xl transition-all duration-500 hover:bg-white/10 hover:shadow-purple-700/30"
+                >
+                  <button
+                    className="flex w-full items-center justify-between text-left"
+                    onClick={() => setOpenFaqIndex((prev) => (prev === i ? null : i))}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-panel-${i}`}
+                  >
+                    <h4 className="text-lg font-semibold text-purple-200 transition-colors hover:text-white">{item.question}</h4>
+                    <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                  </button>
 
-      {/* CTA Section */}
-      <section className="relative py-28 px-6 bg-gradient-to-br from-fuchsia-800 via-purple-700 to-black text-white text-center overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="w-[700px] h-[700px] bg-fuchsia-500/20 blur-3xl rounded-full absolute -top-48 left-1/2 -translate-x-1/2 animate-pulse" />
-          <div className="w-[400px] h-[400px] bg-white/5 rounded-full blur-2xl absolute bottom-0 left-1/3" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.06),_transparent)] opacity-50" />
-        </div>
+                  <motion.div
+                    id={`faq-panel-${i}`}
+                    initial={false}
+                    animate={isOpen ? "open" : "collapsed"}
+                    variants={{ open: { height: "auto", opacity: 1, marginTop: 16 }, collapsed: { height: 0, opacity: 0, marginTop: 0 } }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <p className="text-sm leading-relaxed text-purple-300">{item.answer}</p>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      </SectionWrapper>
 
-        <div className="max-w-4xl mx-auto relative z-10">
-          <h3 className={`text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 leading-tight text-white transition-all duration-1000 ${
-            isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-          }`}>
-            Ready to Transform
-            <br className="hidden sm:inline" /> Your Business?
-          </h3>
-          <p className={`text-lg mb-10 text-purple-100 transition-all duration-1000 ${
-            isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-          }`} style={{ animationDelay: "200ms" }}>
-            Let's discuss your project and create something extraordinary together.
-          </p>
-          <div className={`transition-all duration-1000 ${
-            isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
-          }`} style={{ animationDelay: "400ms" }}>
-            <Button className="bg-white text-purple-800 px-8 py-4 text-lg font-semibold rounded-full hover:scale-110 transition-transform duration-300 animate-pulse-slow">
-              Start Your Project
-            </Button>
-          </div>
-        </div>
-
-        <style jsx>{`
-          @keyframes fadeInUp {
-            0% {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          .animate-fade-in-up {
-            animation: fadeInUp 1s ease-out forwards;
-          }
-
-          .animate-pulse-slow {
-            animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-          }
-        `}</style>
-      </section>
-
-      <Footer />
-
-      {isVisible && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-8 right-8 bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white p-4 rounded-full shadow-2xl z-50 transition-all duration-300 transform hover:scale-110 hover:shadow-purple-500/50 border border-purple-400/20 backdrop-blur-sm"
-          aria-label="Back to top"
-          style={{
-            boxShadow: '0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 4px 6px -2px rgba(147, 51, 234, 0.1)'
-          }}
-        >
-          <svg 
-            className="w-6 h-6" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-            strokeWidth="2.5"
+      {/* CTA */}
+      <SectionWrapper backgroundType="cta">
+        <div className="text-center">
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={inView}
+            className="mb-8 text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-6xl"
           >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              d="M5 10l7-7m0 0l7 7m-7-7v18" 
-            />
+            Ready to Get Started?
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={inView}
+            className="mb-10 text-lg text-purple-100"
+          >
+            Let&apos;s discuss your project and bring your vision to life with our innovative solutions.
+          </motion.p>
+          <Button onClick={goToForm} className="bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white px-6 py-3 text-sm rounded-full hover:scale-105 transition-all">
+            Start Your Project
+          </Button>
+        </div>
+      </SectionWrapper>
+
+      {/* Footer + back to top */}
+      <Footer />
+      <WhatsAppButton />
+      {showBackToTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Back to top"
+          className="fixed bottom-8 right-8 rounded-full border border-purple-400/20 bg-gradient-to-r from-purple-600 to-fuchsia-600 p-4 text-white shadow-2xl backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:from-purple-700 hover:to-fuchsia-700 hover:shadow-purple-500/50 z-50"
+          style={{ boxShadow: "0 10px 25px -5px rgba(147 51 234 / 0.3), 0 4px 6px -2px rgba(147 51 234 / 0.1)" }}
+        >
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
           </svg>
-        </button>
+        </motion.button>
       )}
     </main>
   );
